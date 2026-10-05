@@ -25,6 +25,7 @@
       --c-prs: #c9a96e;
       --c-mcps: #b98264;
       --c-artist: #5fb8a8;
+      --c-label: #6f8fb0;
     }
 
     * { box-sizing: border-box; }
@@ -304,11 +305,95 @@
     .footnote { margin: 8px 0 0; font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
     .footnote a { color: var(--subheading); }
 
+    /* Deal type choice */
+    .deal-choice { margin-bottom: 24px; }
+    .deal-choice .choices { flex-wrap: wrap; }
+    .deal-choice .choice { min-width: 150px; }
+    .deal-choice .choice span { padding: 12px 10px; }
+
+    .group-title {
+      margin: 24px 0 12px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .money-input { position: relative; }
+    .money-input span {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+    }
+    .money-input input { padding-left: 26px; }
+
+    .who {
+      margin: 0;
+      line-height: 1.65;
+      font-size: 0.95rem;
+    }
+    .who + .who { margin-top: 10px; }
+
+    /* Comparison table: a wide version, and a phone version with each label above its three values */
+    table.compare {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .compare th, .compare td {
+      padding: 10px 8px;
+      text-align: right;
+      border-top: 1px solid var(--line);
+      vertical-align: top;
+      line-height: 1.45;
+    }
+
+    .compare thead th {
+      border-top: 0;
+      font-weight: 400;
+      color: var(--subheading);
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+    }
+
+    .compare th[scope="row"] {
+      text-align: left;
+      font-weight: 300;
+      color: var(--muted);
+    }
+
+    .compare .is-current { background: rgba(95, 184, 168, 0.1); }
+    .compare thead .is-current { color: var(--headline); }
+    .compare .neg { color: var(--loss); }
+    .compare .pos { color: var(--gain); }
+    .compare tr.key td, .compare tr.key th { font-size: 1rem; color: var(--headline); }
+
     [hidden] { display: none !important; }
+
+    .compare-narrow { display: none; }
+    .compare-narrow tr.label-row th {
+      text-align: left;
+      padding: 12px 6px 2px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-weight: 300;
+    }
+    .compare-narrow tr.value-row td { border-top: 0; padding-top: 2px; }
+    .compare-narrow thead th { font-size: 0.75rem; }
 
     @media (max-width: 680px) {
       .inputs { grid-template-columns: 1fr; }
       .results { grid-template-columns: 1fr; }
+      .compare-wide { display: none; }
+      .compare-narrow { display: table; font-size: 0.85rem; }
+      .compare-narrow th, .compare-narrow td { padding-left: 4px; padding-right: 4px; }
     }
 
     /* ---------- Background ---------- */
@@ -372,8 +457,17 @@
 
   <main class="calculator">
     <section class="card" aria-labelledby="inputs-title">
-      <h2 id="inputs-title">Your music</h2>
-      <p class="hint">For a self-released UK artist who writes their own songs. Based on RULES.md. Tap a tag to see its source.</p>
+      <h2 id="inputs-title">Her deal</h2>
+      <p class="hint">For a UK artist who writes her own songs and has no publisher. Based on RULES.md. Tap a tag to see its source.</p>
+
+      <fieldset class="field deal-choice">
+        <legend>Deal type</legend>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="deal" value="self" checked><span>Self-released</span></label>
+          <label class="choice"><input type="radio" name="deal" value="royalty"><span>Indie royalty deal</span></label>
+          <label class="choice"><input type="radio" name="deal" value="profit"><span>Indie profit-share deal</span></label>
+        </div>
+      </fieldset>
 
       <div class="inputs">
         <div class="field">
@@ -389,13 +483,57 @@
           </div>
         </div>
 
-        <fieldset class="field">
-          <legend>Distributor</legend>
-          <div class="choices">
-            <label class="choice"><input type="radio" name="distributor" value="distrokid" checked><span>DistroKid</span></label>
-            <label class="choice"><input type="radio" name="distributor" value="cdbaby"><span>CD Baby</span></label>
+        <div class="field">
+          <label for="costs">Cost of making and promoting the release <span id="costs-tag"></span></label>
+          <div class="money-input"><span>£</span><input id="costs" type="number" inputmode="numeric" min="0" step="500" value="5000"></div>
+        </div>
+      </div>
+
+      <div id="self-inputs">
+        <p class="group-title">Self-released</p>
+        <div class="inputs">
+          <fieldset class="field">
+            <legend>Distributor</legend>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="distributor" value="distrokid" checked><span>DistroKid</span></label>
+              <label class="choice"><input type="radio" name="distributor" value="cdbaby"><span>CD Baby</span></label>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+
+      <div id="label-inputs" hidden>
+        <p class="group-title">Label deal</p>
+        <div class="inputs">
+          <div class="field">
+            <label for="labelfee">Label's distributor fee <span id="labelfee-tag"></span></label>
+            <div class="slider-row">
+              <input id="labelfee" type="range" min="0" max="40" step="1" value="20">
+              <output id="labelfee-out" class="slider-value" for="labelfee">20%</output>
+            </div>
           </div>
-        </fieldset>
+
+          <div class="field" id="royalty-field">
+            <label for="royalty">Her royalty rate <span id="royalty-tag"></span></label>
+            <div class="slider-row">
+              <input id="royalty" type="range" min="5" max="50" step="1" value="25">
+              <output id="royalty-out" class="slider-value" for="royalty">25%</output>
+            </div>
+          </div>
+
+          <div class="field" id="split-field">
+            <label for="split">Her share of the profit <span id="split-tag"></span></label>
+            <div class="slider-row">
+              <input id="split" type="range" min="10" max="90" step="1" value="50">
+              <output id="split-out" class="slider-value" for="split">50%</output>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="advance">Cash advance <span id="advance-tag"></span></label>
+            <div class="money-input"><span>£</span><input id="advance" type="number" inputmode="numeric" min="0" step="500" value="0"></div>
+          </div>
+        </div>
       </div>
 
       <p id="threshold-note" class="message note" hidden></p>
@@ -408,6 +546,11 @@
       <ul class="rows" id="rows" aria-live="polite"></ul>
     </section>
 
+    <section class="card" aria-labelledby="who-title">
+      <h2 id="who-title">Release costs: who pays, and who carries the loss</h2>
+      <div id="who"></div>
+    </section>
+
     <section class="card" aria-labelledby="fixed-title">
       <h2 id="fixed-title">Fixed costs</h2>
       <p class="hint">Paid however many streams there are.</p>
@@ -415,22 +558,30 @@
     </section>
 
     <section class="card" aria-labelledby="result-title">
-      <h2 id="result-title">What the artist keeps</h2>
-      <p class="hint">Earnings above, minus fixed costs.</p>
+      <h2 id="result-title">What she keeps</h2>
+      <p class="hint" id="result-hint"></p>
       <div class="results" aria-live="polite">
         <div class="result" id="year1">
           <div class="label">Year 1</div>
           <div class="big" id="year1-amount"></div>
           <div class="sub" id="year1-sub"></div>
         </div>
-        <div class="result" id="later">
-          <div class="label">Each later year</div>
-          <div class="big" id="later-amount"></div>
-          <div class="sub" id="later-sub"></div>
+        <div class="result" id="second">
+          <div class="label" id="second-label"></div>
+          <div class="big" id="second-amount"></div>
+          <div class="sub" id="second-sub"></div>
         </div>
       </div>
+      <p id="carry-message" class="message note" hidden></p>
       <p id="loss-message" class="message loss" hidden></p>
-      <p class="footnote">An estimate for illustration, not financial advice. Not included: PPL, YouTube, and streams outside the UK. See RULES.md for all sources.</p>
+    </section>
+
+    <section class="card" aria-labelledby="compare-title">
+      <h2 id="compare-title">Compare all three deals</h2>
+      <p class="hint">Year 1, using the settings above.</p>
+      <table class="compare compare-wide" id="compare"></table>
+      <table class="compare compare-narrow" id="compare-narrow"></table>
+      <p class="footnote">An estimate for illustration, not financial advice. A label may also bring marketing and contacts that lead to more streams; that isn't measured here. Not included: PPL, YouTube, producer royalties, and streams outside the UK. See RULES.md for all sources.</p>
     </section>
   </main>
 
@@ -465,11 +616,18 @@
        Change a value, label or source here and the whole calculator updates.
        label: 'FACT' (stated in the source) or 'ASSUMPTION' (estimate or
        a source figure applied to a situation it doesn't directly cover).
+       Entries without a value tag a rule rather than a number.
        ===================================================================== */
     var CMA_REPORT = 'https://www.gov.uk/government/publications/music-and-streaming-market-study-final-report/executive-summary';
+    var CMA_FULL = 'https://assets.publishing.service.gov.uk/media/6384f43ee90e077898ccb48e/Music_and_streaming_final_report.pdf';
+    var IPO_REPORT = 'https://assets.publishing.service.gov.uk/media/614c760fd3bf7f719095b5ad/music-creators-earnings-report.pdf';
+    var DCMS_REPORT = 'https://publications.parliament.uk/pa/cm5802/cmselect/cmcumeds/50/5006.htm';
 
     var RULES = {
+      // Section 1: value of a stream
       streamValueDefaultPence: { value: 0.9,   label: 'ASSUMPTION', note: 'Middle of the 0.8p–1.0p range worked out in RULES.md section 1.' },
+
+      // Section 2: percentage cuts
       serviceShare:            { value: 0.32,  label: 'FACT',       note: 'Streaming services kept 32% of UK streaming revenue in 2021 (CMA).', source: CMA_REPORT },
       recordingShare:          { value: 0.53,  label: 'FACT',       note: '53% of UK streaming revenue went to recording rights in 2021 (CMA).', source: CMA_REPORT },
       songwritingShare:        { value: 0.15,  label: 'FACT',       note: '15% of UK streaming revenue went to publishing rights in 2021 (CMA).', source: CMA_REPORT },
@@ -478,68 +636,132 @@
       prsHalf:                 { value: 0.5,   label: 'ASSUMPTION', note: 'Songwriting money split about half PRS, half MCPS for streaming. Not confirmed from a source.' },
       prsCost:                 { value: 0.093, label: 'ASSUMPTION', note: "PRS's cost-to-income ratio across all its income in 2022, applied to streaming.", source: 'https://www.cisac.org/Newsroom/society-news/prs-music-reports-record-breaking-revenues-and-distributions-collecting-ps964' },
       mcpsCost:                { value: 0.074, label: 'ASSUMPTION', note: "MCPS's average commission across all its income in 2021, applied to streaming.", source: 'https://www.prsformusic.com/press/2022/mcps-announces-2021-distributions-of-181-million-to-its-members' },
+      spotifyMinStreams:       { value: 1000,  label: 'FACT',       note: 'On Spotify, a track needs 1,000 streams in 12 months to earn recording royalties.', source: 'https://artists.spotify.com/royalties-guide' },
+
+      // Section 3: fixed costs
       distroKidYearlyUSD:      { value: 24.99, label: 'FACT',       note: 'DistroKid Musician plan, billed yearly.', source: 'https://distrokid.com/pricing/' },
       cdBabySingleUSD:         { value: 9.99,  label: 'FACT',       note: 'CD Baby one-off fee to release a single.', source: 'https://cdbaby.com/cd-baby-cost/' },
       cdBabyReleases:          { value: 1,     label: 'ASSUMPTION', note: 'Assumes one single is released in year 1. RULES.md does not set a number of releases.' },
       gbpPerUSD:               { value: 0.76,  label: 'ASSUMPTION', note: 'Exchange rate. RULES.md gives $24.99 as "about £19".' },
       prsJoiningFee:           { value: 100,   label: 'FACT',       note: 'PRS one-off joining fee (seen in search results; check the link).', source: 'https://help.prsformusic.com/s/article/how-much-does-it-cost-to-join' },
       mcpsJoiningFee:          { value: 100,   label: 'FACT',       note: 'MCPS one-off joining fee (seen in search results; check the link).', source: 'https://help.prsformusic.com/s/article/how-much-does-it-cost-to-join' },
-      spotifyMinStreams:       { value: 1000,  label: 'FACT',       note: 'On Spotify, a track needs 1,000 streams in 12 months to earn recording royalties.', source: 'https://artists.spotify.com/royalties-guide' }
+
+      // Section 5: independent label (starting values for the adjustable settings)
+      releaseCosts:            { value: 5000,  label: 'ASSUMPTION', note: 'Cost of making and promoting a small release (recording, artwork, video, marketing). Real costs vary widely.' },
+      labelDistributorFee:     { value: 0.20,  label: 'ASSUMPTION', note: "IPO: independent distributors keep 20% on average (p. 66). Assumed the same for a label's own distributor.", source: IPO_REPORT },
+      royaltyRate:             { value: 0.25,  label: 'ASSUMPTION', note: 'IPO: "a 25% royalty has come to be regarded as average" for streaming (p. 66). No source gives an indie-only rate.', source: IPO_REPORT },
+      profitSplit:             { value: 0.5,   label: 'FACT',       note: 'DCMS Committee: indie profit-share deals are "usually 50:50" (para 44).', source: DCMS_REPORT },
+      advance:                 { value: 0,     label: 'ASSUMPTION', note: 'Default: no cash advance. An advance is added to the costs and paid back the same way.' },
+
+      // Section 5: rules without a number
+      royaltyRecoup:           { label: 'FACT',       note: 'Royalty deal: the advance and costs are earned out from the performer\'s royalties only (DCMS, para 45).', source: DCMS_REPORT },
+      profitRecoup:            { label: 'FACT',       note: 'Profit-share deal: costs are earned out from total revenues before the profit is shared (DCMS, para 45).', source: DCMS_REPORT },
+      advanceInProfitShare:    { label: 'ASSUMPTION', note: 'The sources don\'t single out the advance in a profit share; it is treated as one of the costs.' },
+      notOutOfPocket:          { label: 'ASSUMPTION', note: 'The usual position: costs are "refunded from those royalties" (CMA para 2.26), not from the artist\'s pocket. Check the individual contract.', source: CMA_FULL },
+      writeOffShare:           { value: 0.19,  label: 'FACT', note: '19% of AIM member labels write off unrecouped debt, after ten years on average (DCMS, para 46).', source: DCMS_REPORT },
+      writeOffYears:           { value: 10,    label: 'FACT', note: '19% of AIM member labels write off unrecouped debt, after ten years on average (DCMS, para 46).', source: DCMS_REPORT },
+      songwritingUnchanged:    { label: 'ASSUMPTION', note: 'Assumes she hasn\'t also signed a publishing deal, so the songwriting money is the same as self-released.' }
     };
 
     /* ---------- The maths (no page code, so it can be tested on its own) ---------- */
-    function calculate(streams, pencePerStream, distributor) {
+    // inputs: { deal: 'self'|'royalty'|'profit', streams, pence, releaseCosts,
+    //           distributor: 'distrokid'|'cdbaby', labelFee, royaltyRate, profitSplit, advance }
+    function calculate(inputs) {
       var r = function (key) { return RULES[key].value; };
-      var gross = streams * pencePerStream / 100;
+      var deal = inputs.deal;
+      var gross = inputs.streams * inputs.pence / 100;
 
       var service = gross * r('serviceShare');
       var recording = gross * r('recordingShare');
       var songwriting = gross * r('songwritingShare');
 
-      var distributorCut = recording * (distributor === 'cdbaby' ? r('cdBabyCut') : r('distroKidCut'));
       var prsMoney = songwriting * r('prsHalf');
       var mcpsMoney = songwriting - prsMoney;
       var prsCost = prsMoney * r('prsCost');
       var mcpsCost = mcpsMoney * r('mcpsCost');
-
-      var artistRecording = recording - distributorCut;
       var artistSongwriting = songwriting - prsCost - mcpsCost;
-      var artist = artistRecording + artistSongwriting;
+      var joiningFees = r('prsJoiningFee') + r('mcpsJoiningFee');
 
-      var distributorYear1, distributorLater;
-      if (distributor === 'cdbaby') {
-        distributorYear1 = r('cdBabySingleUSD') * r('cdBabyReleases') * r('gbpPerUSD');
-        distributorLater = 0;
-      } else {
-        distributorYear1 = distributorLater = r('distroKidYearlyUSD') * r('gbpPerUSD');
-      }
-      var fixedYear1 = distributorYear1 + r('prsJoiningFee') + r('mcpsJoiningFee');
-      var fixedLater = distributorLater;
-
-      return {
-        gross: gross, service: service, recording: recording, songwriting: songwriting,
-        distributorCut: distributorCut, prsCost: prsCost, mcpsCost: mcpsCost,
-        artistRecording: artistRecording, artistSongwriting: artistSongwriting, artist: artist,
-        distributorYear1: distributorYear1, distributorLater: distributorLater,
-        fixedYear1: fixedYear1, fixedLater: fixedLater,
-        year1: artist - fixedYear1, later: artist - fixedLater
+      var res = {
+        deal: deal, gross: gross, service: service, recording: recording, songwriting: songwriting,
+        prsCost: prsCost, mcpsCost: mcpsCost, artistSongwriting: artistSongwriting
       };
+
+      if (deal === 'self') {
+        var isCdBaby = inputs.distributor === 'cdbaby';
+        var cut = isCdBaby ? r('cdBabyCut') : r('distroKidCut');
+        res.distributorCut = recording * cut;
+        res.artistRecording = recording - res.distributorCut;
+        res.artist = res.artistRecording + artistSongwriting;
+        if (isCdBaby) {
+          res.distributorYear1 = r('cdBabySingleUSD') * r('cdBabyReleases') * r('gbpPerUSD');
+          res.distributorLater = 0;
+        } else {
+          res.distributorYear1 = res.distributorLater = r('distroKidYearlyUSD') * r('gbpPerUSD');
+        }
+        res.fixedYear1 = res.distributorYear1 + joiningFees;
+        res.fixedLater = res.distributorLater;
+        res.releaseCostsPaid = inputs.releaseCosts;
+        res.advance = 0;
+        res.owed = 0;
+        res.year1 = res.artist - res.fixedYear1 - inputs.releaseCosts;
+        res.later = res.artist - res.fixedLater;
+        // Streams for her recording money to pay back the release costs she paid
+        var selfPerStream = inputs.pence / 100 * r('recordingShare') * (1 - cut);
+        res.breakEvenStreams = inputs.releaseCosts > 0 ? (selfPerStream > 0 ? inputs.releaseCosts / selfPerStream : Infinity) : 0;
+        res.labelReceivedAtBreakEven = null;
+        return res;
+      }
+
+      // Label deals
+      var debt = inputs.releaseCosts + inputs.advance;
+      res.labelDistributorCut = recording * inputs.labelFee;
+      res.labelReceipts = recording - res.labelDistributorCut;
+      var perStreamReceipts = inputs.pence / 100 * r('recordingShare') * (1 - inputs.labelFee);
+
+      var recouped;
+      if (deal === 'royalty') {
+        var royaltyShare = res.labelReceipts * inputs.royaltyRate;
+        recouped = Math.min(royaltyShare, debt);
+        res.artistRecording = royaltyShare - recouped;
+        var perStreamToDebt = perStreamReceipts * inputs.royaltyRate;
+        res.breakEvenStreams = debt > 0 ? (perStreamToDebt > 0 ? debt / perStreamToDebt : Infinity) : 0;
+        res.labelReceivedAtBreakEven = debt > 0 ? (inputs.royaltyRate > 0 ? debt / inputs.royaltyRate : Infinity) : 0;
+      } else {
+        recouped = Math.min(res.labelReceipts, debt);
+        res.artistRecording = (res.labelReceipts - recouped) * inputs.profitSplit;
+        res.breakEvenStreams = debt > 0 ? (perStreamReceipts > 0 ? debt / perStreamReceipts : Infinity) : 0;
+        res.labelReceivedAtBreakEven = debt;
+      }
+
+      res.debt = debt;
+      res.recouped = recouped;
+      res.owed = debt - recouped;
+      res.labelKeeps = res.labelReceipts - res.artistRecording;
+      res.artist = res.artistRecording + artistSongwriting;
+      res.advance = inputs.advance;
+      res.releaseCostsPaid = 0;
+      res.fixedYear1 = joiningFees;
+      res.fixedLater = 0;
+      res.year1 = res.artist + inputs.advance - joiningFees;
+      return res;
     }
 
     /* ---------- Display ---------- */
+    function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+
     function tag(key) {
       var rule = RULES[key];
       var cls = rule.label === 'FACT' ? 'fact' : 'assumption';
-      var title = rule.label + ': ' + rule.note;
+      var title = esc(rule.label + ': ' + rule.note);
       if (rule.source) {
-        return '<a class="tag ' + cls + '" href="' + rule.source + '" target="_blank" rel="noopener" title="' + title.replace(/"/g, '&quot;') + '">' + rule.label + '</a>';
+        return '<a class="tag ' + cls + '" href="' + rule.source + '" target="_blank" rel="noopener" title="' + title + '">' + rule.label + '</a>';
       }
-      return '<span class="tag ' + cls + '" tabindex="0" title="' + title.replace(/"/g, '&quot;') + '">' + rule.label + '</span>';
+      return '<span class="tag ' + cls + '" tabindex="0" title="' + title + '">' + rule.label + '</span>';
     }
 
-    function pct(key) {
-      return +(RULES[key].value * 100).toFixed(1) + '%';
-    }
+    function pct(x) { return +(x * 100).toFixed(1) + '%'; }
+    function rulePct(key) { return pct(RULES[key].value); }
 
     function money(x) {
       var abs = Math.abs(x);
@@ -552,109 +774,279 @@
       return whole > 0 ? (part / whole * 100).toFixed(1) + '%' : '0%';
     }
 
-    var streamsInput = document.getElementById('streams');
-    var valueInput = document.getElementById('value');
+    function streamsText(n) {
+      if (!isFinite(n)) return 'never';
+      if (n <= 0) return 'from the first stream';
+      if (n >= 1e6) return 'about ' + (n / 1e6).toFixed(1) + ' million streams';
+      return 'about ' + Math.ceil(n).toLocaleString('en-GB') + ' streams';
+    }
 
-    document.getElementById('value-tag').innerHTML = tag('streamValueDefaultPence');
+    var DEAL_NAMES = { self: 'Self-released', royalty: 'Indie royalty deal', profit: 'Indie profit-share deal' };
+
+    var el = function (id) { return document.getElementById(id); };
+    var streamsInput = el('streams'), valueInput = el('value'), costsInput = el('costs');
+    var feeInput = el('labelfee'), royaltyInput = el('royalty'), splitInput = el('split'), advanceInput = el('advance');
+
+    // Starting values and tags come from RULES
     valueInput.value = RULES.streamValueDefaultPence.value;
+    costsInput.value = RULES.releaseCosts.value;
+    feeInput.value = RULES.labelDistributorFee.value * 100;
+    royaltyInput.value = RULES.royaltyRate.value * 100;
+    splitInput.value = RULES.profitSplit.value * 100;
+    advanceInput.value = RULES.advance.value;
+    el('value-tag').innerHTML = tag('streamValueDefaultPence');
+    el('costs-tag').innerHTML = tag('releaseCosts');
+    el('labelfee-tag').innerHTML = tag('labelDistributorFee');
+    el('royalty-tag').innerHTML = tag('royaltyRate');
+    el('split-tag').innerHTML = tag('profitSplit');
+    el('advance-tag').innerHTML = tag('advance');
+
+    function wholeNumber(input) { return Math.max(0, Math.floor(Number(input.value) || 0)); }
+
+    function readInputs() {
+      return {
+        deal: document.querySelector('input[name="deal"]:checked').value,
+        streams: wholeNumber(streamsInput),
+        pence: Number(valueInput.value),
+        releaseCosts: wholeNumber(costsInput),
+        distributor: document.querySelector('input[name="distributor"]:checked').value,
+        labelFee: Number(feeInput.value) / 100,
+        royaltyRate: Number(royaltyInput.value) / 100,
+        profitSplit: Number(splitInput.value) / 100,
+        advance: wholeNumber(advanceInput)
+      };
+    }
 
     function render() {
-      var streams = Math.max(0, Math.floor(Number(streamsInput.value) || 0));
-      var pence = Number(valueInput.value);
-      var distributor = document.querySelector('input[name="distributor"]:checked').value;
-      var isCdBaby = distributor === 'cdbaby';
-      var res = calculate(streams, pence, distributor);
+      var inp = readInputs();
+      var deal = inp.deal;
+      var isLabel = deal !== 'self';
+      var res = calculate(inp);
 
-      document.getElementById('value-out').textContent = pence.toFixed(2) + 'p';
+      // Show only the inputs that apply
+      el('self-inputs').hidden = isLabel;
+      el('label-inputs').hidden = !isLabel;
+      el('royalty-field').hidden = deal !== 'royalty';
+      el('split-field').hidden = deal !== 'profit';
+      el('value-out').textContent = inp.pence.toFixed(2) + 'p';
+      el('labelfee-out').textContent = pct(inp.labelFee);
+      el('royalty-out').textContent = pct(inp.royaltyRate);
+      el('split-out').textContent = pct(inp.profitSplit);
 
       // Under the Spotify threshold
-      var note = document.getElementById('threshold-note');
-      if (streams < RULES.spotifyMinStreams.value) {
-        note.hidden = false;
+      var note = el('threshold-note');
+      note.hidden = inp.streams >= RULES.spotifyMinStreams.value;
+      if (!note.hidden) {
         note.innerHTML = 'Under ' + RULES.spotifyMinStreams.value.toLocaleString('en-GB') + ' streams in 12 months, Spotify pays nothing for a track\'s recording' + tag('spotifyMinStreams') +
           '. The figures below don\'t remove this, because they also cover other services and the songwriting money, which this rule doesn\'t affect.';
-      } else {
-        note.hidden = true;
       }
 
-      document.getElementById('gross-line').textContent =
-        streams.toLocaleString('en-GB') + ' streams × ' + pence.toFixed(2) + 'p = ' + money(res.gross) + ' of streaming income in total.';
+      renderBreakdown(inp, res);
+      renderWho(inp, res);
+      renderFixed(inp, res);
+      renderResults(inp, res);
+      renderCompare(inp);
+    }
+
+    function renderBreakdown(inp, res) {
+      el('gross-line').textContent =
+        inp.streams.toLocaleString('en-GB') + ' streams × ' + inp.pence.toFixed(2) + 'p = ' + money(res.gross) + ' of streaming income in total.';
 
       var segments = [
         { name: 'Streaming service', amount: res.service, color: 'var(--c-service)',
-          detail: 'Keeps ' + pct('serviceShare') + tag('serviceShare') + ' of all income' },
-        { name: 'Distributor (' + (isCdBaby ? 'CD Baby' : 'DistroKid') + ')', amount: res.distributorCut, color: 'var(--c-distributor)',
-          detail: 'Takes ' + pct(isCdBaby ? 'cdBabyCut' : 'distroKidCut') + tag(isCdBaby ? 'cdBabyCut' : 'distroKidCut') + ' of the recording money' },
-        { name: 'PRS running costs', amount: res.prsCost, color: 'var(--c-prs)',
-          detail: pct('prsCost') + tag('prsCost') + ' of the PRS half' + tag('prsHalf') + ' of the songwriting money' },
-        { name: 'MCPS commission', amount: res.mcpsCost, color: 'var(--c-mcps)',
-          detail: pct('mcpsCost') + tag('mcpsCost') + ' of the MCPS half of the songwriting money' },
-        { name: 'Artist keeps', amount: res.artist, color: 'var(--c-artist)',
-          detail: money(res.artistRecording) + ' from the recording (' + pct('recordingShare') + tag('recordingShare') + ', minus distributor)<br>' +
-                  money(res.artistSongwriting) + ' from the songwriting (' + pct('songwritingShare') + tag('songwritingShare') + ', minus PRS and MCPS costs)' }
+          detail: 'Keeps ' + rulePct('serviceShare') + tag('serviceShare') + ' of all income' }
       ];
 
-      var bar = document.getElementById('bar');
+      if (inp.deal === 'self') {
+        var isCdBaby = inp.distributor === 'cdbaby';
+        var cutKey = isCdBaby ? 'cdBabyCut' : 'distroKidCut';
+        segments.push({ name: 'Distributor (' + (isCdBaby ? 'CD Baby' : 'DistroKid') + ')', amount: res.distributorCut, color: 'var(--c-distributor)',
+          detail: 'Takes ' + rulePct(cutKey) + tag(cutKey) + ' of the recording money' });
+      } else {
+        segments.push({ name: 'Label\'s distributor', amount: res.labelDistributorCut, color: 'var(--c-distributor)',
+          detail: 'Takes ' + pct(inp.labelFee) + tag('labelDistributorFee') + ' of the recording money (' + rulePct('recordingShare') + tag('recordingShare') + ' of all income)' });
+        var labelDetail = inp.deal === 'royalty'
+          ? 'Keeps ' + pct(1 - inp.royaltyRate) + ' of what it receives. Her ' + pct(inp.royaltyRate) + tag('royaltyRate') + ' royalty pays back costs first' + tag('royaltyRecoup')
+          : 'Costs come out of everything it receives' + tag('profitRecoup') + ', then she gets ' + pct(inp.profitSplit) + tag('profitSplit') + ' of the profit';
+        if (res.recouped > 0) labelDetail += '<br>Includes ' + money(res.recouped) + ' paying back release costs' + (inp.advance > 0 ? ' and her advance' : '');
+        segments.push({ name: 'Label', amount: res.labelKeeps, color: 'var(--c-label)', detail: labelDetail });
+      }
+
+      segments.push(
+        { name: 'PRS running costs', amount: res.prsCost, color: 'var(--c-prs)',
+          detail: rulePct('prsCost') + tag('prsCost') + ' of the PRS half' + tag('prsHalf') + ' of the songwriting money' },
+        { name: 'MCPS commission', amount: res.mcpsCost, color: 'var(--c-mcps)',
+          detail: rulePct('mcpsCost') + tag('mcpsCost') + ' of the MCPS half of the songwriting money' }
+      );
+
+      var recordingLine = inp.deal === 'self'
+        ? money(res.artistRecording) + ' from the recording (' + rulePct('recordingShare') + tag('recordingShare') + ', minus distributor)'
+        : money(res.artistRecording) + ' from the recording' + (res.owed > 0 ? ' (nothing yet: costs aren\'t paid back)' : '');
+      segments.push({ name: 'She keeps', amount: res.artist, color: 'var(--c-artist)',
+        detail: recordingLine + '<br>' + money(res.artistSongwriting) + ' from the songwriting (' + rulePct('songwritingShare') + tag('songwritingShare') +
+          ', minus PRS and MCPS costs)' + (inp.deal === 'self' ? '' : tag('songwritingUnchanged')) });
+
+      var bar = el('bar');
       bar.innerHTML = segments.map(function (s) {
-        return '<div style="width:' + (res.gross > 0 ? s.amount / res.gross * 100 : 0) + '%;background:' + s.color + '" title="' + s.name + ': ' + money(s.amount) + '"></div>';
+        return '<div style="width:' + (res.gross > 0 ? s.amount / res.gross * 100 : 0) + '%;background:' + s.color + '" title="' + esc(s.name + ': ' + money(s.amount)) + '"></div>';
       }).join('');
       bar.setAttribute('aria-label', segments.map(function (s) { return s.name + ' ' + share(s.amount, res.gross); }).join(', '));
 
-      document.getElementById('rows').innerHTML = segments.map(function (s) {
+      el('rows').innerHTML = segments.map(function (s) {
         return '<li><span class="swatch" style="background:' + s.color + '"></span>' +
           '<span class="row-label">' + s.name + '<span class="row-detail">' + s.detail + '</span></span>' +
           '<span class="amount">' + money(s.amount) + '<span class="share">' + share(s.amount, res.gross) + '</span></span></li>';
       }).join('') +
         '<li class="total"><span></span><span class="row-label">Total streaming income</span><span class="amount">' + money(res.gross) + '</span></li>';
+    }
 
-      // Fixed costs
-      var usd = function (key) { return '$' + RULES[key].value.toFixed(2); };
-      var fx = 'converted at $1 = £' + RULES.gbpPerUSD.value.toFixed(2) + tag('gbpPerUSD');
-      var distributorRow = isCdBaby
-        ? { name: 'CD Baby release fee', when: 'Year 1 only', amount: res.distributorYear1,
-            detail: usd('cdBabySingleUSD') + tag('cdBabySingleUSD') + ' per single × ' + RULES.cdBabyReleases.value + tag('cdBabyReleases') + ', ' + fx }
-        : { name: 'DistroKid yearly fee', when: 'Every year', amount: res.distributorYear1,
-            detail: usd('distroKidYearlyUSD') + tag('distroKidYearlyUSD') + ' a year, ' + fx };
-      var fixed = [
-        distributorRow,
+    function renderWho(inp, res) {
+      var costs = money(inp.releaseCosts);
+      var html;
+      if (inp.deal === 'self') {
+        html = '<p class="who"><strong>She pays the ' + costs + ' herself</strong>, upfront' + tag('releaseCosts') + '.</p>' +
+          '<p class="who">If the music doesn\'t earn it back, <strong>she carries the loss</strong>. Her recording money pays it back after ' + streamsText(res.breakEvenStreams) + '.</p>';
+      } else {
+        var total = money(res.debt);
+        var how = inp.deal === 'royalty'
+          ? 'It is paid back <strong>only from her ' + pct(inp.royaltyRate) + ' royalty</strong>' + tag('royaltyRecoup') + '.'
+          : 'It is paid back <strong>from everything the label receives</strong>, before any profit is shared' + tag('profitRecoup') + '.';
+        html = '<p class="who"><strong>The label pays the ' + costs + '</strong>' + tag('releaseCosts') +
+          (inp.advance > 0 ? ', plus her ' + money(inp.advance) + ' cash advance' + tag('advance') + (inp.deal === 'profit' ? tag('advanceInProfitShare') : '') + ': ' + total + ' in total' : '') + '. ' + how + '</p>' +
+          '<p class="who">If the music never earns it back, <strong>the label carries the loss</strong>. She doesn\'t repay it from her own pocket' + tag('notOutOfPocket') +
+          '. But the unpaid amount stays on her account and comes out of any future earnings from the recording. Only ' + pct(RULES.writeOffShare.value) + tag('writeOffShare') +
+          ' of independent labels in the trade body AIM write it off, after about ' + RULES.writeOffYears.value + ' years on average.</p>';
+      }
+      el('who').innerHTML = html;
+    }
+
+    function renderFixed(inp, res) {
+      var fixed = [];
+      if (inp.deal === 'self') {
+        var usd = function (key) { return '$' + RULES[key].value.toFixed(2); };
+        var fx = 'converted at $1 = £' + RULES.gbpPerUSD.value.toFixed(2) + tag('gbpPerUSD');
+        fixed.push(inp.distributor === 'cdbaby'
+          ? { name: 'CD Baby release fee', when: 'Year 1 only', amount: res.distributorYear1,
+              detail: usd('cdBabySingleUSD') + tag('cdBabySingleUSD') + ' per single × ' + RULES.cdBabyReleases.value + tag('cdBabyReleases') + ', ' + fx }
+          : { name: 'DistroKid yearly fee', when: 'Every year', amount: res.distributorYear1,
+              detail: usd('distroKidYearlyUSD') + tag('distroKidYearlyUSD') + ' a year, ' + fx });
+      }
+      fixed.push(
         { name: 'PRS joining fee', when: 'Year 1 only', amount: RULES.prsJoiningFee.value, detail: 'One-off' + tag('prsJoiningFee') },
         { name: 'MCPS joining fee', when: 'Year 1 only', amount: RULES.mcpsJoiningFee.value, detail: 'One-off' + tag('mcpsJoiningFee') }
-      ];
-      document.getElementById('fixed-rows').innerHTML = fixed.map(function (f) {
+      );
+      var later = inp.deal === 'self' ? 'Each later year: ' + money(res.fixedLater) : 'The label pays for distribution, so there are no later fixed costs.';
+      el('fixed-rows').innerHTML = fixed.map(function (f) {
         return '<li><span></span><span class="row-label">' + f.name + '<span class="row-detail">' + f.detail + '</span></span>' +
           '<span class="amount">' + money(f.amount) + '<span class="share">' + f.when + '</span></span></li>';
       }).join('') +
-        '<li class="total"><span></span><span class="row-label">Year 1 total<span class="row-detail">Each later year: ' + money(res.fixedLater) + '</span></span><span class="amount">' + money(res.fixedYear1) + '</span></li>';
+        '<li class="total"><span></span><span class="row-label">Year 1 total<span class="row-detail">' + later + '</span></span><span class="amount">' + money(res.fixedYear1) + '</span></li>';
+    }
 
-      // Results
-      showResult('year1', res.year1, money(res.artist) + ' earned − ' + money(res.fixedYear1) + ' fixed costs');
-      showResult('later', res.later, money(res.artist) + ' earned − ' + money(res.fixedLater) + ' fixed costs');
+    function setResult(id, amount, sub) {
+      var box = el(id);
+      box.classList.toggle('is-loss', amount < 0);
+      box.classList.toggle('is-gain', amount >= 0);
+      el(id + '-amount').textContent = amount < 0 ? 'Loss of ' + money(-amount) : money(amount);
+      el(id + '-sub').textContent = sub;
+    }
 
-      var loss = document.getElementById('loss-message');
-      if (res.year1 < 0 || res.later < 0) {
-        var parts = [];
-        if (res.year1 < 0) parts.push('In year 1 the artist <strong>loses ' + money(-res.year1) + '</strong>: fixed costs of ' + money(res.fixedYear1) + ' are more than the ' + money(res.artist) + ' earned.');
-        if (res.later < 0) parts.push('Each later year still <strong>loses ' + money(-res.later) + '</strong>.');
-        else parts.push('From year 2 the joining fees are paid, so the artist makes ' + money(res.later) + ' a year.');
-        loss.innerHTML = parts.join(' ');
-        loss.hidden = false;
+    function renderResults(inp, res) {
+      var loss = el('loss-message'), carry = el('carry-message');
+      var second = el('second');
+
+      if (inp.deal === 'self') {
+        el('result-hint').textContent = 'Her earnings, minus fixed costs and the release costs she paid.';
+        setResult('year1', res.year1, money(res.artist) + ' earned − ' + money(res.fixedYear1) + ' fixed costs − ' + money(res.releaseCostsPaid) + ' release costs');
+        el('second-label').textContent = 'Each later year';
+        setResult('second', res.later, money(res.artist) + ' earned − ' + money(res.fixedLater) + ' fixed costs');
+        carry.hidden = true;
       } else {
-        loss.hidden = true;
+        el('result-hint').textContent = 'Her earnings and any advance, minus fixed costs. The label paid the release costs.';
+        var parts = [money(res.artistRecording) + ' recording', money(res.artistSongwriting) + ' songwriting'];
+        if (res.advance > 0) parts.push(money(res.advance) + ' advance');
+        setResult('year1', res.year1, parts.join(' + ') + ' − ' + money(res.fixedYear1) + ' fixed costs');
+
+        // Second box: streams before she's paid for the recording
+        el('second-label').textContent = 'Before she\'s paid for the recording';
+        second.classList.remove('is-loss', 'is-gain');
+        el('second-amount').textContent = isFinite(res.breakEvenStreams)
+          ? (res.breakEvenStreams <= 0 ? 'From the first stream' : (res.breakEvenStreams >= 1e6 ? (res.breakEvenStreams / 1e6).toFixed(1) + ' million streams' : Math.ceil(res.breakEvenStreams).toLocaleString('en-GB') + ' streams'))
+          : 'Never';
+        el('second-sub').textContent = !isFinite(res.breakEvenStreams)
+          ? 'With these settings the costs can never be paid back.'
+          : res.breakEvenStreams <= 0
+            ? 'There are no costs to pay back.'
+            : 'By then the label will have received ' + money(res.labelReceivedAtBreakEven) + ' after its distributor\'s fee' +
+              (inp.deal === 'royalty' ? ', because only ' + pct(inp.royaltyRate) + ' of each pound goes towards the ' + money(res.debt) + ' of costs.' : ', enough to cover the ' + money(res.debt) + ' of costs.');
+
+        carry.hidden = !(res.owed > 0.005);
+        if (!carry.hidden) {
+          carry.innerHTML = '<strong>' + money(res.owed) + ' of costs isn\'t earned back yet.</strong> It carries into later years and comes out of her future recording money before she is paid for the recording. Her songwriting money isn\'t affected.';
+        }
+      }
+
+      loss.hidden = res.year1 >= 0;
+      if (!loss.hidden) {
+        var why = inp.deal === 'self'
+          ? 'her costs (' + money(res.fixedYear1 + res.releaseCostsPaid) + ', including the ' + money(res.releaseCostsPaid) + ' release) are more than the ' + money(res.artist) + ' she earned.'
+          : 'the ' + money(res.fixedYear1) + ' PRS and MCPS joining fees are more than the ' + money(res.artist + res.advance) + ' she received.';
+        loss.innerHTML = 'In year 1 she <strong>loses ' + money(-res.year1) + '</strong>: ' + why;
       }
     }
 
-    function showResult(id, amount, sub) {
-      var el = document.getElementById(id);
-      el.classList.toggle('is-loss', amount < 0);
-      el.classList.toggle('is-gain', amount >= 0);
-      document.getElementById(id + '-amount').textContent = amount < 0 ? 'Loss of ' + money(-amount) : money(amount);
-      document.getElementById(id + '-sub').textContent = sub;
+    function renderCompare(inp) {
+      var deals = ['self', 'royalty', 'profit'];
+      var all = deals.map(function (d) {
+        var copy = Object.assign({}, inp, { deal: d });
+        return calculate(copy);
+      });
+      var cell = function (fn, cls) {
+        return deals.map(function (d, i) {
+          var v = fn(all[i], d);
+          var c = (d === inp.deal ? 'is-current ' : '') + (cls ? cls(all[i], d) : '');
+          return '<td class="' + c + '">' + v + '</td>';
+        }).join('');
+      };
+      var signClass = function (r) { return r.year1 < 0 ? 'neg' : 'pos'; };
+      var dash = '—';
+
+      var rows = [
+        ['Who pays the ' + money(inp.releaseCosts) + ' release costs', function (r, d) { return d === 'self' ? 'She does' : 'The label'; }],
+        ['Recording money paid to her', function (r) { return money(r.artistRecording); }],
+        ['Songwriting money', function (r) { return money(r.artistSongwriting); }],
+        ['Cash advance', function (r, d) { return d === 'self' ? dash : money(r.advance); }],
+        ['Fixed costs', function (r) { return '−' + money(r.fixedYear1); }],
+        ['Release costs she paid', function (r, d) { return d === 'self' ? '−' + money(r.releaseCostsPaid) : '£0.00'; }],
+        ['Year 1 for her', function (r) { return money(r.year1); }, signClass, 'key'],
+        ['Still owed to the label (carries over)', function (r, d) { return d === 'self' ? dash : money(r.owed); }],
+        ['Streams to pay back the costs from recording money', function (r) { return streamsText(r.breakEvenStreams).replace('about ', '~'); }],
+        ['Label has received by then', function (r, d) { return d === 'self' ? dash : (isFinite(r.labelReceivedAtBreakEven) ? money(r.labelReceivedAtBreakEven) : dash); }],
+        ['Who carries the loss if it isn\'t earned back', function (r, d) { return d === 'self' ? 'She does' : 'The label'; }]
+      ];
+
+      var head = '<thead><tr>' + deals.map(function (d) {
+        return '<th scope="col" class="' + (d === inp.deal ? 'is-current' : '') + '">' + DEAL_NAMES[d] + '</th>';
+      }).join('') + '</tr></thead>';
+      el('compare-narrow').innerHTML = head + '<tbody>' + rows.map(function (row) {
+        return '<tr class="label-row ' + (row[3] || '') + '"><th scope="colgroup" colspan="3">' + row[0] + '</th></tr>' +
+          '<tr class="value-row ' + (row[3] || '') + '">' + cell(row[1], row[2]) + '</tr>';
+      }).join('') + '</tbody>';
+
+      el('compare').innerHTML =
+        '<thead><tr><th scope="col"></th>' + deals.map(function (d) {
+          return '<th scope="col" class="' + (d === inp.deal ? 'is-current' : '') + '">' + DEAL_NAMES[d] + '</th>';
+        }).join('') + '</tr></thead><tbody>' +
+        rows.map(function (row) {
+          return '<tr class="' + (row[3] || '') + '"><th scope="row">' + row[0] + '</th>' + cell(row[1], row[2]) + '</tr>';
+        }).join('') + '</tbody>';
     }
 
-    streamsInput.addEventListener('input', render);
-    valueInput.addEventListener('input', render);
-    document.querySelectorAll('input[name="distributor"]').forEach(function (el) {
-      el.addEventListener('change', render);
+    [streamsInput, valueInput, costsInput, feeInput, royaltyInput, splitInput, advanceInput].forEach(function (input) {
+      input.addEventListener('input', render);
+    });
+    document.querySelectorAll('input[name="deal"], input[name="distributor"]').forEach(function (input) {
+      input.addEventListener('change', render);
     });
     render();
   </script>

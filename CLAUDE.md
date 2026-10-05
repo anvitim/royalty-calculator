@@ -33,7 +33,9 @@ It will cover:
 - **The whole site is `index.html`:** one file, plain HTML/CSS/JavaScript, no outside libraries.
 - **Design:** deep-sea, slate and muted-teal colours; light sans-serif type using fonts already on the device; slow animated water waves behind everything.
 - **Headline:** stays on one line and shrinks to fit small screens.
-- **Every number from `RULES.md`** lives in the `RULES` block in the `<script>` of `index.html`, each with its label, note and source. The maths is in `calculate()`.
+- **Every number from `RULES.md`** lives in the `RULES` block in the `<script>` of `index.html`, each with its label, note and source.
+- **The maths** is in `calculate(inputs)`, which takes a deal type (`self`, `royalty` or `profit`) and the settings, and works with or without the page. Test new work by calling it directly in the browser.
+- **Wording:** `RULES.md` uses "they"; the case studies and site copy use "she".
 - **Repository:** https://github.com/anvitim/royalty-calculator (public).
   - Commits use GitHub's private noreply email, not the owner's Gmail.
   - The GitHub CLI (`gh`) is installed at `~/.local/bin/gh`.
@@ -43,14 +45,25 @@ It will cover:
 - Landing page.
 - `RULES.md` for a self-released UK artist: per-stream value, percentage cuts, fixed costs, worked examples for 10,000 and 1 million streams.
 - Self-released calculator, matching those worked examples.
+- `RULES.md` section 5, independent label (approved and saved to GitHub):
+  - royalty and profit-share deals;
+  - £5,000 release costs in every deal, for a like-for-like comparison;
+  - who pays and who carries the loss;
+  - why the royalty deal takes about four times as many streams;
+  - an optional cash advance;
+  - sources: the IPO's *Music creators' earnings in the digital era* and the DCMS Committee's *Economics of music streaming*, both 2021.
+- Indie-label calculator, approved and saved to GitHub, matching every worked example in sections 4 and 5. It has:
+  - a choice of deal type;
+  - adjustable settings: label distributor fee, royalty rate, profit split, release costs and cash advance;
+  - streams needed before she's paid for the recording;
+  - a side-by-side comparison of all three deals.
 
 ## Next
 
-1. Indie-label rules, then calculator.
-2. Major-label rules, with the Olivia Dean case study.
-3. Cover-song scenario.
-4. The owner's own domain.
-5. A database.
+1. Major-label rules, with the Olivia Dean case study.
+2. Cover-song scenario.
+3. The owner's own domain.
+4. A database.
 
 ## Parked ideas (don't start without being asked)
 
