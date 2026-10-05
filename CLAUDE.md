@@ -35,7 +35,12 @@ It will cover:
 - **Headline:** stays on one line and shrinks to fit small screens.
 - **Every number from `RULES.md`** lives in the `RULES` block in the `<script>` of `index.html`, each with its label, note and source.
 - **The maths** is in `calculate(inputs)`, which takes a deal type (`self`, `royalty` or `profit`) and the settings, and works with or without the page. Test new work by calling it directly in the browser.
-- **Wording:** `RULES.md` uses "they"; the case studies and site copy use "she".
+- **Wording:**
+  - `RULES.md` uses "they".
+  - The calculator and its plain-English summary speak to the reader as "you".
+  - Case studies (such as Olivia Dean) use "she".
+- **Plain-English summary:** built from fixed sentence templates filled with the calculator's own numbers, with no AI service. It describes the results and never advises which deal to choose.
+- **Adding a deal (e.g. major label):** add a branch in `calculate()`, then an entry in `DEALS` with its summary template. Add its id to `DEAL_ORDER`, a radio button, and its settings. The comparison table and summary pick it up automatically.
 - **Repository:** https://github.com/anvitim/royalty-calculator (public).
   - Commits use GitHub's private noreply email, not the owner's Gmail.
   - The GitHub CLI (`gh`) is installed at `~/.local/bin/gh`.
@@ -57,6 +62,10 @@ It will cover:
   - adjustable settings: label distributor fee, royalty rate, profit split, release costs and cash advance;
   - streams needed before she's paid for the recording;
   - a side-by-side comparison of all three deals.
+- Self-released break-even counts everything kept, including songwriting money, and covers fixed costs: about 869,000 streams.
+- Calculator wording uses "you".
+- "In summary" section at the bottom: the verdict first, then two short sentences per deal and one shared note for label deals.
+- No file names appear on the page; the headline stays centred at every width.
 
 ## Next
 

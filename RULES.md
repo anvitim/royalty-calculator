@@ -153,7 +153,14 @@ A cash advance is money the label pays the artist upfront, before the release ha
 
 The DCMS Committee gave the same example: with £10,000 of costs and a 25% royalty, income must pass £40,000 (£30,000 of it to the label) before the artist is paid. **FACT:** [DCMS, para 45](https://publications.parliament.uk/pa/cm5802/cmselect/cmcumeds/50/5006.htm)
 
-A self-released artist pays back the same £5,000 from their recording money after about **1.05 million streams**, because they keep the whole recording share. **ASSUMPTION:** this uses the 0.9p from section 4.
+**When a self-released artist gets back what they spent.** A self-released artist keeps their songwriting money too, so everything they keep counts towards what they spent. That's the £5,000 release, plus £219 of year-1 fixed costs (DistroKid about £19, PRS and MCPS £200).
+
+- They keep about **0.60p a stream**: 0.477p recording (53% of 0.9p) plus about 0.124p songwriting (15% of 0.9p, after PRS and MCPS costs).
+- £5,219 ÷ 0.60p ≈ **869,000 streams** (868,779, rounding up to a whole stream) before year 1 stops being a loss.
+- This matches the table below: at 1 million streams they're about £788 ahead.
+- **ASSUMPTION:** this uses the 0.9p from section 4.
+
+**When the artist is no longer out of pocket in a label deal.** Until the label's costs are paid back, a label-deal artist earns only the songwriting money, about 0.124p a stream. That has to cover the £200 joining fees: £200 ÷ 0.124p ≈ **162,000 streams**. A cash advance of £200 or more covers the fees from the start.
 
 ### Fixed costs
 
