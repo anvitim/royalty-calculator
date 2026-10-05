@@ -10,32 +10,47 @@
       --bg-bottom: #14313a;
       --headline: #eef4f2;
       --subheading: #b4cdca;
+      --muted: #9fbab7;
+      --card: rgba(9, 24, 30, 0.78);
+      --card-border: rgba(159, 186, 183, 0.18);
+      --line: rgba(159, 186, 183, 0.14);
+      --fact: #7cc4b8;
+      --assumption: #d8c08e;
+      --loss: #f0a58f;
+      --gain: #8fd6c4;
+
+      /* Breakdown colours */
+      --c-service: #4f6d7a;
+      --c-distributor: #8a7fa8;
+      --c-prs: #c9a96e;
+      --c-mcps: #b98264;
+      --c-artist: #5fb8a8;
     }
 
     * { box-sizing: border-box; }
-
-    html, body { height: 100%; }
 
     body {
       margin: 0;
       min-height: 100vh;
       min-height: 100dvh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+      background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%) fixed;
       color: var(--headline);
       font-family: "Helvetica Neue", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
     }
 
-    main {
+    .hero {
       position: relative;
       z-index: 2;
       width: 100%;
       max-width: 1200px;
-      padding: clamp(40px, 8vw, 120px) clamp(16px, 5vw, 80px);
+      margin: 0 auto;
+      min-height: 62vh;
+      min-height: 62dvh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(40px, 8vw, 120px) clamp(16px, 5vw, 80px) clamp(24px, 4vw, 48px);
       text-align: center;
     }
 
@@ -48,7 +63,7 @@
       letter-spacing: 0.02em;
     }
 
-    p {
+    .subheading {
       margin: clamp(24px, 4vw, 48px) 0 0;
       font-size: clamp(0.8rem, 2.4vw, 1.6rem);
       font-weight: 300;
@@ -58,6 +73,245 @@
       text-wrap: balance;
     }
 
+    /* ---------- Calculator ---------- */
+    .calculator {
+      position: relative;
+      z-index: 2;
+      max-width: 880px;
+      margin: 0 auto clamp(48px, 8vw, 96px);
+      padding: 0 16px;
+      font-weight: 300;
+      letter-spacing: 0.01em;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: clamp(20px, 4vw, 36px);
+      margin-bottom: 20px;
+      -webkit-backdrop-filter: blur(6px);
+              backdrop-filter: blur(6px);
+    }
+
+    h2 {
+      margin: 0 0 6px;
+      font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+      font-weight: 300;
+      letter-spacing: 0.04em;
+    }
+
+    .hint {
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    /* Inputs */
+    .inputs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .field label, .field legend {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      color: var(--subheading);
+      padding: 0;
+    }
+
+    fieldset.field { border: 0; margin: 0; padding: 0; min-width: 0; }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 10px 12px;
+      font: inherit;
+      font-size: 1.1rem;
+      color: var(--headline);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+    }
+
+    input[type="number"]:focus, input[type="range"]:focus-visible, .choice input:focus-visible + span {
+      outline: 2px solid var(--fact);
+      outline-offset: 2px;
+    }
+
+    .slider-row { display: flex; align-items: center; gap: 12px; }
+
+    input[type="range"] {
+      flex: 1;
+      min-width: 0;
+      accent-color: var(--c-artist);
+    }
+
+    .slider-value {
+      min-width: 3.4em;
+      font-size: 1.1rem;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .choices { display: flex; gap: 8px; }
+
+    .choice { flex: 1; cursor: pointer; }
+
+    .choice input { position: absolute; opacity: 0; pointer-events: none; }
+
+    .choice span {
+      display: block;
+      padding: 10px 8px;
+      text-align: center;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .choice input:checked + span {
+      background: rgba(95, 184, 168, 0.18);
+      border-color: var(--c-artist);
+    }
+
+    /* Tags */
+    .tag {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 1px 6px 0;
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      line-height: 1.5;
+      border-radius: 4px;
+      border: 1px solid currentColor;
+      vertical-align: 0.15em;
+      text-decoration: none;
+      white-space: nowrap;
+      cursor: help;
+    }
+
+    .tag.fact { color: var(--fact); }
+    .tag.assumption { color: var(--assumption); }
+    a.tag:hover { background: rgba(255, 255, 255, 0.08); }
+
+    /* Breakdown bar */
+    .bar {
+      display: flex;
+      height: 22px;
+      border-radius: 11px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.06);
+      margin: 4px 0 20px;
+    }
+
+    .bar div { height: 100%; transition: width 0.35s ease; }
+
+    /* Rows */
+    .rows { list-style: none; margin: 0; padding: 0; }
+
+    .rows li {
+      display: grid;
+      grid-template-columns: 14px 1fr auto;
+      gap: 4px 12px;
+      align-items: baseline;
+      padding: 12px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .rows li:first-child { border-top: 0; }
+
+    .swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      align-self: center;
+    }
+
+    .row-label { line-height: 1.5; }
+
+    .row-detail {
+      display: block;
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .amount {
+      text-align: right;
+      font-size: 1.05rem;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .share {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .rows li.total { border-top: 1px solid var(--card-border); }
+    .rows li.total .amount { font-weight: 400; }
+
+    /* Results */
+    .results {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .result {
+      padding: 18px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--line);
+    }
+
+    .result .label {
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      color: var(--subheading);
+    }
+
+    .result .big {
+      margin: 6px 0 4px;
+      font-size: clamp(1.7rem, 5vw, 2.4rem);
+      font-weight: 300;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .result .sub { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+
+    .result.is-loss { border-color: rgba(240, 165, 143, 0.5); background: rgba(240, 165, 143, 0.07); }
+    .result.is-loss .big { color: var(--loss); }
+    .result.is-gain .big { color: var(--gain); }
+
+    .message {
+      margin: 16px 0 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .message.loss { background: rgba(240, 165, 143, 0.1); border: 1px solid rgba(240, 165, 143, 0.4); }
+    .message.note { background: rgba(216, 192, 142, 0.1); border: 1px solid rgba(216, 192, 142, 0.4); }
+
+    .footnote { margin: 8px 0 0; font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
+    .footnote a { color: var(--subheading); }
+
+    [hidden] { display: none !important; }
+
+    @media (max-width: 680px) {
+      .inputs { grid-template-columns: 1fr; }
+      .results { grid-template-columns: 1fr; }
+    }
+
+    /* ---------- Background ---------- */
     /* Layered water waves filling the whole page */
     .waves {
       position: fixed;
@@ -95,24 +349,89 @@
       to   { transform: translateX(-50%); }
     }
 
-    /* A soft dark pool behind the words keeps them easy to read */
+    /* A soft dark pool behind the headline keeps it easy to read */
     .scrim {
       position: fixed;
       inset: 0;
       z-index: 1;
       pointer-events: none;
-      background: radial-gradient(ellipse 70% 40% at 50% 50%, rgba(8, 20, 26, 0.6) 0%, rgba(8, 20, 26, 0) 100%);
+      background: radial-gradient(ellipse 70% 40% at 50% 35%, rgba(8, 20, 26, 0.6) 0%, rgba(8, 20, 26, 0) 100%);
     }
 
     @media (prefers-reduced-motion: reduce) {
       .wave { animation: none; }
+      .bar div { transition: none; }
     }
   </style>
 </head>
 <body>
-  <main>
+  <header class="hero">
     <h1>Let's talk about royalties</h1>
-    <p>Who earns when a song is played?</p>
+    <p class="subheading">Who earns when a song is played?</p>
+  </header>
+
+  <main class="calculator">
+    <section class="card" aria-labelledby="inputs-title">
+      <h2 id="inputs-title">Your music</h2>
+      <p class="hint">For a self-released UK artist who writes their own songs. Based on RULES.md. Tap a tag to see its source.</p>
+
+      <div class="inputs">
+        <div class="field">
+          <label for="streams">Streams per year</label>
+          <input id="streams" type="number" inputmode="numeric" min="0" step="1000" value="100000">
+        </div>
+
+        <div class="field">
+          <label for="value">Value of one stream <span id="value-tag"></span></label>
+          <div class="slider-row">
+            <input id="value" type="range" min="0.3" max="1.5" step="0.05" value="0.9">
+            <output id="value-out" class="slider-value" for="value">0.90p</output>
+          </div>
+        </div>
+
+        <fieldset class="field">
+          <legend>Distributor</legend>
+          <div class="choices">
+            <label class="choice"><input type="radio" name="distributor" value="distrokid" checked><span>DistroKid</span></label>
+            <label class="choice"><input type="radio" name="distributor" value="cdbaby"><span>CD Baby</span></label>
+          </div>
+        </fieldset>
+      </div>
+
+      <p id="threshold-note" class="message note" hidden></p>
+    </section>
+
+    <section class="card" aria-labelledby="split-title">
+      <h2 id="split-title">Where the money goes</h2>
+      <p class="hint" id="gross-line"></p>
+      <div class="bar" id="bar" role="img"></div>
+      <ul class="rows" id="rows" aria-live="polite"></ul>
+    </section>
+
+    <section class="card" aria-labelledby="fixed-title">
+      <h2 id="fixed-title">Fixed costs</h2>
+      <p class="hint">Paid however many streams there are.</p>
+      <ul class="rows" id="fixed-rows"></ul>
+    </section>
+
+    <section class="card" aria-labelledby="result-title">
+      <h2 id="result-title">What the artist keeps</h2>
+      <p class="hint">Earnings above, minus fixed costs.</p>
+      <div class="results" aria-live="polite">
+        <div class="result" id="year1">
+          <div class="label">Year 1</div>
+          <div class="big" id="year1-amount"></div>
+          <div class="sub" id="year1-sub"></div>
+        </div>
+        <div class="result" id="later">
+          <div class="label">Each later year</div>
+          <div class="big" id="later-amount"></div>
+          <div class="sub" id="later-sub"></div>
+        </div>
+      </div>
+      <p id="loss-message" class="message loss" hidden></p>
+      <p class="footnote">An estimate for illustration, not financial advice. Not included: PPL, YouTube, and streams outside the UK. See RULES.md for all sources.</p>
+    </section>
   </main>
 
   <div class="scrim" aria-hidden="true"></div>
@@ -140,6 +459,204 @@
     fitHeadline();
     window.addEventListener('resize', fitHeadline);
     if (document.fonts) document.fonts.ready.then(fitHeadline);
+
+    /* =====================================================================
+       RULES — every number taken from RULES.md lives here.
+       Change a value, label or source here and the whole calculator updates.
+       label: 'FACT' (stated in the source) or 'ASSUMPTION' (estimate or
+       a source figure applied to a situation it doesn't directly cover).
+       ===================================================================== */
+    var CMA_REPORT = 'https://www.gov.uk/government/publications/music-and-streaming-market-study-final-report/executive-summary';
+
+    var RULES = {
+      streamValueDefaultPence: { value: 0.9,   label: 'ASSUMPTION', note: 'Middle of the 0.8p–1.0p range worked out in RULES.md section 1.' },
+      serviceShare:            { value: 0.32,  label: 'FACT',       note: 'Streaming services kept 32% of UK streaming revenue in 2021 (CMA).', source: CMA_REPORT },
+      recordingShare:          { value: 0.53,  label: 'FACT',       note: '53% of UK streaming revenue went to recording rights in 2021 (CMA).', source: CMA_REPORT },
+      songwritingShare:        { value: 0.15,  label: 'FACT',       note: '15% of UK streaming revenue went to publishing rights in 2021 (CMA).', source: CMA_REPORT },
+      distroKidCut:            { value: 0,     label: 'FACT',       note: 'DistroKid: "Keep 100% of earnings".', source: 'https://distrokid.com/pricing/' },
+      cdBabyCut:               { value: 0.09,  label: 'FACT',       note: 'CD Baby keeps 9% of digital distribution revenue.', source: 'https://cdbaby.com/cd-baby-cost/' },
+      prsHalf:                 { value: 0.5,   label: 'ASSUMPTION', note: 'Songwriting money split about half PRS, half MCPS for streaming. Not confirmed from a source.' },
+      prsCost:                 { value: 0.093, label: 'ASSUMPTION', note: "PRS's cost-to-income ratio across all its income in 2022, applied to streaming.", source: 'https://www.cisac.org/Newsroom/society-news/prs-music-reports-record-breaking-revenues-and-distributions-collecting-ps964' },
+      mcpsCost:                { value: 0.074, label: 'ASSUMPTION', note: "MCPS's average commission across all its income in 2021, applied to streaming.", source: 'https://www.prsformusic.com/press/2022/mcps-announces-2021-distributions-of-181-million-to-its-members' },
+      distroKidYearlyUSD:      { value: 24.99, label: 'FACT',       note: 'DistroKid Musician plan, billed yearly.', source: 'https://distrokid.com/pricing/' },
+      cdBabySingleUSD:         { value: 9.99,  label: 'FACT',       note: 'CD Baby one-off fee to release a single.', source: 'https://cdbaby.com/cd-baby-cost/' },
+      cdBabyReleases:          { value: 1,     label: 'ASSUMPTION', note: 'Assumes one single is released in year 1. RULES.md does not set a number of releases.' },
+      gbpPerUSD:               { value: 0.76,  label: 'ASSUMPTION', note: 'Exchange rate. RULES.md gives $24.99 as "about £19".' },
+      prsJoiningFee:           { value: 100,   label: 'FACT',       note: 'PRS one-off joining fee (seen in search results; check the link).', source: 'https://help.prsformusic.com/s/article/how-much-does-it-cost-to-join' },
+      mcpsJoiningFee:          { value: 100,   label: 'FACT',       note: 'MCPS one-off joining fee (seen in search results; check the link).', source: 'https://help.prsformusic.com/s/article/how-much-does-it-cost-to-join' },
+      spotifyMinStreams:       { value: 1000,  label: 'FACT',       note: 'On Spotify, a track needs 1,000 streams in 12 months to earn recording royalties.', source: 'https://artists.spotify.com/royalties-guide' }
+    };
+
+    /* ---------- The maths (no page code, so it can be tested on its own) ---------- */
+    function calculate(streams, pencePerStream, distributor) {
+      var r = function (key) { return RULES[key].value; };
+      var gross = streams * pencePerStream / 100;
+
+      var service = gross * r('serviceShare');
+      var recording = gross * r('recordingShare');
+      var songwriting = gross * r('songwritingShare');
+
+      var distributorCut = recording * (distributor === 'cdbaby' ? r('cdBabyCut') : r('distroKidCut'));
+      var prsMoney = songwriting * r('prsHalf');
+      var mcpsMoney = songwriting - prsMoney;
+      var prsCost = prsMoney * r('prsCost');
+      var mcpsCost = mcpsMoney * r('mcpsCost');
+
+      var artistRecording = recording - distributorCut;
+      var artistSongwriting = songwriting - prsCost - mcpsCost;
+      var artist = artistRecording + artistSongwriting;
+
+      var distributorYear1, distributorLater;
+      if (distributor === 'cdbaby') {
+        distributorYear1 = r('cdBabySingleUSD') * r('cdBabyReleases') * r('gbpPerUSD');
+        distributorLater = 0;
+      } else {
+        distributorYear1 = distributorLater = r('distroKidYearlyUSD') * r('gbpPerUSD');
+      }
+      var fixedYear1 = distributorYear1 + r('prsJoiningFee') + r('mcpsJoiningFee');
+      var fixedLater = distributorLater;
+
+      return {
+        gross: gross, service: service, recording: recording, songwriting: songwriting,
+        distributorCut: distributorCut, prsCost: prsCost, mcpsCost: mcpsCost,
+        artistRecording: artistRecording, artistSongwriting: artistSongwriting, artist: artist,
+        distributorYear1: distributorYear1, distributorLater: distributorLater,
+        fixedYear1: fixedYear1, fixedLater: fixedLater,
+        year1: artist - fixedYear1, later: artist - fixedLater
+      };
+    }
+
+    /* ---------- Display ---------- */
+    function tag(key) {
+      var rule = RULES[key];
+      var cls = rule.label === 'FACT' ? 'fact' : 'assumption';
+      var title = rule.label + ': ' + rule.note;
+      if (rule.source) {
+        return '<a class="tag ' + cls + '" href="' + rule.source + '" target="_blank" rel="noopener" title="' + title.replace(/"/g, '&quot;') + '">' + rule.label + '</a>';
+      }
+      return '<span class="tag ' + cls + '" tabindex="0" title="' + title.replace(/"/g, '&quot;') + '">' + rule.label + '</span>';
+    }
+
+    function pct(key) {
+      return +(RULES[key].value * 100).toFixed(1) + '%';
+    }
+
+    function money(x) {
+      var abs = Math.abs(x);
+      var digits = abs < 1000 ? 2 : 0;
+      var text = '£' + abs.toLocaleString('en-GB', { minimumFractionDigits: digits, maximumFractionDigits: digits });
+      return (x < -0.005 ? '−' : '') + text;
+    }
+
+    function share(part, whole) {
+      return whole > 0 ? (part / whole * 100).toFixed(1) + '%' : '0%';
+    }
+
+    var streamsInput = document.getElementById('streams');
+    var valueInput = document.getElementById('value');
+
+    document.getElementById('value-tag').innerHTML = tag('streamValueDefaultPence');
+    valueInput.value = RULES.streamValueDefaultPence.value;
+
+    function render() {
+      var streams = Math.max(0, Math.floor(Number(streamsInput.value) || 0));
+      var pence = Number(valueInput.value);
+      var distributor = document.querySelector('input[name="distributor"]:checked').value;
+      var isCdBaby = distributor === 'cdbaby';
+      var res = calculate(streams, pence, distributor);
+
+      document.getElementById('value-out').textContent = pence.toFixed(2) + 'p';
+
+      // Under the Spotify threshold
+      var note = document.getElementById('threshold-note');
+      if (streams < RULES.spotifyMinStreams.value) {
+        note.hidden = false;
+        note.innerHTML = 'Under ' + RULES.spotifyMinStreams.value.toLocaleString('en-GB') + ' streams in 12 months, Spotify pays nothing for a track\'s recording' + tag('spotifyMinStreams') +
+          '. The figures below don\'t remove this, because they also cover other services and the songwriting money, which this rule doesn\'t affect.';
+      } else {
+        note.hidden = true;
+      }
+
+      document.getElementById('gross-line').textContent =
+        streams.toLocaleString('en-GB') + ' streams × ' + pence.toFixed(2) + 'p = ' + money(res.gross) + ' of streaming income in total.';
+
+      var segments = [
+        { name: 'Streaming service', amount: res.service, color: 'var(--c-service)',
+          detail: 'Keeps ' + pct('serviceShare') + tag('serviceShare') + ' of all income' },
+        { name: 'Distributor (' + (isCdBaby ? 'CD Baby' : 'DistroKid') + ')', amount: res.distributorCut, color: 'var(--c-distributor)',
+          detail: 'Takes ' + pct(isCdBaby ? 'cdBabyCut' : 'distroKidCut') + tag(isCdBaby ? 'cdBabyCut' : 'distroKidCut') + ' of the recording money' },
+        { name: 'PRS running costs', amount: res.prsCost, color: 'var(--c-prs)',
+          detail: pct('prsCost') + tag('prsCost') + ' of the PRS half' + tag('prsHalf') + ' of the songwriting money' },
+        { name: 'MCPS commission', amount: res.mcpsCost, color: 'var(--c-mcps)',
+          detail: pct('mcpsCost') + tag('mcpsCost') + ' of the MCPS half of the songwriting money' },
+        { name: 'Artist keeps', amount: res.artist, color: 'var(--c-artist)',
+          detail: money(res.artistRecording) + ' from the recording (' + pct('recordingShare') + tag('recordingShare') + ', minus distributor)<br>' +
+                  money(res.artistSongwriting) + ' from the songwriting (' + pct('songwritingShare') + tag('songwritingShare') + ', minus PRS and MCPS costs)' }
+      ];
+
+      var bar = document.getElementById('bar');
+      bar.innerHTML = segments.map(function (s) {
+        return '<div style="width:' + (res.gross > 0 ? s.amount / res.gross * 100 : 0) + '%;background:' + s.color + '" title="' + s.name + ': ' + money(s.amount) + '"></div>';
+      }).join('');
+      bar.setAttribute('aria-label', segments.map(function (s) { return s.name + ' ' + share(s.amount, res.gross); }).join(', '));
+
+      document.getElementById('rows').innerHTML = segments.map(function (s) {
+        return '<li><span class="swatch" style="background:' + s.color + '"></span>' +
+          '<span class="row-label">' + s.name + '<span class="row-detail">' + s.detail + '</span></span>' +
+          '<span class="amount">' + money(s.amount) + '<span class="share">' + share(s.amount, res.gross) + '</span></span></li>';
+      }).join('') +
+        '<li class="total"><span></span><span class="row-label">Total streaming income</span><span class="amount">' + money(res.gross) + '</span></li>';
+
+      // Fixed costs
+      var usd = function (key) { return '$' + RULES[key].value.toFixed(2); };
+      var fx = 'converted at $1 = £' + RULES.gbpPerUSD.value.toFixed(2) + tag('gbpPerUSD');
+      var distributorRow = isCdBaby
+        ? { name: 'CD Baby release fee', when: 'Year 1 only', amount: res.distributorYear1,
+            detail: usd('cdBabySingleUSD') + tag('cdBabySingleUSD') + ' per single × ' + RULES.cdBabyReleases.value + tag('cdBabyReleases') + ', ' + fx }
+        : { name: 'DistroKid yearly fee', when: 'Every year', amount: res.distributorYear1,
+            detail: usd('distroKidYearlyUSD') + tag('distroKidYearlyUSD') + ' a year, ' + fx };
+      var fixed = [
+        distributorRow,
+        { name: 'PRS joining fee', when: 'Year 1 only', amount: RULES.prsJoiningFee.value, detail: 'One-off' + tag('prsJoiningFee') },
+        { name: 'MCPS joining fee', when: 'Year 1 only', amount: RULES.mcpsJoiningFee.value, detail: 'One-off' + tag('mcpsJoiningFee') }
+      ];
+      document.getElementById('fixed-rows').innerHTML = fixed.map(function (f) {
+        return '<li><span></span><span class="row-label">' + f.name + '<span class="row-detail">' + f.detail + '</span></span>' +
+          '<span class="amount">' + money(f.amount) + '<span class="share">' + f.when + '</span></span></li>';
+      }).join('') +
+        '<li class="total"><span></span><span class="row-label">Year 1 total<span class="row-detail">Each later year: ' + money(res.fixedLater) + '</span></span><span class="amount">' + money(res.fixedYear1) + '</span></li>';
+
+      // Results
+      showResult('year1', res.year1, money(res.artist) + ' earned − ' + money(res.fixedYear1) + ' fixed costs');
+      showResult('later', res.later, money(res.artist) + ' earned − ' + money(res.fixedLater) + ' fixed costs');
+
+      var loss = document.getElementById('loss-message');
+      if (res.year1 < 0 || res.later < 0) {
+        var parts = [];
+        if (res.year1 < 0) parts.push('In year 1 the artist <strong>loses ' + money(-res.year1) + '</strong>: fixed costs of ' + money(res.fixedYear1) + ' are more than the ' + money(res.artist) + ' earned.');
+        if (res.later < 0) parts.push('Each later year still <strong>loses ' + money(-res.later) + '</strong>.');
+        else parts.push('From year 2 the joining fees are paid, so the artist makes ' + money(res.later) + ' a year.');
+        loss.innerHTML = parts.join(' ');
+        loss.hidden = false;
+      } else {
+        loss.hidden = true;
+      }
+    }
+
+    function showResult(id, amount, sub) {
+      var el = document.getElementById(id);
+      el.classList.toggle('is-loss', amount < 0);
+      el.classList.toggle('is-gain', amount >= 0);
+      document.getElementById(id + '-amount').textContent = amount < 0 ? 'Loss of ' + money(-amount) : money(amount);
+      document.getElementById(id + '-sub').textContent = sub;
+    }
+
+    streamsInput.addEventListener('input', render);
+    valueInput.addEventListener('input', render);
+    document.querySelectorAll('input[name="distributor"]').forEach(function (el) {
+      el.addEventListener('change', render);
+    });
+    render();
   </script>
 </body>
 </html>
