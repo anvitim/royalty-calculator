@@ -1,4 +1,6 @@
-# Royalty Calculator
+# The economics of a song
+
+**Site name: "The economics of a song"**, with the line "Who earns when a song is played?" underneath. Use the name as the homepage headline and in every page's browser-tab title.
 
 A "who gets paid" calculator for music royalties: it shows where the money goes when a song is streamed, told through women artists, with maths that is the same for everyone. **UK version due 23 October 2026.**
 
@@ -30,7 +32,12 @@ It will cover:
 - The maths is the same for everyone, but the case studies and copy speak to women artists.
 - Hosting is Vercel only, at https://royalty-calculator-nu.vercel.app. It republishes automatically whenever GitHub changes. Never set up other hosting (including GitHub Pages).
 - No file names (like `RULES-UK.md`) appear on the site; visitors see friendly wording and a link to the rules on GitHub.
-- Olivia Dean's real contract is private. The case study must say it estimates what a typical major-label deal would pay on songs with her streams and credits, and is not a statement of what she earned.
+- Olivia Dean's real contract is private. Her case study must say it estimates what a typical major-label deal would pay on a song with these streams and credits, and is not a statement of what anyone earned. It uses "Man I Need" and leads with shares of every £1. Pounds appear only as a range, and never next to a co-writer's name.
+- **Olivia Dean is the only real-world case.** Every other case study uses an illustrative persona:
+  - one fictional woman artist per deal type in each market;
+  - clearly labelled as an illustration;
+  - round, typical numbers;
+  - never based on an identifiable real artist.
 
 ## How the site is organised
 
