@@ -1,10 +1,145 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Royalty Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Let's talk about royalties</title>
+  <style>
+    :root {
+      --bg-top: #0a1a21;
+      --bg-bottom: #14313a;
+      --headline: #eef4f2;
+      --subheading: #b4cdca;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+      color: var(--headline);
+      font-family: "Helvetica Neue", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    main {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 1200px;
+      padding: clamp(40px, 8vw, 120px) clamp(16px, 5vw, 80px);
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+      white-space: nowrap;
+      font-size: min(5.6vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.12;
+      letter-spacing: 0.02em;
+    }
+
+    p {
+      margin: clamp(24px, 4vw, 48px) 0 0;
+      font-size: clamp(0.8rem, 2.4vw, 1.6rem);
+      font-weight: 300;
+      line-height: 1.5;
+      letter-spacing: 0.08em;
+      color: var(--subheading);
+      text-wrap: balance;
+    }
+
+    /* Layered water waves filling the whole page */
+    .waves {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .wave {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 200%;
+      animation: drift var(--speed) linear var(--delay) infinite;
+    }
+
+    .wave svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .wave-1 { height: 100%; --speed: 70s; --delay: -12s; color: rgba(74, 110, 122, 0.10); }
+    .wave-2 { height: 86%;  --speed: 60s; --delay: -40s; color: rgba(84, 132, 130, 0.09); }
+    .wave-3 { height: 72%;  --speed: 52s; --delay: -7s;  color: rgba(52, 84, 98, 0.16); }
+    .wave-4 { height: 58%;  --speed: 44s; --delay: -25s; color: rgba(96, 140, 136, 0.09); }
+    .wave-5 { height: 44%;  --speed: 37s; --delay: -16s; color: rgba(44, 76, 90, 0.20); }
+    .wave-6 { height: 30%;  --speed: 31s; --delay: -4s;  color: rgba(88, 128, 126, 0.12); }
+    .wave-7 { height: 17%;  --speed: 26s; --delay: -19s; color: rgba(30, 60, 72, 0.30); }
+
+    /* Each wave holds two identical stretches of sea, so sliding by half loops seamlessly */
+    @keyframes drift {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* A soft dark pool behind the words keeps them easy to read */
+    .scrim {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: radial-gradient(ellipse 70% 40% at 50% 50%, rgba(8, 20, 26, 0.6) 0%, rgba(8, 20, 26, 0) 100%);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .wave { animation: none; }
+    }
+  </style>
 </head>
-<body style="margin:0; height:100vh; display:flex; align-items:center; justify-content:center;">
-  <p>Who gets paid when a song plays? Coming soon.</p>
+<body>
+  <main>
+    <h1>Let's talk about royalties</h1>
+    <p>Who earns when a song is played?</p>
+  </main>
+
+  <div class="scrim" aria-hidden="true"></div>
+
+  <div class="waves" aria-hidden="true">
+    <div class="wave wave-1"><svg viewBox="0 0 2880 200" preserveAspectRatio="none"><path fill="currentColor" d="M0 20 Q 360 0 720 20 T 1440 20 T 2160 20 T 2880 20 V 200 H 0 Z"/></svg></div>
+    <div class="wave wave-2"><svg viewBox="0 0 2880 200" preserveAspectRatio="none"><path fill="currentColor" d="M0 25 Q 360 50 720 25 T 1440 25 T 2160 25 T 2880 25 V 200 H 0 Z"/></svg></div>
+    <div class="wave wave-3"><svg viewBox="0 0 2880 200" preserveAspectRatio="none"><path fill="currentColor" d="M0 30 Q 360 0 720 30 T 1440 30 T 2160 30 T 2880 30 V 200 H 0 Z"/></svg></div>
+    <div class="wave wave-4"><svg viewBox="0 0 2880 200" preserveAspectRatio="none"><path fill="currentColor" d="M0 35 Q 360 70 720 35 T 1440 35 T 2160 35 T 2880 35 V 200 H 0 Z"/></svg></div>
+    <div class="wave wave-5"><svg viewBox="0 0 2880 200" preserveAspectRatio="none"><path fill="currentColor" d="M0 45 Q 360 5 720 45 T 1440 45 T 2160 45 T 2880 45 V 200 H 0 Z"/></svg></div>
+    <div class="wave wave-6"><svg viewBox="0 0 2880 200" preserveAspectRatio="none"><path fill="currentColor" d="M0 55 Q 360 105 720 55 T 1440 55 T 2160 55 T 2880 55 V 200 H 0 Z"/></svg></div>
+    <div class="wave wave-7"><svg viewBox="0 0 2880 200" preserveAspectRatio="none"><path fill="currentColor" d="M0 70 Q 360 10 720 70 T 1440 70 T 2160 70 T 2880 70 V 200 H 0 Z"/></svg></div>
+  </div>
+
+  <script>
+    // Keep the headline on one line: if it would overflow, shrink it to fit.
+    var h1 = document.querySelector('h1');
+    function fitHeadline() {
+      h1.style.fontSize = '';
+      if (h1.scrollWidth > h1.clientWidth) {
+        var size = parseFloat(getComputedStyle(h1).fontSize);
+        h1.style.fontSize = (size * h1.clientWidth / h1.scrollWidth * 0.98) + 'px';
+      }
+    }
+    fitHeadline();
+    window.addEventListener('resize', fitHeadline);
+    if (document.fonts) document.fonts.ready.then(fitHeadline);
+  </script>
 </body>
 </html>
