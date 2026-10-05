@@ -50,7 +50,7 @@ The CMA also found that royalty rates in major-label deals averaged 23.3% in 202
 
 **Other rules:**
 - On Spotify, a track earns recording money only after 1,000 streams in 12 months. **FACT:** [Spotify](https://artists.spotify.com/royalties-guide)
-- With no publisher, PRS pays the writer the publisher's share too. **ASSUMPTION:** based on PRS guidance; confirm with PRS.
+- With no publisher, PRS pays the writer the publisher's share too: "If the writer has no publisher they will receive 100% of the distribution from PRS." **FACT:** [IPO, p. 64](https://assets.publishing.service.gov.uk/media/614c760fd3bf7f719095b5ad/music-creators-earnings-report.pdf)
 
 **Result:** using DistroKid, an artist-writer keeps **about 67p of every £1**:
 - 53p from the recording;
@@ -190,8 +190,179 @@ The DCMS Committee gave the same example: with £10,000 of costs and a 25% royal
 | Cost of making and promoting the release | £5,000 | **ASSUMPTION** |
 | Cash advance | £0 | **ASSUMPTION** |
 
+**Not covered in sections 1–5:** producer royalties, which section 6 adds.
+
+## 6. Signed to a major label
+
+The three major labels are Universal, Sony and Warner. Together they had 75% of the UK recorded-music market in 2019. **FACT:** [IPO, p. 132](https://assets.publishing.service.gov.uk/media/614c760fd3bf7f719095b5ad/music-creators-earnings-report.pdf)
+
+A major-label deal works like the indie **royalty deal** in section 5, with bigger sums and a few differences. The artist's advance and the costs that can be charged back are paid back from the artist's royalty only. **FACT:** DCMS calls this the "advance and royalty" deal, "the predominant type of deal for a performer signed to a major record label" ([DCMS, paras 44–45](https://publications.parliament.uk/pa/cm5802/cmselect/cmcumeds/50/5006.htm))
+
+### The royalty rate
+
+| Who | Average royalty | Label |
+|---|---|---|
+| New artists, majors' multi-track deals, 2021 | 23.3% | **FACT:** [CMA report, Table 2.8](https://assets.publishing.service.gov.uk/media/6384f43ee90e077898ccb48e/Music_and_streaming_final_report.pdf) |
+| All UK artists signed to majors, 2021 | 26.3% | **FACT:** [CMA report, para 2.69](https://assets.publishing.service.gov.uk/media/6384f43ee90e077898ccb48e/Music_and_streaming_final_report.pdf) |
+| The majors' largest artists (top 400 by UK streaming), 2021 | 27.0% | **FACT:** [CMA report, footnote 99](https://assets.publishing.service.gov.uk/media/6384f43ee90e077898ccb48e/Music_and_streaming_final_report.pdf) |
+| New artists / established artists renegotiating | 20–24% / 25–30% | **FACT:** [DCMS, para 44](https://publications.parliament.uk/pa/cm5802/cmselect/cmcumeds/50/5006.htm) |
+
+**This section uses 25%. ASSUMPTION:** the IPO calls 25% the "average" for streaming (p. 66), and the CMA uses it in its own worked example. The calculator will let the user change it.
+
+**The producer is paid from the artist's royalty.**
+- The record producer usually gets a royalty of 3–5%. **FACT:** majors' evidence to the CMA ([CMA report, para 2.73](https://assets.publishing.service.gov.uk/media/6384f43ee90e077898ccb48e/Music_and_streaming_final_report.pdf))
+- The artist's rate is quoted "minus fees for the record producer". **FACT:** [DCMS, para 44](https://publications.parliament.uk/pa/cm5802/cmselect/cmcumeds/50/5006.htm)
+- The producer is paid from the first sale, whether or not the artist's costs have been paid back. **FACT:** [IPO, p. 147](https://assets.publishing.service.gov.uk/media/614c760fd3bf7f719095b5ad/music-creators-earnings-report.pdf)
+- **This section uses 4%** for the producer, leaving the artist 21% (25% − 4%). **ASSUMPTION:** 4% is the IPO's figure (p. 147); real deals vary.
+
+**No separate distributor fee.** The majors run their own distribution companies (ADA for Warner, Ingrooves for Universal, The Orchard for Sony). **FACT:** [CMA report, para 2.25](https://assets.publishing.service.gov.uk/media/6384f43ee90e077898ccb48e/Music_and_streaming_final_report.pdf) **ASSUMPTION:** the label therefore receives the whole 53p of recording money in every £1.
+
+### The advance, and which costs are charged back
+
+- **Average advance on a new major-label deal:** £153,200 in 2021. **FACT:** [CMA report, Table 2.8](https://assets.publishing.service.gov.uk/media/6384f43ee90e077898ccb48e/Music_and_streaming_final_report.pdf) This is an average across deals, including a few very large ones.
+- **Charged back to the artist** (taken out of the artist's royalty before they're paid): the advance, recording costs, tour support and video costs. "Typically the majority of these costs are recoupable." **FACT:** [CMA report, footnote 101](https://assets.publishing.service.gov.uk/media/6384f43ee90e077898ccb48e/Music_and_streaming_final_report.pdf) Only part of video and TV-advertising costs is usually charged back. **FACT:** [CMA report, footnote 110](https://assets.publishing.service.gov.uk/media/6384f43ee90e077898ccb48e/Music_and_streaming_final_report.pdf)
+- **Paid by the label and not charged back:** marketing and advertising (press, promotion, online and TV ads, billboards). "Typically these costs are non-recoupable." **FACT:** [CMA report, footnote 102](https://assets.publishing.service.gov.uk/media/6384f43ee90e077898ccb48e/Music_and_streaming_final_report.pdf)
+- **This section uses a £50,000 advance and £15,667 of recording costs: £65,667 to pay back.** **ASSUMPTION:** these are the CMA's own worked-example figures, which it calls "indicative rather than being an average or 'typical' artist experience" ([CMA report, Figure 2.7](https://assets.publishing.service.gov.uk/media/6384f43ee90e077898ccb48e/Music_and_streaming_final_report.pdf)).
+- **The artist keeps the advance even if it's never earned back.** It "will not need to be paid back". **FACT:** [CMA report, para 2.77](https://assets.publishing.service.gov.uk/media/6384f43ee90e077898ccb48e/Music_and_streaming_final_report.pdf) The unpaid amount stays on the artist's account against future royalties. Sony now pays through old unpaid balances on deals from before 2000. **FACT:** [DCMS, para 46](https://publications.parliament.uk/pa/cm5802/cmselect/cmcumeds/50/5006.htm)
+
+### A publisher's share of the songwriting money
+
+Many signed artists also have a **publisher**: a company that looks after their songs, collects money for them, and often pays a separate songwriting advance. In return it keeps part of the songwriting money.
+
+- **Performance money (through PRS).** PRS pays the writer 50% directly. That 50% can't be used to pay back a publisher's advance. The publisher receives the other 50% and "will commonly pay up to three-fifths of this share to their writers". **FACT:** [IPO, p. 64](https://assets.publishing.service.gov.uk/media/614c760fd3bf7f719095b5ad/music-creators-earnings-report.pdf)
+- **Copying money (through MCPS)** goes to the publisher, which pays the writer "in the region of 70%-80%". **FACT:** [IPO, p. 64](https://assets.publishing.service.gov.uk/media/614c760fd3bf7f719095b5ad/music-creators-earnings-report.pdf)
+- **Overall, the writer keeps 75% of the songwriting money** (after PRS and MCPS costs), and the publisher keeps 25%. **ASSUMPTION:** the IPO says writers' royalties are "now commonly in the region of 75%-80%", and uses 75% in its own model ([IPO, p. 132](https://assets.publishing.service.gov.uk/media/614c760fd3bf7f719095b5ad/music-creators-earnings-report.pdf)).
+- **Fixed costs change.** The writer joins PRS (£100, as section 3). The publisher, not the writer, deals with MCPS. **ASSUMPTION:** the MCPS fee falls away for a writer with a publisher.
+- **No publishing advance. ASSUMPTION:** it keeps the examples simple. If there is one, it's paid back only from the publisher's payments to the writer, not from PRS's direct 50% (IPO, p. 64).
+
+### Co-writers
+
+Most hit songs have several writers. The songwriting money for a song is split between its writers in shares they agree, and each writer's share then goes through their own publisher deal.
+
+- **Whether a song has co-writers is public; the percentages usually aren't.** Song credits (on Apple Music, Spotify and similar) list who wrote a song, but not their percentages.
+- **This section splits a song equally between its credited writers. ASSUMPTION:** a common starting point, but real splits can differ; producers who co-write sometimes take a larger or smaller share.
+
+### Per stream at 0.9p (one writer, with a publisher)
+
+| Who | Share | Per stream |
+|---|---|---|
+| Streaming service | 32% | 0.288p |
+| Label (before its own costs) | 53% recording, minus artist and producer | 0.358p |
+| Producer | 4% of the recording money | 0.019p |
+| Artist's royalty (pays back the £65,667 first) | 21% of the recording money | 0.100p |
+| PRS and MCPS costs | as section 2 | 0.011p |
+| Publisher | 25% of the songwriting money after PRS/MCPS costs | 0.031p |
+| Artist as songwriter | 75% of the songwriting money after PRS/MCPS costs | 0.093p |
+
+### Why paying back takes so long
+
+The £65,667 is paid back only from the artist's 21% of the recording money. Of every £1 of recording money the label receives, only 21p goes towards the costs.
+
+- So the label must receive about **£312,700** of recording money, about 4.8 times the costs, before the artist is paid any royalty.
+- That takes about **65.6 million streams**.
+
+This is the same reason as the indie royalty deal in section 5, at a larger scale.
+
+### Worked examples: year 1 (0.9p per stream, one writer, with a publisher)
+
+Year 1 = the £50,000 advance + any royalty cash after paying back + songwriting money − £100 PRS joining fee.
+
+| Streams a year | Royalty earned | Paid back / still owed | Songwriting money | **Year 1 for the artist** |
+|---|---|---|---|---|
+| 1,000,000 | £1,002 | all of it goes to costs; £64,665 still owed | £928 | **about £50,828** |
+| 10,000,000 | £10,017 | all of it goes to costs; £55,650 still owed | £9,280 | **about £59,180** |
+| 100,000,000 | £100,170 | £65,667 paid back; **£34,503 paid to the artist** | £92,796 | **about £177,199** |
+
+**What the examples show:**
+- In year 1, almost all of what the artist receives is the advance.
+- Below about 65.6 million streams, the advance is all the recording money the artist gets. The songwriting money is paid either way.
+
+**With co-writers:** at 10 million streams, a song with **three equal writers** gives each writer about £4,124 before their publisher's share. With a publisher keeping 25%, the artist's songwriting money falls from £9,280 to about **£3,093**.
+
+**Without a publisher**, the same artist (sole writer) would keep all £12,373 of the songwriting money at 10 million streams (section 2), but would get no publishing advance or services.
+
+### What a user will be able to change (major label)
+
+| Setting | Starting value | Label |
+|---|---|---|
+| Royalty rate | 25% | **ASSUMPTION** |
+| Producer's royalty | 4% | **ASSUMPTION** |
+| Cash advance | £50,000 | **ASSUMPTION** |
+| Recording and video costs charged back | £15,667 | **ASSUMPTION** |
+| Writer's share from the publisher | 75% (or no publisher) | **ASSUMPTION** |
+| Number of writers (equal split) | 1 | **ASSUMPTION** |
+
+## 7. Case study: "Man I Need" by Olivia Dean
+
+> **What this is:** an estimate of what a **typical** major-label deal (section 6) would pay on a song with these streams and credits. Olivia Dean's real contracts are private. **This is not a statement of what anyone earned.**
+
+### The song
+
+| | | Label |
+|---|---|---|
+| Song | "Man I Need", released 15 August 2025 | **FACT:** [Spotify](https://open.spotify.com/track/1qbmS6ep2hbBRaEZFpn7BX) |
+| Spotify plays | 1,460,984,908 (checked 5 October 2026, worldwide, since release) | **FACT:** [Spotify](https://open.spotify.com/track/1qbmS6ep2hbBRaEZFpn7BX) |
+| Label | Capitol Records UK / Polydor Label Group (Universal Music) | **FACT:** [Spotify](https://open.spotify.com/track/1qbmS6ep2hbBRaEZFpn7BX) |
+| Credited writers | Olivia Dean, Zach Nahome, Tobias Jesso Jr. | **FACT:** [Apple Music credits](https://music.apple.com/gb/song/man-i-need/1817609509) |
+| Producer | Zach Nahome | **FACT:** [Apple Music credits](https://music.apple.com/gb/song/man-i-need/1817609509) |
+
+### Who gets what from every £1
+
+This part doesn't depend on what a stream is worth. It uses the section 6 deal and four assumptions:
+- **Royalty:** Olivia Dean's royalty is 25%, minus 4% for the producer. **ASSUMPTION**, as section 6.
+- **Equal writers:** the three credited writers share the songwriting money equally. **ASSUMPTION:** the real shares aren't public.
+- **Publishers:** each writer has a publisher keeping 25% of their songwriting money. **ASSUMPTION**, as section 6.
+- **UK rules:** the money divides as it would in the UK (32% service, 53% recording, 15% songwriting). **ASSUMPTION:** those are UK figures (section 1), applied here to worldwide plays.
+
+| Who | Of every £1 | How |
+|---|---|---|
+| Streaming services | 32p | 32% kept by the service |
+| The label | 39.8p | the 53p recording money, minus the artist's and producer's royalties |
+| The record producer | 2.1p | 4% of the recording money |
+| **Olivia Dean, as the recording artist** | **11.1p** | 21% of the recording money |
+| PRS and MCPS running costs | 1.3p | as section 2 |
+| The writers' publishers, together | 3.4p | 25% of the songwriting money after PRS and MCPS costs |
+| **Olivia Dean, as one of three credited writers** | **3.4p** | a third of the writers' 75% |
+| The other two credited writers, as a group | 6.9p | two-thirds of the writers' 75% |
+
+**In total, the estimate gives Olivia Dean about 14.6p of every £1** this song earns from streaming:
+- 11.1p as the artist;
+- 3.4p as a songwriter.
+
+**Her artist share isn't all cash.** Her royalty first pays back her advance and any costs charged back to her. That's settled across her whole contract, not song by song, so it isn't shown here (section 6).
+
+### In pounds: a range, because the true figure isn't known
+
+Two unknowns pull in opposite directions:
+- **It may be too high.** The plays are worldwide, and an average stream worldwide is probably worth less than an average UK stream.
+- **It may be too low.** Only Spotify plays are counted, but the song is also streamed on Apple Music, Amazon, YouTube and others.
+
+**Low end: about 0.6p per play, a worldwide average. ASSUMPTION.**
+- Record companies' worldwide streaming income passed US$22 billion in 2025. **FACT:** [IFPI](https://www.ifpi.org/global-music-report-2026-global-recorded-music-revenues-grow-6-4-as-record-companies-drive-innovation/)
+- There were 5.1 trillion on-demand audio streams worldwide in 2025. **FACT:** Luminate, reported by [AP](https://ny1.com/nyc/all-boroughs/ap-top-news/2026/01/14/music-streams-hit-5-trillion-in-2025-christian-rock-and-latin-lead-growth-in-the-us)
+- **Working:**
+  1. $22bn ÷ 5.1tn = $0.0043 to record companies per stream.
+  2. ÷ 0.53, the UK recording share, = $0.0081 per stream in total.
+  3. × £0.76 per $1 = **about 0.62p**, rounded to 0.6p.
+- **Why it's only an ASSUMPTION:**
+  - the IFPI figure includes video streaming, but the stream count is audio only;
+  - the 53% and the exchange rate are UK assumptions.
+
+**High end: 0.9p per play, the UK average (section 1). ASSUMPTION.**
+
+| | Low (0.6p a play) | High (0.9p a play) |
+|---|---|---|
+| All the streaming money from the song's Spotify plays | about £8.8 million | about £13.1 million |
+| **What a typical major-label deal would give an artist-writer on this song, before any advance is paid back** (14.6p of every £1) | **about £1.3 million** | **about £1.9 million** |
+
+**The true figure isn't known.**
+- These are Spotify plays only, so other services would add to both ends.
+- Paying back her advance would reduce the cash she received.
+- The range shows the scale of the money, not a measurement.
+
+**Pounds are shown only for the song as a whole and for the artist-writer's share.** The other writers, the producer and the publishers appear only as shares of every £1.
+
 **Not covered here:**
 - PPL, which pays for radio and public play but not on-demand streams ([PPL](https://www.ppluk.com/royalties/the-rights-ppl-can-collect-for/)).
 - YouTube.
-- Streams outside the UK.
-- Producer royalties, often around 4% and paid from the first sale ([IPO, p. 147](https://assets.publishing.service.gov.uk/media/614c760fd3bf7f719095b5ad/music-creators-earnings-report.pdf)).
+- Streams outside the UK, except as described in section 7.
