@@ -6,10 +6,10 @@
    specific to one country: numbers, organisations and currency all come
    from the market file.
 
-   To add a deal (for example a major-label deal): add its branch in
-   calculate(), an entry in DEALS with its summary template, its id in
-   DEAL_ORDER, a radio button in the page's "Deal type" choice, and any
-   settings it needs. The comparison table and summary pick it up.
+   To add a deal: add its branch in calculate(), an entry in DEALS with its
+   summary template, its id in DEAL_ORDER, a radio button in the page's
+   "Deal type" choice, and any settings it needs. The comparison table and
+   summary pick it up.
    ===================================================================== */
 (function () {
   var M = window.MARKET;
@@ -21,11 +21,20 @@
   }
 
   /* ---------- The maths (no page code, so it can be tested on its own) ----------
-     inputs: { deal: 'self' | 'royalty' | 'profit', streams, streamValue (e.g. pence),
-               releaseCosts, distributor, labelFee, royaltyRate, profitSplit, advance } */
+     inputs: {
+       deal: 'self' | 'royalty' | 'profit' | 'major',
+       streams, streamValue (e.g. pence), coShare (your share of the songwriting, 0–1),
+       self:   releaseCosts, distributor
+       indie:  releaseCosts, labelFee, royaltyRate, profitSplit, advance
+       major:  majorRoyalty, producerShare, majorAdvance, majorCosts, writerShare
+     } */
   function calculate(inputs) {
     var deal = inputs.deal;
-    var gross = inputs.streams * inputs.streamValue / M.streamValue.perUnit;
+    var perUnit = M.streamValue.perUnit;
+    var gross = inputs.streams * inputs.streamValue / perUnit;
+    var coShare = inputs.coShare === undefined ? 1 : inputs.coShare;
+    var writerShare = deal === 'major' ? inputs.writerShare : 1;
+    var hasPublisher = writerShare < 1;
 
     var service = gross * r('serviceShare');
     var recording = gross * r('recordingShare');
@@ -46,13 +55,27 @@
       keptShareOfSongwriting += item.share * (1 - r(item.society.costKey));
     });
     var societyCosts = societies.reduce(function (sum, item) { return sum + item.cost; }, 0);
-    var artistSongwriting = songwriting - societyCosts;
-    var joiningFees = M.societies.reduce(function (sum, s) { return sum + r(s.joinKey); }, 0);
+    var songwritingAfterSocieties = songwriting - societyCosts;
+
+    // Co-writers take their share; a publisher (major deal) keeps part of yours
+    var yourSongwriting = songwritingAfterSocieties * coShare;
+    var coWriters = songwritingAfterSocieties - yourSongwriting;
+    var publisher = yourSongwriting * (1 - writerShare);
+    var artistSongwriting = yourSongwriting - publisher;
+
+    // Joining fees: with a publisher, the publisher deals with some societies (e.g. MCPS)
+    var payingSocieties = M.societies.filter(function (s) { return !(hasPublisher && s.publisherJoins); });
+    var joiningFees = payingSocieties.reduce(function (sum, s) { return sum + r(s.joinKey); }, 0);
 
     var res = {
       deal: deal, gross: gross, service: service, recording: recording, songwriting: songwriting,
-      societies: societies, societyCosts: societyCosts, artistSongwriting: artistSongwriting, joiningFees: joiningFees
+      societies: societies, societyCosts: societyCosts, coWriters: coWriters, publisher: publisher,
+      artistSongwriting: artistSongwriting, joiningFees: joiningFees, payingSocieties: payingSocieties,
+      coShare: coShare, writerShare: writerShare, producer: 0, labelDistributorCut: 0, distributorCut: 0
     };
+
+    // Songwriting money you keep per stream (used for break-even)
+    var songwritingKeptPerStream = inputs.streamValue / perUnit * r('songwritingShare') * keptShareOfSongwriting * coShare * writerShare;
 
     if (deal === 'self') {
       var distributor = findDistributor(inputs.distributor);
@@ -68,54 +91,81 @@
       res.releaseCostsPaid = inputs.releaseCosts;
       res.advance = 0;
       res.owed = 0;
+      res.debt = 0;
       res.year1 = res.artist - res.fixedYear1 - inputs.releaseCosts;
+      res.unearnedAdvance = 0;
+      res.earned = res.year1;
       res.later = res.artist - res.fixedLater;
       // Streams before everything kept (recording + songwriting) covers the release costs and year-1 fixed costs
-      var keptPerStream = inputs.streamValue / M.streamValue.perUnit * (
-        r('recordingShare') * (1 - cut) + r('songwritingShare') * keptShareOfSongwriting);
+      var keptPerStream = inputs.streamValue / perUnit * r('recordingShare') * (1 - cut) + songwritingKeptPerStream;
       var spent = inputs.releaseCosts + res.fixedYear1;
       res.breakEvenStreams = spent > 0 ? (keptPerStream > 0 ? spent / keptPerStream : Infinity) : 0;
       res.labelReceivedAtBreakEven = null;
       return res;
     }
 
-    // Label deals
-    var debt = inputs.releaseCosts + inputs.advance;
-    res.labelDistributorCut = recording * inputs.labelFee;
-    res.labelReceipts = recording - res.labelDistributorCut;
-    var perStreamReceipts = inputs.streamValue / M.streamValue.perUnit * r('recordingShare') * (1 - inputs.labelFee);
+    var debt, recouped;
 
-    var recouped;
-    if (deal === 'royalty') {
-      var royaltyShare = res.labelReceipts * inputs.royaltyRate;
-      recouped = Math.min(royaltyShare, debt);
-      res.artistRecording = royaltyShare - recouped;
-      var perStreamToDebt = perStreamReceipts * inputs.royaltyRate;
+    if (deal === 'major') {
+      // The label distributes itself; the producer is paid from the artist's rate, from the first stream
+      var artistRate = Math.max(0, inputs.majorRoyalty - inputs.producerShare);
+      debt = inputs.majorAdvance + inputs.majorCosts;
+      res.labelReceipts = recording;
+      res.producer = recording * Math.min(inputs.producerShare, inputs.majorRoyalty);
+      var royaltyEarned = recording * artistRate;
+      recouped = Math.min(royaltyEarned, debt);
+      res.royaltyEarned = royaltyEarned;
+      res.artistRecording = royaltyEarned - recouped;
+      res.artistRate = artistRate;
+      var perStreamToDebt = inputs.streamValue / perUnit * r('recordingShare') * artistRate;
       res.breakEvenStreams = debt > 0 ? (perStreamToDebt > 0 ? debt / perStreamToDebt : Infinity) : 0;
-      res.labelReceivedAtBreakEven = debt > 0 ? (inputs.royaltyRate > 0 ? debt / inputs.royaltyRate : Infinity) : 0;
+      res.labelReceivedAtBreakEven = debt > 0 ? (artistRate > 0 ? debt / artistRate : Infinity) : 0;
+      res.advance = inputs.majorAdvance;
+      res.chargedBackCosts = inputs.majorCosts;
     } else {
-      recouped = Math.min(res.labelReceipts, debt);
-      res.artistRecording = (res.labelReceipts - recouped) * inputs.profitSplit;
-      res.breakEvenStreams = debt > 0 ? (perStreamReceipts > 0 ? debt / perStreamReceipts : Infinity) : 0;
-      res.labelReceivedAtBreakEven = debt;
+      // Indie deals
+      debt = inputs.releaseCosts + inputs.advance;
+      res.labelDistributorCut = recording * inputs.labelFee;
+      res.labelReceipts = recording - res.labelDistributorCut;
+      var perStreamReceipts = inputs.streamValue / perUnit * r('recordingShare') * (1 - inputs.labelFee);
+      if (deal === 'royalty') {
+        var royaltyShare = res.labelReceipts * inputs.royaltyRate;
+        recouped = Math.min(royaltyShare, debt);
+        res.artistRecording = royaltyShare - recouped;
+        var perStreamRoyalty = perStreamReceipts * inputs.royaltyRate;
+        res.breakEvenStreams = debt > 0 ? (perStreamRoyalty > 0 ? debt / perStreamRoyalty : Infinity) : 0;
+        res.labelReceivedAtBreakEven = debt > 0 ? (inputs.royaltyRate > 0 ? debt / inputs.royaltyRate : Infinity) : 0;
+      } else {
+        recouped = Math.min(res.labelReceipts, debt);
+        res.artistRecording = (res.labelReceipts - recouped) * inputs.profitSplit;
+        res.breakEvenStreams = debt > 0 ? (perStreamReceipts > 0 ? debt / perStreamReceipts : Infinity) : 0;
+        res.labelReceivedAtBreakEven = debt;
+      }
+      res.advance = inputs.advance;
     }
 
     res.debt = debt;
     res.recouped = recouped;
     res.owed = debt - recouped;
-    res.labelKeeps = res.labelReceipts - res.artistRecording;
+    res.labelKeeps = res.labelReceipts - res.artistRecording - res.producer;
     res.artist = res.artistRecording + artistSongwriting;
-    res.advance = inputs.advance;
     res.releaseCostsPaid = 0;
     res.fixedYear1 = joiningFees;
     res.fixedLater = 0;
-    res.year1 = res.artist + inputs.advance - joiningFees;
+    res.received = res.artist + res.advance;
+    res.year1 = res.received - joiningFees;
+    // The advance is an early payment of your own royalties. The part your streams haven't yet
+    // earned back is kept apart from what they earned. Charged-back costs are assumed to be paid
+    // back before the advance, so the advance is the last thing to count as earned.
+    res.unearnedAdvance = Math.min(res.advance, res.owed);
+    res.earned = res.year1 - res.unearnedAdvance;
     return res;
   }
 
-  // Smallest number of streams a year at which year 1 stops being a loss (works for any deal)
+  // Smallest number of streams a year at which what your streams earn covers your year-1 costs (any deal).
+  // The advance is left out: it's paid upfront, not earned from streams.
   function streamsUntilAhead(inp, deal) {
-    var year1 = function (n) { return calculate(Object.assign({}, inp, { deal: deal, streams: n })).year1; };
+    var year1 = function (n) { return calculate(Object.assign({}, inp, { deal: deal, streams: n })).earned; };
     if (year1(0) >= 0) return 0;
     var hi = 1e6;
     while (year1(hi) < 0) { hi *= 4; if (hi > 1e12) return Infinity; }
@@ -166,73 +216,98 @@
     return 'about ' + Math.ceil(n).toLocaleString(LOCALE) + ' streams';
   }
 
+  function streamsShort(n) {
+    if (!isFinite(n)) return 'Never';
+    if (n <= 0) return 'From the first stream';
+    if (n >= 1e6) return (n / 1e6).toFixed(1) + ' million streams';
+    return Math.ceil(n).toLocaleString(LOCALE) + ' streams';
+  }
+
   function valueText(v) { return v.toFixed(2) + M.streamValue.unit; }
 
-  function societyNames() {
-    var names = M.societies.map(function (s) { return s.name; });
+  function joinNames(names) {
     return names.length === 1 ? names[0] : names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1];
   }
 
+  function societyNames(list) {
+    return joinNames((list || M.societies).map(function (s) { return s.name; }));
+  }
+
   /* ---------- Deals ---------- */
-  var DEAL_ORDER = ['self', 'royalty', 'profit'];
+  var DEAL_ORDER = ['self', 'royalty', 'profit', 'major'];
 
   var DEALS = {
-    self:    { name: 'Self-released',           verdictName: 'self-releasing',              isLabel: false, summary: summarySelf },
-    royalty: { name: 'Indie royalty deal',      verdictName: 'the indie royalty deal',      isLabel: true,  summary: summaryRoyalty },
-    profit:  { name: 'Indie profit-share deal', verdictName: 'the indie profit-share deal', isLabel: true,  summary: summaryProfit }
+    self:    { name: 'Self-released',           verdictName: 'self-releasing',              isLabel: false, family: 'self',  summary: summarySelf },
+    royalty: { name: 'Indie royalty deal',      verdictName: 'the indie royalty deal',      isLabel: true,  family: 'indie', summary: summaryRoyalty },
+    profit:  { name: 'Indie profit-share deal', verdictName: 'the indie profit-share deal', isLabel: true,  family: 'indie', summary: summaryProfit },
+    major:   { name: 'Major-label deal',        verdictName: 'the major-label deal',        isLabel: true,  family: 'major', summary: summaryMajor }
   };
+
+  // Who pays for making and promoting the release, for the comparison table
+  function whoPaysRelease(res) {
+    if (res.deal === 'self') return 'You do';
+    if (res.deal === 'major') return 'The label; it charges back the advance and recording costs';
+    return 'The label; it charges them back';
+  }
 
   /* ---------- Page ---------- */
   var el = function (id) { return document.getElementById(id); };
-  var streamsInput, valueInput, costsInput, feeInput, royaltyInput, splitInput, advanceInput;
+  var INPUT_IDS = ['streams', 'value', 'coshare', 'costs', 'labelfee', 'royalty', 'split', 'advance',
+                   'major-royalty', 'producer', 'major-advance', 'major-costs', 'writer-share'];
 
-  function wholeNumber(input) { return Math.max(0, Math.floor(Number(input.value) || 0)); }
+  function wholeNumber(id) { return Math.max(0, Math.floor(Number(el(id).value) || 0)); }
+  function percent(id) { return Number(el(id).value) / 100; }
 
   function readInputs() {
     return {
       deal: document.querySelector('input[name="deal"]:checked').value,
-      streams: wholeNumber(streamsInput),
-      streamValue: Number(valueInput.value),
-      releaseCosts: wholeNumber(costsInput),
+      streams: wholeNumber('streams'),
+      streamValue: Number(el('value').value),
+      coShare: percent('coshare'),
+      releaseCosts: wholeNumber('costs'),
       distributor: document.querySelector('input[name="distributor"]:checked').value,
-      labelFee: Number(feeInput.value) / 100,
-      royaltyRate: Number(royaltyInput.value) / 100,
-      profitSplit: Number(splitInput.value) / 100,
-      advance: wholeNumber(advanceInput)
+      labelFee: percent('labelfee'),
+      royaltyRate: percent('royalty'),
+      profitSplit: percent('split'),
+      advance: wholeNumber('advance'),
+      majorRoyalty: percent('major-royalty'),
+      producerShare: percent('producer'),
+      majorAdvance: wholeNumber('major-advance'),
+      majorCosts: wholeNumber('major-costs'),
+      writerShare: percent('writer-share')
     };
   }
 
   function setUp() {
-    streamsInput = el('streams'); valueInput = el('value'); costsInput = el('costs');
-    feeInput = el('labelfee'); royaltyInput = el('royalty'); splitInput = el('split'); advanceInput = el('advance');
-
     // Currency symbols, the value slider and the distributor choices come from the market
     document.querySelectorAll('.currency-symbol').forEach(function (span) { span.textContent = SYMBOL; });
-    valueInput.min = M.streamValue.min;
-    valueInput.max = M.streamValue.max;
-    valueInput.step = M.streamValue.step;
+    var value = el('value');
+    value.min = M.streamValue.min;
+    value.max = M.streamValue.max;
+    value.step = M.streamValue.step;
     el('distributor-choices').innerHTML = M.distributors.map(function (d, i) {
       return '<label class="choice"><input type="radio" name="distributor" value="' + d.id + '"' + (i === 0 ? ' checked' : '') + '><span>' + d.name + '</span></label>';
     }).join('');
 
     // Starting values and tags come from the rules
-    valueInput.value = r(M.streamValue.defaultKey);
-    costsInput.value = r('releaseCosts');
-    feeInput.value = r('labelDistributorFee') * 100;
-    royaltyInput.value = r('royaltyRate') * 100;
-    splitInput.value = r('profitSplit') * 100;
-    advanceInput.value = r('advance');
-    el('value-tag').innerHTML = tag(M.streamValue.defaultKey);
-    el('costs-tag').innerHTML = tag('releaseCosts');
-    el('labelfee-tag').innerHTML = tag('labelDistributorFee');
-    el('royalty-tag').innerHTML = tag('royaltyRate');
-    el('split-tag').innerHTML = tag('profitSplit');
-    el('advance-tag').innerHTML = tag('advance');
+    var start = {
+      value: [M.streamValue.defaultKey, 1], coshare: ['yourSongwritingShare', 100], costs: ['releaseCosts', 1],
+      labelfee: ['labelDistributorFee', 100], royalty: ['royaltyRate', 100], split: ['profitSplit', 100], advance: ['advance', 1],
+      'major-royalty': ['majorRoyaltyRate', 100], producer: ['producerShare', 100], 'major-advance': ['majorAdvance', 1],
+      'major-costs': ['majorRecordingCosts', 1], 'writer-share': ['writerShareAfterPublisher', 100]
+    };
+    Object.keys(start).forEach(function (id) {
+      el(id).value = r(start[id][0]) * start[id][1];
+      var tagSpot = el(id + '-tag');
+      if (tagSpot) tagSpot.innerHTML = tag(start[id][0]);
+    });
     el('not-covered').textContent = M.notCovered;
 
-    [streamsInput, valueInput, costsInput, feeInput, royaltyInput, splitInput, advanceInput].forEach(function (input) {
-      input.addEventListener('input', render);
-    });
+    // A link such as /uk/?deal=major opens with that deal selected
+    var wanted = new URLSearchParams(location.search).get('deal');
+    if (wanted && DEALS[wanted]) document.querySelector('input[name="deal"][value="' + wanted + '"]').checked = true;
+
+    INPUT_IDS.forEach(function (id) { el(id).addEventListener('input', render); });
     document.querySelectorAll('input[name="deal"], input[name="distributor"]').forEach(function (input) {
       input.addEventListener('change', render);
     });
@@ -241,18 +316,24 @@
   function render() {
     var inp = readInputs();
     var deal = inp.deal;
-    var isLabel = DEALS[deal].isLabel;
+    var family = DEALS[deal].family;
     var res = calculate(inp);
 
     // Show only the inputs that apply
-    el('self-inputs').hidden = isLabel;
-    el('label-inputs').hidden = !isLabel;
+    el('self-inputs').hidden = family !== 'self';
+    el('label-inputs').hidden = family !== 'indie';
+    el('major-inputs').hidden = family !== 'major';
+    el('costs-field').hidden = family === 'major';
     el('royalty-field').hidden = deal !== 'royalty';
     el('split-field').hidden = deal !== 'profit';
     el('value-out').textContent = valueText(inp.streamValue);
+    el('coshare-out').textContent = pct(inp.coShare);
     el('labelfee-out').textContent = pct(inp.labelFee);
     el('royalty-out').textContent = pct(inp.royaltyRate);
     el('split-out').textContent = pct(inp.profitSplit);
+    el('major-royalty-out').textContent = pct(inp.majorRoyalty);
+    el('producer-out').textContent = pct(inp.producerShare);
+    el('writer-share-out').textContent = pct(inp.writerShare);
 
     // Under the Spotify threshold
     var note = el('threshold-note');
@@ -282,6 +363,13 @@
     if (inp.deal === 'self') {
       segments.push({ name: 'Distributor (' + res.distributor.name + ')', amount: res.distributorCut, color: 'var(--c-distributor)',
         detail: 'Takes ' + rulePct(res.distributor.cutKey) + tag(res.distributor.cutKey) + ' of the recording money' });
+    } else if (inp.deal === 'major') {
+      var majorDetail = 'Receives the recording money (' + rulePct('recordingShare') + tag('recordingShare') + ' of all income), with no separate distributor fee' + tag('majorNoDistributorFee') +
+        '. Your ' + pct(res.artistRate) + ' royalty pays back the advance and recording costs first' + tag('majorRecoup');
+      if (res.recouped > 0) majorDetail += '<br>Includes ' + money(res.recouped) + ' paying back your advance and recording costs';
+      segments.push({ name: 'Label', amount: res.labelKeeps, color: 'var(--c-label)', detail: majorDetail });
+      segments.push({ name: 'Record producer', amount: res.producer, color: 'var(--c-distributor)',
+        detail: pct(inp.producerShare) + tag('producerShare') + ' of the recording money, taken from your ' + pct(inp.majorRoyalty) + tag('majorRoyaltyRate') + ' royalty and paid from the first stream' });
     } else {
       segments.push({ name: 'Label\'s distributor', amount: res.labelDistributorCut, color: 'var(--c-distributor)',
         detail: 'Takes ' + pct(inp.labelFee) + tag('labelDistributorFee') + ' of the recording money (' + rulePct('recordingShare') + tag('recordingShare') + ' of all income)' });
@@ -292,19 +380,31 @@
       segments.push({ name: 'Label', amount: res.labelKeeps, color: 'var(--c-label)', detail: labelDetail });
     }
 
-    var societyColours = ['var(--c-prs)', 'var(--c-mcps)', 'var(--c-distributor)'];
+    var societyColours = ['var(--c-prs)', 'var(--c-mcps)'];
     res.societies.forEach(function (item, i) {
       var s = item.society;
       segments.push({ name: s.costName, amount: item.cost, color: societyColours[i % societyColours.length],
         detail: rulePct(s.costKey) + tag(s.costKey) + ' of the ' + s.name + ' share (' + pct(item.share) + (s.shareKey ? tag(s.shareKey) : '') + ') of the songwriting money' });
     });
 
-    var recordingLine = inp.deal === 'self'
-      ? money(res.artistRecording) + ' from the recording (' + rulePct('recordingShare') + tag('recordingShare') + ', minus distributor)'
-      : money(res.artistRecording) + ' from the recording' + (res.owed > 0 ? ' (nothing yet: costs aren\'t paid back)' : '');
-    segments.push({ name: 'You keep', amount: res.artist, color: 'var(--c-artist)',
-      detail: recordingLine + '<br>' + money(res.artistSongwriting) + ' from the songwriting (' + rulePct('songwritingShare') + tag('songwritingShare') +
-        ', minus ' + societyNames() + ' costs)' + (inp.deal === 'self' ? '' : tag('songwritingUnchanged')) });
+    if (res.coWriters > 0.005) {
+      segments.push({ name: 'Your co-writers', amount: res.coWriters, color: 'var(--c-cowriters)',
+        detail: 'Their ' + pct(1 - inp.coShare) + ' of the songwriting money' + tag('yourSongwritingShare') });
+    }
+    if (res.publisher > 0.005) {
+      segments.push({ name: 'Your publisher', amount: res.publisher, color: 'var(--c-publisher)',
+        detail: 'Keeps ' + pct(1 - res.writerShare) + ' of your songwriting money' + tag('writerShareAfterPublisher') + '. PRS pays you half the performance money directly' + tag('prsDirectHalf') });
+    }
+
+    var recordingLine;
+    if (inp.deal === 'self') {
+      recordingLine = money(res.artistRecording) + ' from the recording (' + rulePct('recordingShare') + tag('recordingShare') + ', minus distributor)';
+    } else {
+      recordingLine = money(res.artistRecording) + ' from the recording' + (res.owed > 0 ? ' (nothing yet: costs aren\'t paid back)' : '');
+    }
+    var songLine = money(res.artistSongwriting) + ' from the songwriting (' + rulePct('songwritingShare') + tag('songwritingShare') + ', minus ' + societyNames() + ' costs' +
+      (inp.coShare < 1 ? ', co-writers' : '') + (res.writerShare < 1 ? ', publisher' : '') + ')' + (DEALS[inp.deal].family === 'indie' ? tag('songwritingUnchanged') : '');
+    segments.push({ name: 'You keep', amount: res.artist, color: 'var(--c-artist)', detail: recordingLine + '<br>' + songLine });
 
     var bar = el('bar');
     bar.innerHTML = segments.map(function (s) {
@@ -321,19 +421,23 @@
   }
 
   function renderWho(inp, res) {
-    var costs = money(inp.releaseCosts);
     var html;
     if (inp.deal === 'self') {
-      html = '<p class="who"><strong>You pay the ' + costs + ' yourself</strong>, upfront' + tag('releaseCosts') + '.</p>' +
+      html = '<p class="who"><strong>You pay the ' + money(inp.releaseCosts) + ' yourself</strong>, upfront' + tag('releaseCosts') + '.</p>' +
         '<p class="who">If the music doesn\'t earn it back, <strong>you carry the loss</strong>. Everything you keep from the recording and the songwriting covers it, plus ' +
         money(res.fixedYear1) + ' of year-1 fixed costs, after ' + streamsText(res.breakEvenStreams) + '.</p>';
+    } else if (inp.deal === 'major') {
+      html = '<p class="who"><strong>The label pays for the release.</strong> It charges back ' + money(inp.majorCosts) + ' of recording costs' + tag('majorRecordingCosts') +
+        ' and pays for marketing itself, without charging it back' + tag('marketingNotCharged') + '. It also pays you a ' + money(inp.majorAdvance) + ' advance upfront' + tag('majorAdvance') +
+        '. The advance and recording costs, ' + money(res.debt) + ' in total, are paid back <strong>only from your royalty</strong>' + tag('majorRecoup') + '.</p>' +
+        '<p class="who">If the music never earns it back, <strong>the label carries the loss</strong> and you keep the advance' + tag('advanceKept') +
+        '. The unpaid amount stays on your account and comes out of any future royalties. ' + M.majorWriteOffSentence(tag) + '</p>';
     } else {
-      var total = money(res.debt);
       var how = inp.deal === 'royalty'
         ? 'It is paid back <strong>only from your ' + pct(inp.royaltyRate) + ' royalty</strong>' + tag('royaltyRecoup') + '.'
         : 'It is paid back <strong>from everything the label receives</strong>, before any profit is shared' + tag('profitRecoup') + '.';
-      html = '<p class="who"><strong>The label pays the ' + costs + '</strong>' + tag('releaseCosts') +
-        (inp.advance > 0 ? ', plus your ' + money(inp.advance) + ' cash advance' + tag('advance') + (inp.deal === 'profit' ? tag('advanceInProfitShare') : '') + ': ' + total + ' in total' : '') + '. ' + how + '</p>' +
+      html = '<p class="who"><strong>The label pays the ' + money(inp.releaseCosts) + '</strong>' + tag('releaseCosts') +
+        (inp.advance > 0 ? ', plus your ' + money(inp.advance) + ' cash advance' + tag('advance') + (inp.deal === 'profit' ? tag('advanceInProfitShare') : '') + ': ' + money(res.debt) + ' in total' : '') + '. ' + how + '</p>' +
         '<p class="who">If the music never earns it back, <strong>the label carries the loss</strong>. You don\'t repay it from your own pocket' + tag('notOutOfPocket') +
         '. But the unpaid amount stays on your account and comes out of any future earnings from the recording. ' + M.writeOffSentence(tag, pct) + '</p>';
     }
@@ -343,10 +447,12 @@
   function renderFixed(inp, res) {
     var fixed = [];
     if (inp.deal === 'self') fixed.push(Object.assign({ amount: res.distributorYear1 }, res.distributor.feeRow(tag)));
-    M.societies.forEach(function (s) {
+    res.payingSocieties.forEach(function (s) {
       fixed.push({ name: s.name + ' joining fee', when: 'Year 1 only', amount: r(s.joinKey), detail: 'One-off' + tag(s.joinKey) });
     });
+    var skipped = M.societies.filter(function (s) { return res.payingSocieties.indexOf(s) === -1; });
     var later = inp.deal === 'self' ? 'Each later year: ' + money(res.fixedLater) : 'The label pays for distribution, so there are no later fixed costs.';
+    if (skipped.length) later += ' Your publisher deals with ' + societyNames(skipped) + tag('publisherHandlesMcps') + '.';
     el('fixed-rows').innerHTML = fixed.map(function (f) {
       return '<li><span></span><span class="row-label">' + f.name + '<span class="row-detail">' + f.detail + '</span></span>' +
         '<span class="amount">' + money(f.amount) + '<span class="share">' + f.when + '</span></span></li>';
@@ -363,8 +469,9 @@
   }
 
   function renderResults(inp, res) {
-    var loss = el('loss-message'), carry = el('carry-message');
+    var loss = el('loss-message'), carry = el('carry-message'), advanceNote = el('advance-message');
     var second = el('second');
+    advanceNote.hidden = true;
 
     if (inp.deal === 'self') {
       el('result-hint').textContent = 'Your earnings, minus fixed costs and the release costs you paid.';
@@ -373,27 +480,32 @@
       setResult('second', res.later, money(res.artist) + ' earned − ' + money(res.fixedLater) + ' fixed costs');
       carry.hidden = true;
     } else {
-      el('result-hint').textContent = 'Your earnings and any advance, minus fixed costs. The label paid the release costs.';
+      el('result-hint').textContent = 'Your earnings and any advance, minus fixed costs. The label paid for the release.';
       var parts = [money(res.artistRecording) + ' recording', money(res.artistSongwriting) + ' songwriting'];
-      if (res.advance > 0) parts.push(money(res.advance) + ' advance');
+      if (res.advance > 0) parts.unshift(money(res.advance) + ' advance');
       setResult('year1', res.year1, parts.join(' + ') + ' − ' + money(res.fixedYear1) + ' fixed costs');
 
       // Second box: streams before you're paid for the recording
-      el('second-label').textContent = 'Before you\'re paid for the recording';
+      el('second-label').textContent = inp.deal === 'major' ? 'Before your royalties start' : 'Before you\'re paid for the recording';
       second.classList.remove('is-loss', 'is-gain');
-      el('second-amount').textContent = isFinite(res.breakEvenStreams)
-        ? (res.breakEvenStreams <= 0 ? 'From the first stream' : (res.breakEvenStreams >= 1e6 ? (res.breakEvenStreams / 1e6).toFixed(1) + ' million streams' : Math.ceil(res.breakEvenStreams).toLocaleString(LOCALE) + ' streams'))
-        : 'Never';
+      el('second-amount').textContent = streamsShort(res.breakEvenStreams);
+      var perPound = inp.deal === 'major' ? pct(res.artistRate) : pct(inp.royaltyRate);
       el('second-sub').textContent = !isFinite(res.breakEvenStreams)
         ? 'With these settings the costs can never be paid back.'
         : res.breakEvenStreams <= 0
           ? 'There are no costs to pay back.'
-          : 'By then the label will have received ' + money(res.labelReceivedAtBreakEven) + ' after its distributor\'s fee' +
-            (inp.deal === 'royalty' ? ', because only ' + pct(inp.royaltyRate) + ' of each ' + SYMBOL + '1 goes towards the ' + money(res.debt) + ' of costs.' : ', enough to cover the ' + money(res.debt) + ' of costs.');
+          : 'By then the label will have received ' + money(res.labelReceivedAtBreakEven) + ' of recording money' + (inp.deal === 'major' ? '' : ' after its distributor\'s fee') +
+            (inp.deal === 'profit' ? ', enough to cover the ' + money(res.debt) + ' of costs.' : ', because only ' + perPound + ' of each ' + SYMBOL + '1 goes towards the ' + money(res.debt) + ' to pay back.');
+
+      if (res.advance > 0 && res.received > 0) {
+        advanceNote.hidden = false;
+        advanceNote.innerHTML = '<strong>' + share(res.advance, res.received) + ' of what you receive in year 1 is the advance</strong>: ' +
+          money(res.advance) + ' of ' + money(res.received) + '. The advance is paid upfront and counts towards what the label takes back.';
+      }
 
       carry.hidden = !(res.owed > 0.005);
       if (!carry.hidden) {
-        carry.innerHTML = '<strong>' + money(res.owed) + ' of costs isn\'t earned back yet.</strong> It carries into later years and comes out of your future recording money before you\'re paid for the recording. Your songwriting money isn\'t affected.';
+        carry.innerHTML = '<strong>' + money(res.owed) + ' isn\'t earned back yet.</strong> It carries into later years and comes out of your future recording money before you\'re paid for the recording. Your songwriting money isn\'t affected.';
       }
     }
 
@@ -401,7 +513,7 @@
     if (!loss.hidden) {
       var why = inp.deal === 'self'
         ? 'your costs (' + money(res.fixedYear1 + res.releaseCostsPaid) + ', including the ' + money(res.releaseCostsPaid) + ' release) are more than the ' + money(res.artist) + ' you earned.'
-        : 'the ' + money(res.fixedYear1) + ' ' + societyNames() + ' joining fees are more than the ' + money(res.artist + res.advance) + ' you received.';
+        : 'the ' + money(res.fixedYear1) + ' ' + societyNames(res.payingSocieties) + ' joining fees are more than the ' + money(res.received) + ' you received.';
       loss.innerHTML = 'In year 1 you <strong>lose ' + money(-res.year1) + '</strong>: ' + why;
     }
   }
@@ -417,21 +529,28 @@
       }).join('');
     };
     var signClass = function (res) { return res.year1 < 0 ? 'neg' : 'pos'; };
+    var earnedClass = function (res) { return res.earned < 0 ? 'neg' : 'pos'; };
     var dash = '—';
 
     var rows = [
-      ['Who pays the ' + money(inp.releaseCosts) + ' release costs', function (res) { return res.releaseCostsPaid > 0 ? 'You do' : 'The label'; }],
+      ['Who pays for the release', function (res) { return whoPaysRelease(res); }],
+      ['Release costs: paid by you, or charged back to you', function (res) {
+        if (res.deal === 'self') return money(res.releaseCostsPaid) + ' (you pay)';
+        return money(res.debt - res.advance) + ' charged back';
+      }],
       ['Recording money paid to you', function (res) { return money(res.artistRecording); }],
       ['Songwriting money', function (res) { return money(res.artistSongwriting); }],
-      ['Cash advance', function (res, d) { return DEALS[d].isLabel ? money(res.advance) : dash; }],
       ['Fixed costs', function (res) { return '−' + money(res.fixedYear1); }],
       ['Release costs you paid', function (res) { return res.releaseCostsPaid > 0 ? '−' + money(res.releaseCostsPaid) : money(0); }],
-      ['Year 1 for you', function (res) { return money(res.year1); }, signClass, 'key'],
+      ['Paid upfront (advance)', function (res, d) { return DEALS[d].isLabel ? money(res.advance) : dash; }],
+      ['Earned from your streams in year 1', function (res) { return money(res.earned); }, earnedClass, 'key'],
+      ['Advance your streams haven\'t earned back yet', function (res, d) { return DEALS[d].isLabel ? money(res.unearnedAdvance) : dash; }],
+      ['Year 1 total (the two rows above)', function (res) { return money(res.year1); }, signClass],
       ['Still owed to the label (carries over)', function (res, d) { return DEALS[d].isLabel ? money(res.owed) : dash; }],
-      ['Streams before year 1 stops being a loss', function (res, d) { return streamsText(streamsUntilAhead(inp, d)).replace('about ', '~'); }],
+      ['Streams before your streams cover your year-1 costs', function (res, d) { return streamsText(streamsUntilAhead(inp, d)).replace('about ', '~'); }],
       ['Streams before the label\'s costs are paid back and you\'re paid for the recording', function (res) { return res.labelReceivedAtBreakEven === null ? dash : streamsText(res.breakEvenStreams).replace('about ', '~'); }],
       ['Label has received by then', function (res) { return res.labelReceivedAtBreakEven === null || !isFinite(res.labelReceivedAtBreakEven) ? dash : money(res.labelReceivedAtBreakEven); }],
-      ['Who carries the loss if it isn\'t earned back', function (res) { return res.releaseCostsPaid > 0 ? 'You do' : 'The label'; }]
+      ['Who carries the loss if it isn\'t earned back', function (res) { return res.deal === 'self' ? 'You do' : 'The label'; }]
     ];
 
     var headCells = deals.map(function (d) {
@@ -469,29 +588,42 @@
   }
 
   function verdict(inp, results) {
-    // Group deals whose year-1 results round to the same amount, highest first
-    var sorted = DEAL_ORDER.slice().sort(function (a, b) { return results[b].year1 - results[a].year1; });
+    // Rank by what your streams earn in year 1 (not counting any advance), highest first,
+    // grouping deals whose results round to the same amount
+    var sorted = DEAL_ORDER.slice().sort(function (a, b) { return results[b].earned - results[a].earned; });
     var groups = [];
     sorted.forEach(function (d) {
       var last = groups[groups.length - 1];
-      if (last && Math.round(results[last[0]].year1) === Math.round(results[d].year1)) last.push(d);
+      if (last && Math.round(results[last[0]].earned) === Math.round(results[d].earned)) last.push(d);
       else groups.push([d]);
     });
+    var indieDeals = DEAL_ORDER.filter(function (d) { return DEALS[d].family === 'indie'; });
     var labelDeals = DEAL_ORDER.filter(function (d) { return DEALS[d].isLabel; });
+    var sameSet = function (g, set) { return g.length === set.length && g.every(function (d) { return set.indexOf(d) !== -1; }); };
     var groupName = function (g) {
       if (g.length === DEAL_ORDER.length) return 'every route';
-      if (g.length === labelDeals.length && g.every(function (d) { return DEALS[d].isLabel; })) {
-        return labelDeals.length === 2 ? 'both indie deals' : 'all the label deals';
-      }
-      var names = g.map(function (d) { return DEALS[d].verdictName; });
-      return names.length === 1 ? names[0] : names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1];
+      if (sameSet(g, indieDeals)) return indieDeals.length === 2 ? 'both indie deals' : 'all the indie deals';
+      if (sameSet(g, labelDeals)) return 'all the label deals';
+      return joinNames(g.map(function (d) { return DEALS[d].verdictName; }));
     };
-    return groups.map(function (g, i) {
+    var ranking = groups.map(function (g, i) {
       var plural = g.length > 1;
       var res = results[g[0]];
-      if (i === 0) return 'At ' + streamsPhrase(inp.streams) + ' streams, ' + groupName(g) + ' ' + outcome(res.year1, plural) + ' in year 1.';
-      return capitalise(groupName(g)) + ' ' + outcome(res.year1, plural) + '.';
-    }).join(' ');
+      if (i === 0) return 'At ' + streamsPhrase(inp.streams) + ' streams, ' + groupName(g) + ' ' + outcome(res.earned, plural) + ' from your streams in year 1.';
+      return capitalise(groupName(g)) + ' ' + outcome(res.earned, plural) + '.';
+    });
+    // Advances are mentioned separately: they're early payments of your own royalties
+    var advances = DEAL_ORDER.filter(function (d) { return results[d].advance > 0; }).map(function (d) {
+      var res = results[d];
+      if (res.unearnedAdvance >= res.advance - 0.5) {
+        return capitalise(DEALS[d].verdictName) + ' also pays ' + wholeMoney(res.advance) + ' upfront, which is an early payment of your own royalties.';
+      }
+      if (res.unearnedAdvance > 0.5) {
+        return capitalise(DEALS[d].verdictName) + ' also pays ' + wholeMoney(res.advance) + ' upfront, an early payment of your own royalties; your streams have earned back all but ' + wholeMoney(res.unearnedAdvance) + ' of it.';
+      }
+      return capitalise(DEALS[d].verdictName) + '\'s ' + wholeMoney(res.advance) + ' advance is already earned back by these streams, so it\'s counted above.';
+    });
+    return ranking.concat(advances).join(' ');
   }
 
   function breakEvenSentence(n) {
@@ -507,7 +639,7 @@
     return 'If you self-release: ' + first + ' ' + breakEvenSentence(res.breakEvenStreams);
   }
 
-  // What the label pays, and that it takes the loss
+  // What the indie label pays, and that it takes the loss
   function labelPays(inp) {
     if (inp.releaseCosts > 0 && inp.advance > 0) return 'the label pays the ' + wholeMoney(inp.releaseCosts) + ', pays you ' + wholeMoney(inp.advance) + ' upfront, and takes the loss if the song flops.';
     if (inp.releaseCosts > 0) return 'the label pays the ' + wholeMoney(inp.releaseCosts) + ' and takes the loss if the song flops.';
@@ -534,6 +666,19 @@
       : 'you\'d never be paid for the recording with these settings';
     return 'If you sign an indie profit-share deal: ' + labelPays(inp) + ' It repays itself from all the recording money, then ' +
       (split === 50 ? 'splits the rest 50/50' : 'gives you ' + split + '% of the rest') + ', so ' + when + '.';
+  }
+
+  function summaryMajor(res, inp) {
+    var first = inp.majorAdvance > 0
+      ? 'the label pays you ' + wholeMoney(inp.majorAdvance) + ' upfront, pays for the release and takes the loss if the song flops.'
+      : 'the label pays for the release and takes the loss if the song flops.';
+    if (res.debt <= 0) return 'If you sign a major-label deal: ' + first + ' With nothing to repay, your ' + pct(res.artistRate) + ' royalty is paid from the first stream.';
+    var repays = inp.majorAdvance > 0 && inp.majorCosts > 0 ? 'the advance and ' + wholeMoney(inp.majorCosts) + ' of recording costs'
+      : inp.majorAdvance > 0 ? 'the advance' : wholeMoney(inp.majorCosts) + ' of recording costs';
+    var when = isFinite(res.breakEvenStreams)
+      ? 'you aren\'t paid royalties until ' + streamsText(res.breakEvenStreams)
+      : 'you\'d never be paid royalties with these settings';
+    return 'If you sign a major-label deal: ' + first + ' It repays ' + repays + ' from your ' + pct(res.artistRate) + ' share first, so ' + when + '.';
   }
 
   function labelNote() {

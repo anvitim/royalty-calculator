@@ -27,6 +27,7 @@
           <label class="choice"><input type="radio" name="deal" value="self" checked><span>Self-released</span></label>
           <label class="choice"><input type="radio" name="deal" value="royalty"><span>Indie royalty deal</span></label>
           <label class="choice"><input type="radio" name="deal" value="profit"><span>Indie profit-share deal</span></label>
+          <label class="choice"><input type="radio" name="deal" value="major"><span>Major-label deal</span></label>
         </div>
       </fieldset>
 
@@ -45,6 +46,15 @@
         </div>
 
         <div class="field">
+          <label for="coshare">Your share of the songwriting <span id="coshare-tag"></span></label>
+          <div class="slider-row">
+            <input id="coshare" type="range" min="5" max="100" step="1" value="100">
+            <output id="coshare-out" class="slider-value" for="coshare">100%</output>
+          </div>
+          <p class="field-help">If you wrote the song with others, you split the songwriting money with them.</p>
+        </div>
+
+        <div class="field" id="costs-field">
           <label for="costs">Cost of making and promoting the release <span id="costs-tag"></span></label>
           <div class="money-input"><span class="currency-symbol">£</span><input id="costs" type="number" inputmode="numeric" min="0" step="500" value="5000"></div>
         </div>
@@ -61,7 +71,7 @@
       </div>
 
       <div id="label-inputs" hidden>
-        <p class="group-title">Label deal</p>
+        <p class="group-title">Indie label deal</p>
         <div class="inputs">
           <div class="field">
             <label for="labelfee">Label's distributor fee <span id="labelfee-tag"></span></label>
@@ -90,6 +100,46 @@
           <div class="field">
             <label for="advance">Cash advance <span id="advance-tag"></span></label>
             <div class="money-input"><span class="currency-symbol">£</span><input id="advance" type="number" inputmode="numeric" min="0" step="500" value="0"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="major-inputs" hidden>
+        <p class="group-title">Major-label deal</p>
+        <p class="field-help">The label pays to make and promote the release. It charges back your advance and the recording costs, and pays for marketing itself.</p>
+        <div class="inputs">
+          <div class="field">
+            <label for="major-royalty">Your royalty rate <span id="major-royalty-tag"></span></label>
+            <div class="slider-row">
+              <input id="major-royalty" type="range" min="10" max="40" step="0.5" value="25">
+              <output id="major-royalty-out" class="slider-value" for="major-royalty">25%</output>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="producer">Producer's share <span id="producer-tag"></span></label>
+            <div class="slider-row">
+              <input id="producer" type="range" min="0" max="8" step="0.5" value="4">
+              <output id="producer-out" class="slider-value" for="producer">4%</output>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="writer-share">Songwriting money you keep after your publisher <span id="writer-share-tag"></span></label>
+            <div class="slider-row">
+              <input id="writer-share" type="range" min="50" max="100" step="1" value="75">
+              <output id="writer-share-out" class="slider-value" for="writer-share">75%</output>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="major-advance">Cash advance <span id="major-advance-tag"></span></label>
+            <div class="money-input"><span class="currency-symbol">£</span><input id="major-advance" type="number" inputmode="numeric" min="0" step="1000" value="50000"></div>
+          </div>
+
+          <div class="field">
+            <label for="major-costs">Recording costs charged back <span id="major-costs-tag"></span></label>
+            <div class="money-input"><span class="currency-symbol">£</span><input id="major-costs" type="number" inputmode="numeric" min="0" step="500" value="15667"></div>
           </div>
         </div>
       </div>
@@ -130,13 +180,15 @@
           <div class="sub" id="second-sub"></div>
         </div>
       </div>
+      <p id="advance-message" class="message note" hidden></p>
       <p id="carry-message" class="message note" hidden></p>
       <p id="loss-message" class="message loss" hidden></p>
     </section>
 
     <section class="card" aria-labelledby="compare-title">
-      <h2 id="compare-title">Compare all three deals</h2>
-      <p class="hint">Year 1, using the settings above.</p>
+      <h2 id="compare-title">Compare all four deals</h2>
+      <p class="hint">Year 1, using the settings above. An advance is shown separately: it's paid upfront, and it's an early payment of your own royalties.</p>
+      <p class="hint">Major labels usually sign artists who already have a large audience, so assuming the same number of streams on every route is a simplification.</p>
       <table class="compare compare-wide" id="compare"></table>
       <table class="compare compare-narrow" id="compare-narrow"></table>
       <p class="footnote">An estimate for illustration, not financial advice. Not included: <span id="not-covered"></span>. Tap any tag to see its source.</p>

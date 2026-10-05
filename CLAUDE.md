@@ -100,10 +100,16 @@ Shared files:
   - shared calculator logic, with a separate rules block for each market;
   - rules file renamed to `RULES-UK.md`.
 
+- **Phase 2 build (approved and saved to GitHub):**
+  - Major-label deal in the UK calculator: royalty rate, producer's share, advance, recording costs charged back, writer's share after publisher. The UK page opens with it selected via `/uk/?deal=major`.
+  - "Your share of the songwriting" setting for every deal (co-writers).
+  - The "Man I Need" case study page at `/uk/olivia-dean/`, built from section 7, with its deal settings read from `markets/uk.js`.
+  - The comparison and summary rank deals by what's **earned from streams** in year 1. An advance counts as earned only once the streams have paid it back; the rest is shown separately as an early payment of the artist's own royalties. Charged-back costs are assumed to be paid back before the advance.
+
 ## Roadmap
 
 1. **Phase 1, homepage and structure:** done.
-2. **Phase 2, UK major-label rules:** write, don't build.
+2. **Phase 2, UK major-label rules, calculator and case study:** done.
    - Royalty rate, advance, which costs are charged back, a publisher's share of the songwriting money, and co-writers splitting the songwriting share.
    - Prepare the Olivia Dean case study: three most-streamed songs, each with its Spotify count and the date checked, its credited writers and label, all sourced. Ask the owner to read counts from Spotify if they can't be read reliably.
    - State the assumption needed to apply UK rules to a worldwide, Spotify-only count.

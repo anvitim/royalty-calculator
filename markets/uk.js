@@ -53,7 +53,29 @@
     notOutOfPocket:          { label: 'ASSUMPTION', note: 'The usual position: costs are "refunded from those royalties" (CMA para 2.26), not from the artist\'s pocket. Check the individual contract.', source: CMA_FULL },
     writeOffShare:           { value: 0.19,  label: 'FACT', note: '19% of AIM member labels write off unrecouped debt, after ten years on average (DCMS, para 46).', source: DCMS_REPORT },
     writeOffYears:           { value: 10,    label: 'FACT', note: '19% of AIM member labels write off unrecouped debt, after ten years on average (DCMS, para 46).', source: DCMS_REPORT },
-    songwritingUnchanged:    { label: 'ASSUMPTION', note: 'Assumes you haven\'t also signed a publishing deal, so the songwriting money is the same as self-released.' }
+    songwritingUnchanged:    { label: 'ASSUMPTION', note: 'Assumes you haven\'t also signed a publishing deal, so the songwriting money is the same as self-released.' },
+
+    // Co-writers (every deal)
+    yourSongwritingShare:    { value: 1,     label: 'ASSUMPTION', note: 'Default: you wrote the song alone. Co-writers split the songwriting money in shares they agree; the shares usually aren\'t public.' },
+
+    // Major label (starting values for the adjustable settings)
+    majorRoyaltyRate:        { value: 0.25,  label: 'ASSUMPTION', note: 'The IPO calls 25% the "average" for streaming (p. 66), and the CMA uses it in its own worked example. CMA averages for 2021: 23.3% new artists, 26.3% all UK artists, 27.0% the largest artists.', source: CMA_FULL },
+    producerShare:           { value: 0.04,  label: 'ASSUMPTION', note: 'Producers usually get 3–5% (CMA para 2.73), paid from the first sale and out of the artist\'s rate. 4% is the IPO\'s figure (p. 147).', source: IPO_REPORT },
+    majorAdvance:            { value: 50000, label: 'ASSUMPTION', note: 'The CMA\'s own worked example (Figure 2.7), which it calls indicative, not typical. The average new major-label advance in 2021 was £153,200 (Table 2.8).', source: CMA_FULL },
+    majorRecordingCosts:     { value: 15667, label: 'ASSUMPTION', note: 'Recording costs charged back in the CMA\'s worked example (Figure 2.7). Advances, recording, tour support and video costs are typically charged back (footnote 101).', source: CMA_FULL },
+    writerShareAfterPublisher: { value: 0.75, label: 'ASSUMPTION', note: 'IPO: writers\' royalties from publishers are "now commonly in the region of 75%-80%"; the IPO uses 75% (p. 132). Set to 100% for no publisher.', source: IPO_REPORT },
+
+    // Major label: rules without a number
+    majorNoDistributorFee:   { label: 'ASSUMPTION', note: 'The majors run their own distribution (CMA para 2.25), so no separate distributor fee is taken.', source: CMA_FULL },
+    majorRecoup:             { label: 'FACT',       note: 'In the "advance and royalty" deal, the predominant major-label deal, the advance and costs are earned out from the performer\'s royalties only (DCMS, paras 44–45).', source: DCMS_REPORT },
+    marketingNotCharged:     { label: 'FACT',       note: 'Marketing and advertising costs are "typically non-recoupable" (CMA footnote 102).', source: CMA_FULL },
+    advanceKept:             { label: 'FACT',       note: 'The advance "will not need to be paid back" if it is never earned back (CMA para 2.77).', source: CMA_FULL },
+    sonyPayThrough:          { label: 'FACT',       note: 'Sony pays through old unpaid balances on deals from before 2000 (DCMS, para 46).', source: DCMS_REPORT },
+    prsDirectHalf:           { label: 'FACT',       note: 'PRS pays the writer 50% of the performance money directly; the publisher gets the other 50% (IPO, p. 64).', source: IPO_REPORT },
+    publisherHandlesMcps:    { label: 'ASSUMPTION', note: 'With a publisher, the publisher deals with MCPS, so the writer pays only the PRS joining fee.' },
+
+    // Case study: worldwide average value of one stream (low end of the range)
+    worldStreamValue:        { value: 0.6,   label: 'ASSUMPTION', note: 'IFPI: record companies\' streaming income passed US$22bn in 2025; Luminate: 5.1 trillion audio streams. $22bn ÷ 5.1tn ÷ 0.53 × £0.76 ≈ 0.62p.', source: 'https://www.ifpi.org/global-music-report-2026-global-recorded-music-revenues-grow-6-4-as-record-companies-drive-innovation/' }
   };
 
   var r = function (key) { return RULES[key].value; };
@@ -70,7 +92,7 @@
     // Organisations that collect the songwriting money. A society without a shareKey takes the rest.
     societies: [
       { name: 'PRS',  shareKey: 'prsHalf', costKey: 'prsCost',  costName: 'PRS running costs', joinKey: 'prsJoiningFee' },
-      { name: 'MCPS', shareKey: null,      costKey: 'mcpsCost', costName: 'MCPS commission',   joinKey: 'mcpsJoiningFee' }
+      { name: 'MCPS', shareKey: null,      costKey: 'mcpsCost', costName: 'MCPS commission',   joinKey: 'mcpsJoiningFee', publisherJoins: true }
     ],
 
     // Distributors a self-released artist can choose from, with their fees in pounds
@@ -100,6 +122,11 @@
       return 'Only ' + pct(r('writeOffShare')) + tag('writeOffShare') + ' of independent labels in the trade body AIM write it off, after about ' + r('writeOffYears') + ' years on average.';
     },
 
-    notCovered: 'PPL, YouTube, producer royalties, and streams outside the UK'
+    // UK-specific sentence about major labels and old unpaid balances
+    majorWriteOffSentence: function (tag) {
+      return 'Sony now pays through old unpaid balances on deals from before 2000' + tag('sonyPayThrough') + '.';
+    },
+
+    notCovered: 'PPL, YouTube, and streams outside the UK. Producer royalties are included only in the major-label deal'
   };
 })();

@@ -4,25 +4,157 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Olivia Dean case study · The economics of a song</title>
-  <meta name="description" content="Coming soon: what a typical major-label deal would pay on songs with Olivia Dean's streams and credits.">
+  <meta name="description" content="What a typical UK major-label deal would pay on a song with the streams and credits of Olivia Dean's “Man I Need”.">
   <link rel="stylesheet" href="/assets/site.css">
 </head>
 <body>
   <nav class="site-nav"><a href="/uk/">← UK calculator</a></nav>
 
   <header class="hero compact page-head">
-    <h1>Olivia Dean: a case study</h1>
-    <p class="subheading">Coming soon</p>
+    <h1>“Man I Need” by Olivia Dean</h1>
+    <p class="subheading">A case study</p>
   </header>
 
-  <main class="section">
-    <div class="card placeholder">
-      <p>This case study will estimate what a typical UK major-label deal would pay on songs with Olivia Dean's streams and songwriting credits.</p>
-      <p>Her real contract is private, so it will be an estimate of a typical deal, not a statement of what she earned.</p>
-      <a class="btn" href="/uk/">Try the UK calculator</a>
-    </div>
+  <main class="calculator">
+    <p class="message note case-banner">
+      <strong>This estimates what a typical major-label deal would pay on a song with these streams and credits.</strong>
+      Olivia Dean's real contracts are private. It is not a statement of what anyone earned.
+    </p>
+
+    <section class="card" aria-labelledby="song-title">
+      <h2 id="song-title">The song</h2>
+      <ul class="rows" id="facts"></ul>
+    </section>
+
+    <section class="card" aria-labelledby="shares-title">
+      <h2 id="shares-title">Who gets what from every £1</h2>
+      <p class="hint">This part doesn't depend on what a stream is worth. It uses a typical UK major-label deal.</p>
+      <div class="bar" id="bar" role="img"></div>
+      <ul class="rows" id="shares"></ul>
+      <p class="message note" id="her-total"></p>
+    </section>
+
+    <section class="card" aria-labelledby="range-title">
+      <h2 id="range-title">In pounds: a range, because the true figure isn't known</h2>
+      <p class="hint">Two unknowns pull in opposite directions.</p>
+      <ul class="case-points">
+        <li><strong>It may be too high.</strong> The plays are worldwide, and an average stream worldwide is probably worth less than an average UK stream.</li>
+        <li><strong>It may be too low.</strong> Only Spotify plays are counted, but the song is also streamed on Apple Music, Amazon, YouTube and others.</li>
+      </ul>
+      <div id="range"></div>
+      <p class="footnote">The true figure isn't known. The range shows the scale of the money, not a measurement. Pounds are shown only for the song as a whole and for the artist-writer's share, never for the other writers, the producer or the publishers.</p>
+    </section>
+
+    <section class="card placeholder">
+      <p>See how the same deal works with your own streams, royalty rate and advance.</p>
+      <a class="btn" href="/uk/?deal=major">Try your own numbers</a>
+    </section>
   </main>
 
   <script src="/assets/site.js"></script>
+  <script src="/markets/uk.js"></script>
+  <script>
+    /* Case study: "Man I Need". The deal settings come from the UK rules block;
+       the song's own facts are listed in CASE below, each with its label and source. */
+    (function () {
+      var RULES = window.MARKET.rules;
+      var r = function (key) { return RULES[key].value; };
+
+      var SPOTIFY = 'https://open.spotify.com/track/1qbmS6ep2hbBRaEZFpn7BX';
+      var APPLE = 'https://music.apple.com/gb/song/man-i-need/1817609509';
+      var CASE = {
+        plays:    { value: 1460984908, label: 'FACT', note: 'Spotify plays, worldwide, since release. Checked 5 October 2026.', source: SPOTIFY },
+        released: { label: 'FACT', note: 'Released 15 August 2025.', source: SPOTIFY },
+        label:    { label: 'FACT', note: 'A Capitol Records UK / Polydor Label Group release (Universal Music).', source: SPOTIFY },
+        writers:  { value: 3, label: 'FACT', note: 'Credited songwriters on Apple Music: Olivia Dean, Zach Nahome, Tobias Jesso Jr.', source: APPLE },
+        producer: { label: 'FACT', note: 'Credited producer on Apple Music: Zach Nahome.', source: APPLE },
+        equalSplit: { label: 'ASSUMPTION', note: 'The three writers share the songwriting money equally. The real shares aren\'t public.' },
+        ukRules:  { label: 'ASSUMPTION', note: 'The money is divided as it would be in the UK (32% service, 53% recording, 15% songwriting), applied here to worldwide plays.' },
+        advanceNotShown: { label: 'ASSUMPTION', note: 'Paying back an advance is settled across a whole contract, not song by song, so it isn\'t shown here.' }
+      };
+
+      function tag(rule) {
+        var cls = rule.label === 'FACT' ? 'fact' : 'assumption';
+        var title = (rule.label + ': ' + rule.note).replace(/"/g, '&quot;');
+        return rule.source
+          ? '<a class="tag ' + cls + '" href="' + rule.source + '" target="_blank" rel="noopener" title="' + title + '">' + rule.label + '</a>'
+          : '<span class="tag ' + cls + '" tabindex="0" title="' + title + '">' + rule.label + '</span>';
+      }
+      var t = function (key) { return tag(RULES[key]); };
+      var c = function (key) { return tag(CASE[key]); };
+      var pence = function (x) { return (x * 100).toFixed(1) + 'p'; };
+      var pct = function (x) { return +(x * 100).toFixed(1) + '%'; };
+      var millions = function (x) { return '£' + (x / 1e6).toFixed(1) + ' million'; };
+
+      // The song's facts
+      var facts = [
+        ['Spotify plays', CASE.plays.value.toLocaleString('en-GB') + ' (worldwide, checked 5 October 2026)' + c('plays')],
+        ['Released', '15 August 2025' + c('released')],
+        ['Label', 'Capitol Records UK / Polydor Label Group (Universal Music)' + c('label')],
+        ['Credited writers', 'Olivia Dean, Zach Nahome, Tobias Jesso Jr.' + c('writers')],
+        ['Producer', 'Zach Nahome' + c('producer')]
+      ];
+      document.getElementById('facts').innerHTML = facts.map(function (f) {
+        return '<li class="fact-row"><span class="row-label">' + f[0] + '</span><span class="fact-value">' + f[1] + '</span></li>';
+      }).join('');
+
+      // Shares of every £1, from a typical major-label deal (UK rules, section 6)
+      var recording = r('recordingShare');
+      var songwriting = r('songwritingShare');
+      var societyCosts = songwriting * (r('prsHalf') * r('prsCost') + (1 - r('prsHalf')) * r('mcpsCost'));
+      var afterSocieties = songwriting - societyCosts;
+      var writersKeep = afterSocieties * r('writerShareAfterPublisher');
+      var artistRate = r('majorRoyaltyRate') - r('producerShare');
+      var herArtist = recording * artistRate;
+      var herWriter = writersKeep / CASE.writers.value;
+
+      var shares = [
+        { name: 'Streaming services', value: r('serviceShare'), color: 'var(--c-service)', detail: pct(r('serviceShare')) + ' kept by the service' + t('serviceShare') },
+        { name: 'The label', value: recording - herArtist - recording * r('producerShare'), color: 'var(--c-label)',
+          detail: 'The ' + pence(recording) + ' recording money' + t('recordingShare') + ', minus the artist\'s and producer\'s royalties' + c('ukRules') },
+        { name: 'The record producer', value: recording * r('producerShare'), color: 'var(--c-distributor)',
+          detail: pct(r('producerShare')) + ' of the recording money' + t('producerShare') },
+        { name: 'Olivia Dean, as the recording artist', value: herArtist, color: 'var(--c-artist)', strong: true,
+          detail: pct(r('majorRoyaltyRate')) + ' royalty' + t('majorRoyaltyRate') + ' minus the producer\'s ' + pct(r('producerShare')) + ': ' + pct(artistRate) + ' of the recording money' },
+        { name: 'PRS and MCPS running costs', value: societyCosts, color: 'var(--c-prs)', detail: 'As for every UK deal' + t('prsCost') + t('mcpsCost') },
+        { name: 'The writers\' publishers, together', value: afterSocieties - writersKeep, color: 'var(--c-publisher)',
+          detail: pct(1 - r('writerShareAfterPublisher')) + ' of the songwriting money after PRS and MCPS costs' + t('writerShareAfterPublisher') },
+        { name: 'Olivia Dean, as one of three credited writers', value: herWriter, color: 'var(--c-mcps)', strong: true,
+          detail: 'A third of the writers\' ' + pct(r('writerShareAfterPublisher')) + c('equalSplit') },
+        { name: 'The other two credited writers, as a group', value: writersKeep - herWriter, color: 'var(--c-cowriters)',
+          detail: 'Two-thirds of the writers\' ' + pct(r('writerShareAfterPublisher')) + c('equalSplit') }
+      ];
+
+      document.getElementById('bar').innerHTML = shares.map(function (s) {
+        return '<div style="width:' + (s.value * 100) + '%;background:' + s.color + '" title="' + s.name + ': ' + pence(s.value) + '"></div>';
+      }).join('');
+      document.getElementById('bar').setAttribute('aria-label', shares.map(function (s) { return s.name + ' ' + pence(s.value); }).join(', '));
+      document.getElementById('shares').innerHTML = shares.map(function (s) {
+        return '<li><span class="swatch" style="background:' + s.color + '"></span>' +
+          '<span class="row-label">' + (s.strong ? '<strong>' + s.name + '</strong>' : s.name) + '<span class="row-detail">' + s.detail + '</span></span>' +
+          '<span class="amount">' + pence(s.value) + '<span class="share">of every £1</span></span></li>';
+      }).join('');
+
+      var herTotal = herArtist + herWriter;
+      document.getElementById('her-total').innerHTML =
+        '<strong>In total, this gives Olivia Dean about ' + pence(herTotal) + ' of every £1</strong> the song earns from streaming: ' +
+        pence(herArtist) + ' as the artist and ' + pence(herWriter) + ' as a songwriter. Her artist share isn\'t all cash: her royalty first pays back her advance and any costs charged back to her' + c('advanceNotShown') + '.';
+
+      // Pounds as a range: worldwide average (low) to UK average (high)
+      var low = r('worldStreamValue') / 100, high = r('streamValueDefault') / 100;
+      var plays = CASE.plays.value;
+      document.getElementById('range').innerHTML =
+        '<ul class="case-points">' +
+          '<li><strong>Low end: about ' + r('worldStreamValue').toFixed(1) + 'p a play</strong>, a worldwide average' + t('worldStreamValue') +
+          '. Record companies\' worldwide streaming income passed US$22 billion in 2025, across 5.1 trillion audio streams. That works out at about 0.62p a stream once the songwriting and service shares are added back.</li>' +
+          '<li><strong>High end: ' + r('streamValueDefault').toFixed(1) + 'p a play</strong>, the UK average' + t('streamValueDefault') + '.</li>' +
+        '</ul>' +
+        '<table class="compare range-table"><thead><tr><th scope="col"></th><th scope="col">Low</th><th scope="col">High</th></tr></thead><tbody>' +
+          '<tr><th scope="row">All the streaming money from the song\'s Spotify plays</th><td>about ' + millions(plays * low) + '</td><td>about ' + millions(plays * high) + '</td></tr>' +
+          '<tr class="key"><th scope="row">What a typical major-label deal would give an artist-writer on this song, before any advance is paid back (' + pence(herTotal) + ' of every £1)</th>' +
+          '<td>about ' + millions(plays * low * herTotal) + '</td><td>about ' + millions(plays * high * herTotal) + '</td></tr>' +
+        '</tbody></table>';
+    })();
+  </script>
 </body>
 </html>

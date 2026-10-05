@@ -25,6 +25,8 @@
   --c-mcps: #b98264;
   --c-artist: #5fb8a8;
   --c-label: #6f8fb0;
+  --c-cowriters: #a7c4a0;
+  --c-publisher: #d68fa0;
 }
 
 * { box-sizing: border-box; }
@@ -590,4 +592,23 @@ a.market-card:hover { border-color: var(--accent); transform: translateY(-2px); 
 
 @media (max-width: 760px) {
   .markets { grid-template-columns: 1fr; }
+}
+
+.field-help { margin: 8px 0 0; font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+#major-inputs > .field-help { margin: 0 0 16px; }
+
+/* Case study page */
+.case-banner { margin: 0 0 20px; font-size: 1rem; }
+.case-points { margin: 0 0 18px; padding-left: 20px; line-height: 1.65; }
+.case-points li { margin-bottom: 8px; }
+.rows li.fact-row { grid-template-columns: minmax(110px, 30%) 1fr; }
+.fact-value { line-height: 1.5; }
+.range-table { margin-top: 8px; }
+.range-table td { white-space: nowrap; }
+
+@media (max-width: 680px) {
+  .range-table { font-size: 0.82rem; }
+  .range-table th, .range-table td { padding-left: 4px; padding-right: 4px; }
+  .range-table td { white-space: normal; }
+  .rows li.fact-row { grid-template-columns: 1fr; gap: 2px; }
 }
