@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UK royalty calculator</title>
+  <meta name="description" content="Where the money from a UK stream goes, whether you self-release or sign to an independent label.">
+  <link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+  <nav class="site-nav"><a href="/">← All markets</a></nav>
+
+  <header class="hero compact page-head">
+    <h1>The UK calculator</h1>
+    <p class="subheading">Where the money from a UK stream goes, whether you self-release or sign to an independent label.</p>
+  </header>
+
+  <main class="calculator">
+    <section class="card" aria-labelledby="inputs-title">
+      <h2 id="inputs-title">Choose your deal</h2>
+      <p class="hint">Pick the deal you have, or one you're thinking about. This calculator is for UK artists who write their own songs.</p>
+      <p class="hint">Each number has a small label. <span class="tag fact">FACT</span> means it comes from a published source. <span class="tag assumption">ASSUMPTION</span> means it's a typical figure, and you can change it. Tap a label to see more.</p>
+
+      <fieldset class="field deal-choice">
+        <legend>Deal type</legend>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="deal" value="self" checked><span>Self-released</span></label>
+          <label class="choice"><input type="radio" name="deal" value="royalty"><span>Indie royalty deal</span></label>
+          <label class="choice"><input type="radio" name="deal" value="profit"><span>Indie profit-share deal</span></label>
+        </div>
+      </fieldset>
+
+      <div class="inputs">
+        <div class="field">
+          <label for="streams">Streams per year</label>
+          <input id="streams" type="number" inputmode="numeric" min="0" step="1000" value="100000">
+        </div>
+
+        <div class="field">
+          <label for="value">Value of one stream <span id="value-tag"></span></label>
+          <div class="slider-row">
+            <input id="value" type="range" min="0.3" max="1.5" step="0.05" value="0.9">
+            <output id="value-out" class="slider-value" for="value">0.90p</output>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="costs">Cost of making and promoting the release <span id="costs-tag"></span></label>
+          <div class="money-input"><span class="currency-symbol">£</span><input id="costs" type="number" inputmode="numeric" min="0" step="500" value="5000"></div>
+        </div>
+      </div>
+
+      <div id="self-inputs">
+        <p class="group-title">Self-released</p>
+        <div class="inputs">
+          <fieldset class="field">
+            <legend>Distributor</legend>
+            <div class="choices" id="distributor-choices"></div>
+          </fieldset>
+        </div>
+      </div>
+
+      <div id="label-inputs" hidden>
+        <p class="group-title">Label deal</p>
+        <div class="inputs">
+          <div class="field">
+            <label for="labelfee">Label's distributor fee <span id="labelfee-tag"></span></label>
+            <div class="slider-row">
+              <input id="labelfee" type="range" min="0" max="40" step="1" value="20">
+              <output id="labelfee-out" class="slider-value" for="labelfee">20%</output>
+            </div>
+          </div>
+
+          <div class="field" id="royalty-field">
+            <label for="royalty">Your royalty rate <span id="royalty-tag"></span></label>
+            <div class="slider-row">
+              <input id="royalty" type="range" min="5" max="50" step="1" value="25">
+              <output id="royalty-out" class="slider-value" for="royalty">25%</output>
+            </div>
+          </div>
+
+          <div class="field" id="split-field">
+            <label for="split">Your share of the profit <span id="split-tag"></span></label>
+            <div class="slider-row">
+              <input id="split" type="range" min="10" max="90" step="1" value="50">
+              <output id="split-out" class="slider-value" for="split">50%</output>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="advance">Cash advance <span id="advance-tag"></span></label>
+            <div class="money-input"><span class="currency-symbol">£</span><input id="advance" type="number" inputmode="numeric" min="0" step="500" value="0"></div>
+          </div>
+        </div>
+      </div>
+
+      <p id="threshold-note" class="message note" hidden></p>
+    </section>
+
+    <section class="card" aria-labelledby="split-title">
+      <h2 id="split-title">Where the money goes</h2>
+      <p class="hint" id="gross-line"></p>
+      <div class="bar" id="bar" role="img"></div>
+      <ul class="rows" id="rows" aria-live="polite"></ul>
+    </section>
+
+    <section class="card" aria-labelledby="who-title">
+      <h2 id="who-title">Release costs: who pays, and who carries the loss</h2>
+      <div id="who"></div>
+    </section>
+
+    <section class="card" aria-labelledby="fixed-title">
+      <h2 id="fixed-title">Fixed costs</h2>
+      <p class="hint">Paid however many streams there are.</p>
+      <ul class="rows" id="fixed-rows"></ul>
+    </section>
+
+    <section class="card" aria-labelledby="result-title">
+      <h2 id="result-title">What you keep</h2>
+      <p class="hint" id="result-hint"></p>
+      <div class="results" aria-live="polite">
+        <div class="result" id="year1">
+          <div class="label">Year 1</div>
+          <div class="big" id="year1-amount"></div>
+          <div class="sub" id="year1-sub"></div>
+        </div>
+        <div class="result" id="second">
+          <div class="label" id="second-label"></div>
+          <div class="big" id="second-amount"></div>
+          <div class="sub" id="second-sub"></div>
+        </div>
+      </div>
+      <p id="carry-message" class="message note" hidden></p>
+      <p id="loss-message" class="message loss" hidden></p>
+    </section>
+
+    <section class="card" aria-labelledby="compare-title">
+      <h2 id="compare-title">Compare all three deals</h2>
+      <p class="hint">Year 1, using the settings above.</p>
+      <table class="compare compare-wide" id="compare"></table>
+      <table class="compare compare-narrow" id="compare-narrow"></table>
+      <p class="footnote">An estimate for illustration, not financial advice. Not included: <span id="not-covered"></span>. Tap any tag to see its source.</p>
+    </section>
+
+    <section class="card" aria-labelledby="summary-title">
+      <h2 id="summary-title">In summary</h2>
+      <div id="summary-text" class="summary" aria-live="polite"></div>
+      <p class="message note">This compares the same number of streams on every route. A label's marketing and promotion could bring you more streams than you'd get on your own, and that isn't measured here. These sentences describe the numbers above; they don't say which deal to choose.</p>
+    </section>
+
+    <section class="card case-card" aria-labelledby="case-title">
+      <h2 id="case-title">Case study: Olivia Dean</h2>
+      <p>What a typical major-label deal would pay on songs with her streams and credits. It's an estimate, not a statement of what she earned.</p>
+      <a class="text-link" href="/uk/olivia-dean/">Read the case study (coming soon)</a>
+    </section>
+  </main>
+
+  <script src="/assets/site.js"></script>
+  <script src="/markets/uk.js"></script>
+  <script src="/assets/calculator.js"></script>
+</body>
+</html>
