@@ -169,8 +169,8 @@
         '<span class="amount">' + money(f.amount) + '<span class="share">' + f.when + '</span></span></li>';
     }).join('');
     if (inp.songwritingCollected) {
-      rows += '<li><span></span><span class="row-label">IPRS joining fee<span class="row-detail">Not included for now' + tag('iprsJoiningFee') + '</span></span>' +
-        '<span class="amount">Not included<span class="share">Year 1 only</span></span></li>';
+      rows += '<li><span></span><span class="row-label">IPRS joining fee<span class="row-detail">One-time application fee for authors and composers' + tag('iprsJoiningFee') + '. No GST added: IPRS\'s page doesn\'t mention any</span></span>' +
+        '<span class="amount">' + money(res.joiningFees) + '<span class="share">Year 1 only</span></span></li>';
     }
     el('in-fixed-rows').innerHTML = rows +
       '<li class="total"><span></span><span class="row-label">Year 1 total<span class="row-detail">' + laterText(res, distributor) + '</span></span><span class="amount">' + money(res.fixedYear1) + '</span></li>';

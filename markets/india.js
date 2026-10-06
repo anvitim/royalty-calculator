@@ -14,6 +14,7 @@
   var SPOTIFY_ROYALTIES = 'https://artists.spotify.com/royalties-guide';
   var IPRS_RULES = 'https://iprs.org/wp-content/uploads/2025/02/Distribution-Rules-Methods.pdf';
   var IPRS_TRANSPARENCY = 'https://iprs.org/wp-content/uploads/2025/08/Annual-Transparency-Report-FY2024-25.pdf';
+  var IPRS_JOIN = 'https://iprs.org/join-as-author-composer/';
   var TUNECORE_PRICING = 'https://www.tunecore.com/en-in/pricing';
   var DISTROKID = 'https://distrokid.com/pricing/';
   var MBW_REPORT = 'https://www.musicbusinessworldwide.com/india-added-nearly-4m-paid-music-streaming-subscriptions-in-2025-taking-its-total-to-14-4m-according-to-new-report/';
@@ -29,7 +30,7 @@
     // Percentage cuts
     serviceShare:            { value: 1 / 3,   label: 'ASSUMPTION', note: 'Spotify says about two-thirds of its music revenue goes to rights-holders, worldwide. Assumed to hold for every service in India; the others publish nothing I found.', source: SPOTIFY_ROYALTIES },
     recordingShare:          { value: 8 / 15,  label: 'ASSUMPTION', note: 'Four-fifths of the two-thirds that goes to rights-holders (Spotify, worldwide), applied to India.', source: SPOTIFY_ROYALTIES },
-    songwritingShare:        { value: 2 / 15,  label: 'ASSUMPTION', note: 'One-fifth of the two-thirds that goes to rights-holders (Spotify, worldwide), applied to India. Whether IPRS receives money in this proportion is not known.', source: SPOTIFY_ROYALTIES },
+    songwritingShare:        { value: 2 / 15,  label: 'ASSUMPTION', note: 'One-fifth of the two-thirds that goes to rights-holders (Spotify, worldwide), applied to India. Whether IPRS receives money in this proportion is not known. It also assumes a writer who owns and publishes her own song receives all of it; one IPRS rule could mean only half arrives unless she also joins as a publisher (₹2,200), which would halve this figure.', source: SPOTIFY_ROYALTIES },
     distroKidCut:            { value: 0,       label: 'FACT',       note: 'DistroKid: "100% of earnings".', source: DISTROKID },
     tuneCoreCut:             { value: 0,       label: 'FACT',       note: 'TuneCore India: "you keep 100% of your royalties". It takes a separate 20% on money from TikTok, Facebook, Instagram and YouTube, which this page leaves out.', source: TUNECORE_PRICING },
     iprsCost:                { value: 0.052,   label: 'ASSUMPTION', note: 'IPRS spent ₹38.7 crore of its ₹741.6 crore income on running costs in 2024-25, across all its income, not streaming alone.', source: IPRS_TRANSPARENCY },
@@ -42,13 +43,14 @@
     inrPerUSD:               { value: 87,      label: 'ASSUMPTION', note: 'Exchange rate used to turn dollar prices into rupees, the rate implied by a news report (₹1,030 crore = US$118.2 million). Today\'s rate will differ.', source: MBW_REPORT },
     gstRate:                 { value: 0.18,    label: 'ASSUMPTION', note: 'GST on the distributor\'s fee. TuneCore says only that "applicable GST charges will be added". The GST Council\'s service rate schedule gives 18% for the general headings; which heading music distribution is filed under is unconfirmed.', source: 'https://gstcouncil.gov.in/sites/default/files/2024-02/gstservicerates.pdf' },
     gstNotForDistroKid:      { label: 'ASSUMPTION', note: 'GST on DistroKid\'s fee isn\'t worked out here, so its figure is before any GST.' },
-    iprsJoiningFee:          { value: 0,       label: 'ASSUMPTION', note: 'Not included for now. IPRS\'s joining fee hasn\'t been read from its site yet, so ₹0 stands for "not included", not "free".' },
+    iprsJoiningFee:          { value: 1200,    label: 'FACT',       note: 'IPRS\'s one-time application processing fee for authors and composers, paid online (₹2,200 for publishers). Paid only if you join, and only in year 1. The owner read it on IPRS\'s own page on 6 October 2026. The page doesn\'t mention GST on it, so none is added.', source: IPRS_JOIN },
     releaseCosts:            { value: 0,       label: 'ASSUMPTION', note: 'Starts at ₹0, with no suggested figure: I found no source for a typical cost of making and promoting a release (recording, artwork, marketing). Enter your own.' },
     singleOneOff:            { label: 'ASSUMPTION', note: 'TuneCore\'s page shows "/year" on its plans but not on the single, which suggests a one-off price. Whether the single renews each year is unconfirmed.', source: TUNECORE_PRICING },
 
     // IPRS
     iprsHoldYears:           { value: 3,       label: 'FACT',       note: 'IPRS holds a non-member\'s share for up to three years, and pays it if they join in time; otherwise it goes back into the pool.', source: IPRS_RULES },
-    iprsRegisterSongs:       { label: 'ASSUMPTION', note: 'Joining isn\'t enough: IPRS matches what each service reports against the songs in its database, and holds back what it can\'t match. Registering each song after joining is my reading of its rules and annual report; I couldn\'t open its member pages.', source: IPRS_RULES },
+    iprsRegisterSongs:       { label: 'FACT',       note: 'Joining isn\'t enough. IPRS matches what each service reports against the songs in its database and holds back what it can\'t match (its rules). Its joining page says that after you join, IPRS sends a format for registering your works. I haven\'t seen the portal steps themselves.', source: IPRS_JOIN },
+    songwritingAllToWriter:  { label: 'ASSUMPTION', note: 'A writer member who owns and publishes her own song is assumed to receive all of the songwriting money. IPRS\'s "Original Self Published Works" split (composer 50%, lyricist 50%, no publisher share) supports this. But its "Authors Statutory Royalty" clause, for works whose owner-publisher isn\'t a member, could mean only the writer\'s half arrives unless she also joins as a publisher (₹2,200). In that case the songwriting figure would be halved. A question to ask IPRS.', source: IPRS_RULES },
     songwritingUnclaimed:    { label: 'FACT',       note: 'IPRS pays only its members. Its rules hold the share of a non-member for up to three years.', source: IPRS_RULES },
     iprsPays:                { label: 'FACT',       note: 'Streaming services pay IPRS under licences, and IPRS pays its members four times a year.', source: IPRS_RULES }
   };

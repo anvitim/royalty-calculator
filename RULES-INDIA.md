@@ -39,11 +39,11 @@ There are two kinds of money, and three kinds of society. **A society only pays 
 
 | Society | Collects for | Does the artist join? | What it costs | Money missed if they don't | Label |
 |---|---|---|---|---|---|
-| **IPRS** (Indian Performing Right Society) | Songwriters, composers and publishers, for their words and tunes. Streaming is its biggest source: ₹602.4 crore of its ₹741.6 crore income in 2024-25 (81%). | **Yes.** This is the one that matters for streams. | **Joining fee: not included for now** (to be read from IPRS's site). I couldn't open IPRS's membership pages (they block automated visits). A [news report](https://morungexpress.com/4th-asia-music-summit-2024-iprs-to-conduct-workshop-enrolment-boot-camp) says IPRS has offered free one-off enrolment at its workshops. | The songwriting share of every stream (about 19% of what the artist would otherwise receive, section 6). IPRS holds a non-member's share for up to three years and pays it if they join in time; otherwise it goes back into the pool. | **FACT** for the income figures and the three-year rule: [IPRS annual transparency report 2024-25](https://iprs.org/wp-content/uploads/2025/08/Annual-Transparency-Report-FY2024-25.pdf), [IPRS distribution rules](https://iprs.org/wp-content/uploads/2025/02/Distribution-Rules-Methods.pdf). |
+| **IPRS** (Indian Performing Right Society) | Songwriters, composers and publishers, for their words and tunes. Streaming is its biggest source: ₹602.4 crore of its ₹741.6 crore income in 2024-25 (81%). | **Yes.** This is the one that matters for streams. | **₹1,200, one time**, for authors and composers (₹2,200 for publishers), paid online. It is paid only if she joins, and only in year 1. The page doesn't mention GST on it, so none is added. IPRS's pages block automated visits, so this is the owner's reading of the page on 6 October 2026. A [news report](https://morungexpress.com/4th-asia-music-summit-2024-iprs-to-conduct-workshop-enrolment-boot-camp) says IPRS has also offered free one-off enrolment at its workshops; that is not assumed. | The songwriting share of every stream (about 19% of what the artist would otherwise receive, section 6). IPRS holds a non-member's share for up to three years and pays it if they join in time; otherwise it goes back into the pool. | **FACT** for the joining fee: [IPRS, join as author/composer](https://iprs.org/join-as-author-composer/) (read by the owner, 6 October 2026). **FACT** for the income figures and the three-year rule: [IPRS annual transparency report 2024-25](https://iprs.org/wp-content/uploads/2025/08/Annual-Transparency-Report-FY2024-25.pdf), [IPRS distribution rules](https://iprs.org/wp-content/uploads/2025/02/Distribution-Rules-Methods.pdf). |
 | **Recording society** (RMPL and PPL India) | The owners of sound recordings, for radio, TV, shops, pubs and other public play. Not streaming. A self-released artist owns their own recordings. | **Optional, and unclear.** I couldn't find a fee, or whether a one-artist owner can join. | **Not found.** | Public-play money for the recordings. Probably small for one independent artist, but I can't size it. | **ASSUMPTION** (status): RMPL was registered in 2021 for five years, and PPL India was re-registered on 11 June 2026, as reported by [Music Business Worldwide](https://www.musicbusinessworldwide.com/ppl-india-reinstated-as-a-copyright-society-after-a-12-year-absence/). Courts and societies have been in dispute over which one may license. |
 | **Performers' society** (ISAMRA, and ISRA before it) | Singers and musicians, for their performances. | **Optional.** | ₹10,000 once for a singer, and ₹2,000 once for a musician. | Performer money from recordings that others play publicly. For a self-released artist I can't say how much, or whether any comes from streams. | Fee: **ASSUMPTION** (low uncertainty): reported in an [ISAMRA announcement carried by The Week](https://www.theweek.in/wire-updates/business/2025/10/01/dcm71-isamra.html); I couldn't open ISAMRA's own site. Registration: unconfirmed (below). |
 
-**Joining IPRS is not enough: each song has to be registered too.** IPRS pays by matching what each streaming service reports against the songs in its own database. Its rules say works that can't be matched, or aren't fully documented, are held back: the money sits in an "unidentified uses" account, and a member has three years from the date of the original distribution to claim it by submitting the works. **FACT:** [IPRS distribution rules](https://iprs.org/wp-content/uploads/2025/02/Distribution-Rules-Methods.pdf). IPRS's own annual report says the same from the other side. Its "four pillars" are membership, documentation (metadata), licensing and distribution. The metadata it needs is contributor names, role splits and the song codes (ISRC, ISWC and IPI), and "when metadata is missing or incorrect: royalties are lost or delayed". **FACT:** [IPRS annual report 2024-25](https://iprs.org/wp-content/uploads/Annual%20Report-FY2024-2025.pdf). The report names independent creators as the ones who most often have gaps. I read "register every song after joining" from these two passages; neither says in so many words that a member must register each song first, and I couldn't open IPRS's member pages to see its portal steps. The worked examples assume every song is registered.
+**Joining IPRS is not enough: each song has to be registered too.** IPRS pays by matching what each streaming service reports against the songs in its own database. Its rules say works that can't be matched, or aren't fully documented, are held back: the money sits in an "unidentified uses" account, and a member has three years from the date of the original distribution to claim it by submitting the works. **FACT:** [IPRS distribution rules](https://iprs.org/wp-content/uploads/2025/02/Distribution-Rules-Methods.pdf). IPRS's own annual report says the same from the other side. Its "four pillars" are membership, documentation (metadata), licensing and distribution. The metadata it needs is contributor names, role splits and the song codes (ISRC, ISWC and IPI), and "when metadata is missing or incorrect: royalties are lost or delayed". **FACT:** [IPRS annual report 2024-25](https://iprs.org/wp-content/uploads/Annual%20Report-FY2024-2025.pdf). The report names independent creators as the ones who most often have gaps. IPRS's joining page adds that after joining, IPRS sends a format for registering works (**FACT:** [IPRS, join as author/composer](https://iprs.org/join-as-author-composer/), read by the owner on 6 October 2026). Together these support "join, then register each song", so that point is now tagged **FACT**. What I still haven't seen is the portal steps and what the format asks for. The worked examples assume every song is registered.
 
 **Things I couldn't pin down:**
 - **Which performers' society is registered today.** ISRA was registered in 2013 and renewed in 2018 for five years. ISAMRA applied for registration in September 2023. A law firm's list of registered societies dated 31 August 2026 shows ISAMRA's application as still pending. I couldn't confirm either way from the Copyright Office.
@@ -110,6 +110,12 @@ Every figure here is applied to India from a worldwide source, because I found n
 - On Spotify, a track earns recording money only after 1,000 streams in 12 months. **FACT:** [Spotify](https://artists.spotify.com/royalties-guide) (stated worldwide; I haven't confirmed it applies the same way in India).
 - IPRS doesn't collect a share for non-members; it holds it. See section 1.2.
 
+**One assumption sits under the 13 paise.** The rules assume **a writer member who owns and publishes her own song receives all of the songwriting money. ASSUMPTION.** Two readings of [IPRS's distribution rules](https://iprs.org/wp-content/uploads/2025/02/Distribution-Rules-Methods.pdf):
+- Their split for "Original Self Published Works" gives the composer 50% and the lyricist 50%, with no publisher share, so a writer who is both gets all of it. This supports the assumption.
+- But IPRS also collects an "Authors Statutory Royalty" for works whose owner-publisher isn't a member, and says it is paid only to member writers. That could mean only the writer's half arrives unless she also joins as a publisher (₹2,200). In that case the songwriting line in every example would be halved.
+
+The rules never say whether a writer who owns her own song counts as its owner-publisher. This is a question to ask IPRS (section 8). Uncertainty: moderate; it affects about a fifth of what she receives, at most half of that.
+
 **Result:** an artist-writer who joins IPRS, registers their songs and uses a distributor receives **about 66 paise of every ₹1** the service brings in:
 - 53 paise from the recording;
 - about 13 paise from the songwriting, after IPRS's running costs.
@@ -141,12 +147,12 @@ Without IPRS, only the 53 paise reaches them from streams.
 | *or* TuneCore India, unlimited releases, "Rising Artist" plan | ₹1,599 a year, before GST | **FACT:** same page |
 | *or* DistroKid | US$24.99 a year, which is about ₹2,200 before any GST | **FACT:** [DistroKid](https://distrokid.com/pricing/) for the dollars. **ASSUMPTION:** ₹87 to the dollar, the rate implied by Music Business Worldwide's report ₹1,030 crore = US$118.2 million; today's rate will differ. DistroKid doesn't show rupee prices, so I haven't worked out its GST. Its figure is converted from dollars and shown before any GST, so it isn't like-for-like with the TuneCore figure. |
 | **GST on the distributor fee** | **18%**, so the TuneCore single costs ₹1,599 + ₹287.82 = **₹1,886.82** | **ASSUMPTION** (low uncertainty). TuneCore says "Applicable GST charges will be added to cart" but not the rate. The GST Council's [service rate schedule](https://gstcouncil.gov.in/sites/default/files/2024-02/gstservicerates.pdf) (February 2024 copy) gives 18% for the general headings that business and technical services fall under (9983 "other professional, technical and business services" and 9997 "other services"), but I couldn't find which heading music distribution is filed under, or confirm the rate after later changes. |
-| IPRS joining fee | **Not included for now** | to be read from IPRS's site |
+| IPRS joining fee, only if she joins | **₹1,200**, one time, in year 1 only. No GST is added: the page doesn't mention any. (₹2,200 for publishers.) | **FACT:** [IPRS, join as author/composer](https://iprs.org/join-as-author-composer/), read by the owner on 6 October 2026 |
 | ISAMRA (singer's lifetime fee), optional | ₹10,000 once | **ASSUMPTION** (low uncertainty): see section 1.2 |
 
 ## 6. Worked examples
 
-These use TuneCore India at ₹1,599 plus 18% GST (₹1,886.82), IPRS membership with every song registered, and **₹0.018 a stream (range ₹0.009–₹0.034)**. Everything is **ASSUMPTION** apart from the ₹1,599. The IPRS joining fee, the cost of making and promoting the release (section 7), income tax and tax taken off IPRS payments are not included. Streams: 10,000, and 10 lakh (1 million).
+These use TuneCore India at ₹1,599 plus 18% GST (₹1,886.82), IPRS membership (₹1,200 in year 1 only) with every song registered, and **₹0.018 a stream (range ₹0.009–₹0.034)**. Year 1 fixed costs are ₹1,886.82 + ₹1,200 = **₹3,086.82**. Everything is **ASSUMPTION** apart from the ₹1,599 and the ₹1,200. The cost of making and promoting the release (section 7), income tax and tax taken off IPRS payments are not included. The songwriting money assumes she receives all of it (section 3). Streams: 10,000, and 10 lakh (1 million).
 
 | | 10,000 streams | 10 lakh (1 million) streams |
 |---|---|---|
@@ -158,14 +164,15 @@ These use TuneCore India at ₹1,599 plus 18% GST (₹1,886.82), IPRS membership
 | IPRS running costs (5.2% of the songwriting) | −₹1.25 | −₹124.80 |
 | **What the artist receives** | **₹118.75** | **₹11,875.20** |
 | TuneCore India single, with GST | −₹1,886.82 | −₹1,886.82 |
-| **Year 1 after fixed costs** | **−₹1,768.07 (a loss)** | **+₹9,988.38** |
-| Same, at the low value ₹0.009 | −₹1,827.44 | +₹4,050.78 |
-| Same, at the high value ₹0.034 | −₹1,662.51 | +₹20,544.11 |
-| Later years | +₹118.75 if the single is a one-off price; −₹1,768.07 if it renews each year | +₹11,875.20 if a one-off; +₹9,988.38 if it renews |
+| IPRS joining fee (year 1 only) | −₹1,200.00 | −₹1,200.00 |
+| **Year 1 after fixed costs** | **−₹2,968.07 (a loss)** | **+₹8,788.38** |
+| Same, at the low value ₹0.009 | −₹3,027.44 | +₹2,850.78 |
+| Same, at the high value ₹0.034 | −₹2,862.51 | +₹19,344.11 |
+| Later years (no joining fee) | +₹118.75 if the single is a one-off price; −₹1,768.07 if it renews each year | +₹11,875.20 if a one-off; +₹9,988.38 if it renews |
 | Without joining IPRS | the songwriting ₹22.75 isn't received | the songwriting ₹2,275.20 isn't received |
 
-- The songwriting share is the same **19%** of what they'd receive in both columns. At 10 lakh (1 million) streams, not joining costs about ₹2,275 a year.
-- **Break-even** (streams a year to cover the ₹1,886.82 fee): at ₹0.018 a stream, about **1.59 lakh (159,000) streams**. At the low value ₹0.009 it is about **3.18 lakh (318,000)**, and at the high value ₹0.034 about **84,000**.
+- The songwriting share is the same **19%** of what they'd receive in both columns. At 10 lakh (1 million) streams, not joining costs about ₹2,275 a year, against a one-time ₹1,200 to join.
+- **Break-even in year 1** (streams to cover the ₹3,086.82 of fixed costs, the TuneCore fee plus the IPRS joining fee): at ₹0.018 a stream, about **2.60 lakh (259,938) streams**. At the low value ₹0.009 it is about **5.20 lakh (519,877)**, and at the high value ₹0.034 about **1.38 lakh (137,614)**. In later years, with no joining fee, the TuneCore fee alone would take about 1.59 lakh (158,887) streams at ₹0.018, if the single renews.
 - At **10,000 streams on one track**, the 1,000-stream rule is passed, so recording money is paid.
 
 ## 7. What's left out
@@ -183,7 +190,9 @@ These use TuneCore India at ₹1,599 plus 18% GST (₹1,886.82), IPRS membership
 
 ## 8. What I couldn't source
 
-- IPRS's joining fee (not included for now) and its portal steps for registering songs.
+- IPRS's portal steps for registering songs, and what its registration format asks for.
+- **A question to ask IPRS:** does a writer member who owns and publishes her own song receive all of the songwriting money, or only the writer's half (the "Authors Statutory Royalty") unless she also joins as a publisher (₹2,200)? If only half, the songwriting line in every worked example would be halved.
+- Whether GST applies to IPRS's joining fee (its page doesn't say).
 - A typical cost of making and promoting a release.
 - Free (advert-paid) income per stream, and the share of an Indian artist's streams that come from paying listeners.
 - How each streaming service divides its income. Only Spotify's worldwide statement exists.
@@ -203,8 +212,9 @@ These use TuneCore India at ₹1,599 plus 18% GST (₹1,886.82), IPRS membership
 **Settled:**
 - Rupees are written the Indian way, with stream counts shown both ways.
 - ₹0.018 is the starting value of a stream, always shown with the range ₹0.009–₹0.034.
-- The IPRS joining fee is not included for now.
+- The IPRS joining fee is ₹1,200, one time, in year 1 only, with no GST added.
+- A writer member who owns and publishes her own song is assumed to receive all of the songwriting money (section 3), until IPRS is asked.
 - The persona is Vani.
 
 **Still open:**
-- **The IPRS joining fee**, to be read from IPRS's site before the worked examples can include it.
+- **The question for IPRS** in section 8: whether she receives all of the songwriting money without a publisher membership.

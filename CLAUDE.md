@@ -112,9 +112,11 @@ Shared files:
 - **India (approved and saved):** `RULES-INDIA.md` and the India calculator, self-released only, in rupees (lakh and crore style). It has IPRS and release-cost settings and a fictional persona, Vani (first name only, no language). Its worked examples match the rules exactly.
 - **Visitor walk-through (approved and saved):** homepage button is now "Choose a market"; India page wording tidied (who it's for said once, IPRS and "non-film" explained); larger invisible tap areas on back links and FACT/ASSUMPTION tags; MCPS share now tagged; one tag on the case study's PRS and MCPS costs; "independent (indie)" defined on the UK page. No numbers, rules or calculations changed.
 
+- **IPRS joining fee (approved and saved):** ₹1,200 one-time, year 1 only, no GST added (FACT, read by the owner on IPRS's page, 6 October 2026). The India rules, worked examples, break-evens and page now include it, and "register each song" is now FACT.
+
 ## Roadmap
 
-1. **Open:** the IPRS joining fee is "not included" in the India calculator until the owner supplies it from IPRS's site.
+1. **Open question to ask IPRS:** does a writer member with no publisher receive all of the songwriting money for her own song, or only the writer's half (unless she also joins as a publisher, ₹2,200)? The rules assume all, tagged ASSUMPTION; if only half, the songwriting line in every India example halves.
 2. **Later:** own domain, a database, the United States, and the **cover-song scenario** (rules agreed in `RULES-UK.md` first, then built). Open question: songwriting money that belongs to the artist is green and her artist money is apricot. Decide the colour rule at design time, since a cover artist's songwriting money goes to someone else.
 
 ## Parked ideas (don't start without being asked)
