@@ -52,9 +52,9 @@ Plain HTML, CSS and JavaScript, with no outside libraries. Pages use addresses s
 
 Shared files:
 - **`assets/site.css`:** all the styling.
-  - Look: near-black background, apricot as the only accent, sans-serif type from the device's own fonts.
-  - Homepage: a record drawn in SVG turns beside the headline (left-aligned on laptops, centred on phones, record above). Markets are CD cases: the UK one ready to play, the others greyed and shrink-wrapped. "How the numbers work" is styled as liner notes.
-  - Anyone with "reduce motion" on sees a still record. No real artwork, artist names or logos on records or CDs.
+  - Look: near-black, device-font sans-serif. Calculator and case study pages: apricot = the artist's own money; controls, links and the chosen tile are warm white; losses coral red. Chart colours are shared by all pages.
+  - Homepage: an SVG record turns beside the headline (centred on phones, record above). Markets are CD cases (UK ready, others greyed). "How the numbers work" is styled as liner notes.
+  - "Reduce motion" gives a still record and tile. No real artwork, artist names or logos.
 - **`assets/site.js`:** used by every page. It keeps the headline on one line, shrinking to fit.
 - **`assets/calculator.js`:** the shared maths and page code for every market. It has no country-specific numbers.
   - `calculate(inputs)` does the maths and works without the page. Test it in the browser with `RoyaltyCalculator.calculate(...)`.
@@ -106,11 +106,11 @@ Shared files:
   - "Your share of the songwriting" setting for every deal (co-writers).
   - The "Man I Need" case study page at `/uk/olivia-dean/`, built from section 7, with its deal settings read from `markets/uk.js`.
   - The comparison and summary rank deals by what's **earned from streams** in year 1. An advance counts as earned only once the streams have paid it back; the rest is shown separately as an early payment of the artist's own royalties. Charged-back costs are assumed to be paid back before the advance.
-- **Homepage redesign:** dark music-app look with the record, CD cases and liner notes (approved and saved).
+- **Homepage redesign:** dark music-app look with the record, CD cases and liner notes (approved and saved). **UK calculator redesign:** tiles, player controls, track list, CD card.
 
 ## Roadmap
 
-1. **Redesign the UK calculator, case study and India pages** to match the homepage. The chart colours tell the shares apart, so retune them for the dark look rather than cutting them to one colour.
+1. **Redesign the case study and India pages** to match the UK calculator.
 2. **Cover-song scenario:** rules agreed in `RULES-UK.md` first, then built.
 3. **India rules** (`RULES-INDIA.md`) for an independent, non-film, self-released artist, in rupees, naming the Indian organisations, with a clearly labelled fictional Hindi singer-songwriter persona. Label anything unsourced as ASSUMPTION and say how uncertain it is. Write, don't build.
 4. **Later:** own domain, a database, the United States.

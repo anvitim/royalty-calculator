@@ -696,11 +696,21 @@
       (hasLabelDeal ? '<p class="summary-label-note">' + esc(labelNote()) + '</p>' : '');
   }
 
+  // Sliders show how far along they are (the filled part of the track)
+  function paintSliders() {
+    Array.prototype.forEach.call(document.querySelectorAll('input[type="range"]'), function (s) {
+      var span = Number(s.max) - Number(s.min);
+      s.style.setProperty('--fill', (span > 0 ? (Number(s.value) - Number(s.min)) / span * 100 : 0) + '%');
+    });
+  }
+  document.addEventListener('input', paintSliders);
+
   // Available for testing in the browser
   window.RoyaltyCalculator = { calculate: calculate, streamsUntilAhead: streamsUntilAhead, readInputs: readInputs, render: render };
 
   if (el('streams')) {
     setUp();
     render();
+    paintSliders();
   }
 })();

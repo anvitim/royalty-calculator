@@ -13,18 +13,18 @@
   --line: rgba(255, 255, 255, 0.08);
   --fact: #7cc4b8;
   --assumption: #d8c08e;
-  --loss: #f0a58f;
-  --gain: #8fd6c4;
+  --loss: #f08a7c;
+  --gain: #f6a35c;
 
-  /* Breakdown colours */
-  --c-service: #4f6d7a;
-  --c-distributor: #8a7fa8;
-  --c-prs: #c9a96e;
-  --c-mcps: #b98264;
-  --c-artist: #5fb8a8;
-  --c-label: #6f8fb0;
-  --c-cowriters: #a7c4a0;
-  --c-publisher: #d68fa0;
+  /* Breakdown colours: apricot is only ever the artist's own money */
+  --c-service: #7d8a9c;
+  --c-distributor: #9b8cd9;
+  --c-prs: #4fb8a6;
+  --c-mcps: #86c36a;
+  --c-artist: #f6a35c;
+  --c-label: #5b9bd8;
+  --c-cowriters: #c78fd1;
+  --c-publisher: #e0728f;
 }
 
 * { box-sizing: border-box; }
@@ -721,3 +721,232 @@ table.compare {
 
 .status.live { background: var(--accent); color: var(--accent-ink); }
 .status.soon { border: 1px solid var(--card-border); color: var(--muted); }
+
+
+/* ---------- UK calculator page: player look ----------
+   Everything below is scoped to body.page-calc. Apricot marks the artist's own money only. */
+.page-calc { --lit: #f5f2ec; }
+.page-calc .site-nav a, .page-calc .text-link { border-bottom-color: rgba(245, 242, 236, 0.4); }
+.page-calc .site-nav a:hover, .page-calc .text-link:hover { color: var(--lit); border-bottom-color: var(--lit); }
+.page-calc input[type="number"]:focus, .page-calc input[type="range"]:focus-visible,
+.page-calc .choice input:focus-visible + span, .page-calc .site-nav a:focus-visible, .page-calc .text-link:focus-visible,
+.page-calc .tag:focus-visible, .page-calc .case-card:focus-within { outline-color: var(--lit); }
+.page-calc .hero.compact { padding-bottom: clamp(16px, 3vw, 28px); }
+.page-calc h1 { font-weight: 400; }
+
+.page-calc .card {
+  background: linear-gradient(180deg, #1b1b1f, #141417);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+.page-calc .card h2 { font-weight: 400; }
+
+/* Deal type: playlist tiles */
+.page-calc .deal-choice .choices {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.page-calc .deal-choice .choice { min-width: 0; position: relative; }
+.page-calc .deal-choice .choice span {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  min-height: 112px;
+  padding: 14px;
+  text-align: left;
+  font-size: 1rem;
+  line-height: 1.3;
+  border-radius: 14px;
+  border: 1px solid var(--card-border);
+  background: linear-gradient(160deg, #26262c, #18181b);
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+.page-calc .deal-choice .choice span::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, #18181b 0 14%, rgba(0, 0, 0, 0) 15%),
+    repeating-radial-gradient(circle, #3a3a42 0 2px, #2b2b31 2px 4px);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+}
+.page-calc .deal-choice .choice:hover span { transform: translateY(-2px); border-color: rgba(255, 255, 255, 0.25); }
+.page-calc .deal-choice .choice input:checked + span {
+  background: linear-gradient(160deg, #3c3c46, #24242a);
+  border-color: var(--lit);
+  box-shadow: 0 0 0 1px var(--lit), 0 10px 30px rgba(245, 242, 236, 0.14);
+  color: #fff;
+}
+.page-calc .deal-choice .choice input:checked + span::before {
+  background:
+    radial-gradient(circle, #24242a 0 14%, rgba(0, 0, 0, 0) 15%),
+    repeating-radial-gradient(circle, #f5f2ec 0 2px, #b9b4ab 2px 4px);
+  animation: spin 5s linear infinite;
+}
+.page-calc .deal-choice .choice input:checked + span::after {
+  content: '';
+  position: absolute;
+  top: 18px;
+  right: 16px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--lit);
+  box-shadow: 0 0 10px 2px rgba(245, 242, 236, 0.7);
+}
+
+/* Settings: player controls */
+.page-calc .inputs { gap: 14px; }
+.page-calc .inputs > .field {
+  padding: 14px 16px 16px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid var(--line);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+.page-calc .inputs > fieldset.field { padding: 14px 16px 16px; }
+.page-calc .field label, .page-calc .field legend { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+.page-calc .deal-choice > legend { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 12px; }
+.page-calc .field .tag { text-transform: none; }
+.page-calc .field-help { text-transform: none; letter-spacing: 0; }
+.page-calc input[type="number"] {
+  background: #0a0a0c;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.03em;
+}
+.page-calc .slider-value {
+  min-width: 4em;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: #0a0a0c;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  color: var(--lit);
+}
+.page-calc .group-title { color: var(--lit); opacity: 0.7; }
+
+/* Sliders: a track that fills as the knob moves, with a round knob */
+.page-calc input[type="range"] {
+  --fill: 50%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 22px;
+  background: transparent;
+  cursor: pointer;
+}
+.page-calc input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--lit) var(--fill), rgba(255, 255, 255, 0.16) var(--fill));
+}
+.page-calc input[type="range"]::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--lit) var(--fill), rgba(255, 255, 255, 0.16) var(--fill));
+}
+.page-calc input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  margin-top: -6px;
+  border-radius: 50%;
+  border: 0;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+.page-calc input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 0;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* Distributor choice keeps its pill buttons, lit in white rather than apricot */
+.page-calc .field .choice span { background: #0a0a0c; border-radius: 8px; }
+.page-calc .field .choice input:checked + span { background: rgba(245, 242, 236, 0.14); border-color: var(--lit); }
+
+/* Where the money goes */
+.page-calc .bar { height: 26px; border-radius: 13px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5); }
+.page-calc .bar div + div { border-left: 2px solid #141417; }
+.page-calc .swatch { border-radius: 50%; }
+.page-calc .rows li.total { border-top-color: rgba(255, 255, 255, 0.2); }
+
+/* What you keep: the artist's own money, so apricot */
+.page-calc .result { background: rgba(0, 0, 0, 0.28); border-radius: 16px; }
+.page-calc .result.is-gain { border-color: rgba(246, 163, 92, 0.4); }
+.page-calc .result.is-gain .big { color: var(--accent); }
+.page-calc .result.is-loss { border-color: rgba(240, 138, 124, 0.5); background: rgba(240, 138, 124, 0.08); }
+.page-calc .message.loss { background: rgba(240, 138, 124, 0.1); border-color: rgba(240, 138, 124, 0.4); }
+
+/* Comparison: a track list */
+.page-calc table.compare { counter-reset: track; }
+.page-calc .compare thead th {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+.page-calc .compare tbody tr { transition: background 0.15s; }
+.page-calc .compare-wide tbody tr:hover { background: rgba(255, 255, 255, 0.05); }
+.page-calc .compare-wide tbody tr { counter-increment: track; }
+.page-calc .compare-wide th[scope="row"]::before {
+  content: counter(track);
+  display: inline-block;
+  min-width: 1.8em;
+  margin-right: 6px;
+  color: rgba(255, 255, 255, 0.35);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.page-calc .compare .is-current { background: rgba(245, 242, 236, 0.08); }
+.page-calc .compare thead .is-current { color: var(--lit); box-shadow: inset 0 -2px 0 var(--lit); }
+.page-calc .compare .pos { color: var(--accent); }
+.page-calc .compare tr.key td { color: var(--accent); }
+.page-calc .compare tr.key th { color: var(--headline); }
+.page-calc .compare-narrow tr.label-row th { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.7rem; }
+
+/* Case study card: a CD case, like the homepage shelf */
+.page-calc .case-card {
+  display: grid;
+  grid-template-columns: minmax(120px, 190px) 1fr;
+  align-items: center;
+  gap: clamp(20px, 4vw, 40px);
+}
+.page-calc .case-card .cd-case { width: 100%; margin: 0; }
+.page-calc .case-card h2 { margin-bottom: 8px; }
+
+@media (max-width: 760px) {
+  .page-calc .deal-choice .choices { grid-template-columns: 1fr 1fr; }
+  .page-calc .deal-choice .choice span { min-height: 96px; }
+}
+@media (max-width: 480px) {
+  .page-calc .case-card { grid-template-columns: 100px 1fr; gap: 16px; align-items: start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-calc .deal-choice .choice input:checked + span::before { animation: none; }
+  .page-calc .deal-choice .choice span { transition: none; }
+}
+
+/* Choice buttons are labels too: keep them in normal type */
+.page-calc .field label.choice { margin: 0; text-transform: none; letter-spacing: 0.01em; font-size: 1rem; color: var(--headline); }
+.page-calc .field .choices .choice span { font-size: 0.92rem; }
+.page-calc .deal-choice .choice span { font-size: 1rem; }
+
+/* Track numbers hang to the left so wrapped labels stay tidy; losses stay red even on the key row */
+.page-calc .compare-wide th[scope="row"] { position: relative; padding-left: 2.8em; }
+.page-calc .compare-wide th[scope="row"]::before { position: absolute; left: 4px; margin: 0; min-width: 1.6em; }
+.page-calc .compare tr.key td.neg { color: var(--loss); }
+.page-calc .deal-choice .choice span { padding-top: 58px; min-height: 112px; }
+@media (max-width: 760px) { .page-calc .deal-choice .choice span { min-height: 112px; } }
