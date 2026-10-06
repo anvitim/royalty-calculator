@@ -110,9 +110,8 @@ Shared files:
 
 ## Roadmap
 
-1. **Cover-song scenario:** rules agreed in `RULES-UK.md` first, then built. Open question: songwriting money that belongs to the artist is green and her artist money is apricot. Decide the colour rule at design time, since a cover artist's songwriting money goes to someone else.
-2. **India rules** (`RULES-INDIA.md`) for an independent, non-film, self-released artist, in rupees, naming the Indian organisations, with a clearly labelled fictional Hindi singer-songwriter persona. Label anything unsourced as ASSUMPTION and say how uncertain it is. Write, don't build.
-3. **Later:** own domain, a database, the United States.
+1. **India rules** (`RULES-INDIA.md`) for an independent, non-film, self-released artist, in rupees, naming the Indian organisations, with a clearly labelled fictional Hindi singer-songwriter persona. Label anything unsourced as ASSUMPTION and say how uncertain it is. Write, don't build.
+2. **Later:** own domain, a database, the United States, and the **cover-song scenario** (rules agreed in `RULES-UK.md` first, then built). Open question: songwriting money that belongs to the artist is green and her artist money is apricot. Decide the colour rule at design time, since a cover artist's songwriting money goes to someone else.
 
 ## Parked ideas (don't start without being asked)
 
