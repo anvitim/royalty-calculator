@@ -1,18 +1,16 @@
 /* Shared styles for every page of the site */
 :root {
-  --bg-top: #4c9fae;
-  --bg-mid: #2a7488;
-  --bg-deep: #123f4d;
-  --bg-bottom: #0b2a35;
-  --headline: #ffffff;
-  --subheading: #d9f0f0;
+  --bg: #0d0d0f;
+  --bg-raised: #17171a;
+  --headline: #f5f2ec;
+  --subheading: #d3cdc4;
   --accent: #f6a35c;
   --accent-hover: #f8b67a;
-  --accent-ink: #1d2b31;
-  --muted: #9fbab7;
-  --card: rgba(9, 24, 30, 0.78);
-  --card-border: rgba(159, 186, 183, 0.18);
-  --line: rgba(159, 186, 183, 0.14);
+  --accent-ink: #1b1510;
+  --muted: #a39d94;
+  --card: #17171a;
+  --card-border: rgba(255, 255, 255, 0.09);
+  --line: rgba(255, 255, 255, 0.08);
   --fact: #7cc4b8;
   --assumption: #d8c08e;
   --loss: #f0a58f;
@@ -35,7 +33,7 @@ body {
   margin: 0;
   min-height: 100vh;
   min-height: 100dvh;
-  background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 30%, var(--bg-deep) 65%, var(--bg-bottom) 100%) fixed;
+  background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(246, 163, 92, 0.10), rgba(246, 163, 92, 0) 70%) no-repeat, var(--bg);
   color: var(--headline);
   font-family: "Helvetica Neue", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -403,66 +401,9 @@ table.compare {
   .compare-narrow th, .compare-narrow td { padding-left: 4px; padding-right: 4px; }
 }
 
-/* ---------- Background ---------- */
-/* Layered water waves filling the whole page */
-.waves {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.wave {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 200%;
-  animation: drift var(--speed) linear var(--delay) infinite;
-}
-
-.wave svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.wave-1 { height: 100%; --speed: 56s; --delay: -12s; --swell: 9s;  color: rgba(170, 225, 228, 0.10); }
-.wave-2 { height: 86%;  --speed: 48s; --delay: -40s; --swell: 11s; color: rgba(120, 200, 205, 0.12); }
-.wave-3 { height: 72%;  --speed: 41s; --delay: -7s;  --swell: 8s;  color: rgba(20, 70, 86, 0.22); }
-.wave-4 { height: 58%;  --speed: 35s; --delay: -25s; --swell: 10s; color: rgba(150, 215, 215, 0.12); }
-.wave-5 { height: 44%;  --speed: 30s; --delay: -16s; --swell: 7s;  color: rgba(12, 52, 66, 0.30); }
-.wave-6 { height: 30%;  --speed: 25s; --delay: -4s;  --swell: 9s;  color: rgba(110, 190, 195, 0.14); }
-.wave-7 { height: 17%;  --speed: 21s; --delay: -19s; --swell: 6s;  color: rgba(8, 36, 46, 0.40); }
-
-/* A slow rise and fall on top of the sideways drift */
-.wave svg { animation: swell var(--swell) ease-in-out infinite alternate; }
-
-@keyframes swell {
-  from { transform: translateY(0); }
-  to   { transform: translateY(14px); }
-}
-
-/* Each wave holds two identical stretches of sea, so sliding by half loops seamlessly */
-@keyframes drift {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-
-/* A soft dark pool behind the headline keeps it easy to read */
-.scrim {
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: radial-gradient(ellipse 70% 40% at 50% 30%, rgba(8, 32, 42, 0.45) 0%, rgba(8, 32, 42, 0) 100%);
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .wave, .wave svg { animation: none; }
   .bar div { transition: none; }
 }
-  
 
 /* ---------- Site navigation and shared components ---------- */
 .site-nav {
@@ -532,54 +473,6 @@ table.compare {
   text-align: center;
 }
 
-/* Market cards */
-.markets {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-
-.market-card {
-  display: block;
-  padding: 22px;
-  border-radius: 18px;
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  color: var(--headline);
-  text-decoration: none;
-  transition: border-color 0.2s, transform 0.2s;
-}
-
-a.market-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-.market-card.is-soon { opacity: 0.8; }
-
-.market-card h3 {
-  margin: 10px 0 6px;
-  font-size: 1.2rem;
-  font-weight: 400;
-  letter-spacing: 0.02em;
-}
-
-.market-card p { margin: 0; color: var(--muted); font-size: 0.9rem; line-height: 1.55; }
-.market-card .go { display: inline-block; margin-top: 14px; color: var(--accent); font-size: 0.92rem; }
-
-.status {
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: 999px;
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.status.live { background: var(--accent); color: var(--accent-ink); }
-.status.soon { border: 1px solid var(--card-border); color: var(--muted); }
-
-.how p { margin: 0 0 12px; line-height: 1.7; }
-.how p > .tag:first-child { margin-left: 0; }
-.how p:last-child { margin-bottom: 0; }
-
 /* UK page heading and case-study card */
 .page-head h1 { font-size: min(6vw, 3.6rem); }
 .hero.compact { min-height: 0; padding-top: clamp(24px, 5vw, 56px); padding-bottom: clamp(24px, 4vw, 40px); }
@@ -590,9 +483,6 @@ a.market-card:hover { border-color: var(--accent); transform: translateY(-2px); 
 .placeholder { text-align: center; }
 .placeholder p { color: var(--subheading); line-height: 1.7; max-width: 560px; margin: 0 auto 14px; }
 
-@media (max-width: 760px) {
-  .markets { grid-template-columns: 1fr; }
-}
 
 .field-help { margin: 8px 0 0; font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
 #major-inputs > .field-help { margin: 0 0 16px; }
@@ -612,3 +502,222 @@ a.market-card:hover { border-color: var(--accent); transform: translateY(-2px); 
   .range-table td { white-space: normal; }
   .rows li.fact-row { grid-template-columns: 1fr; gap: 2px; }
 }
+
+/* ---------- Homepage: record, CD shelf and liner notes ---------- */
+.home-hero {
+  display: grid;
+  grid-template-columns: minmax(260px, 420px) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(28px, 5vw, 72px);
+  min-height: 0;
+  padding-top: clamp(48px, 8vw, 104px);
+  padding-bottom: clamp(40px, 6vw, 80px);
+  text-align: left;
+}
+
+.home-hero .hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.home-hero h1 { font-size: min(5.6vw, 4.2rem); font-weight: 400; letter-spacing: -0.01em; }
+.home-hero .subheading { margin-top: clamp(12px, 2vw, 20px); letter-spacing: 0.04em; color: var(--accent); }
+.home-hero .intro { text-wrap: pretty; }
+
+.turntable { width: 100%; aspect-ratio: 1; }
+.record { display: block; width: 100%; height: 100%; filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.55)); }
+
+.record-spin {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: spin 7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* The shelf of market "CDs" */
+.shelf-title {
+  margin: 0 0 18px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.shelf {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(16px, 3vw, 32px);
+}
+
+.cd {
+  display: block;
+  color: var(--headline);
+  text-decoration: none;
+  border-radius: 12px;
+}
+
+.cd:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
+
+.cd-case {
+  position: relative;
+  width: 82%;
+  aspect-ratio: 1;
+  margin-bottom: 16px;
+}
+
+/* The disc sits behind the case front */
+.cd-disc {
+  position: absolute;
+  top: 6%;
+  left: 6%;
+  width: 88%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, var(--bg) 0 6%, #8f8f96 6.5% 8%, #e4e4e8 8.5% 15%, rgba(0, 0, 0, 0) 15.5%),
+    conic-gradient(from 20deg, #cfd2d8, #ead9ee, #cde6df, #f1e6cc, #d4d8e6, #cfd2d8);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+  transition: transform 0.5s ease;
+}
+
+.is-live .cd-disc { transform: translateX(22%) rotate(0deg); }
+.is-live:hover .cd-disc, .is-live:focus-visible .cd-disc { transform: translateX(30%) rotate(40deg); }
+
+.cd-front {
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+/* Spine on the left and a plastic shine across the front */
+.cd-front::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 9%;
+  background: rgba(0, 0, 0, 0.35);
+  border-right: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.cd-front::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(125deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0) 32%);
+}
+
+/* Abstract cover art: no names, logos or real artwork */
+.is-live .cd-front {
+  background:
+    radial-gradient(circle at 64% 38%, var(--accent) 0 21%, rgba(0, 0, 0, 0) 21.5%),
+    repeating-linear-gradient(0deg, rgba(246, 163, 92, 0.18) 0 2px, rgba(0, 0, 0, 0) 2px 14px) 0 78% / 100% 22% no-repeat,
+    linear-gradient(160deg, #2b2119, #151417);
+}
+
+/* Not out yet: greyed, still in its shrink-wrap */
+.is-soon .cd-front {
+  background:
+    repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.05) 0 2px, rgba(255, 255, 255, 0) 2px 9px),
+    radial-gradient(circle at 64% 38%, #3a3a40 0 21%, rgba(0, 0, 0, 0) 21.5%),
+    linear-gradient(160deg, #232327, #161618);
+}
+
+.cd-sticker {
+  position: absolute;
+  right: 8%;
+  bottom: 8%;
+  z-index: 1;
+  min-width: 2.4em;
+  height: 2.4em;
+  padding: 0 0.5em;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.is-live .cd-sticker { background: var(--accent); color: var(--accent-ink); }
+.is-soon .cd-sticker { background: #3a3a40; color: #c8c3bb; }
+
+.cd-info h3 { margin: 10px 0 6px; font-size: 1.15rem; font-weight: 400; letter-spacing: 0.01em; }
+.cd-info p { margin: 0; color: var(--muted); font-size: 0.9rem; line-height: 1.55; }
+.cd-info .go { display: inline-block; margin-top: 12px; color: var(--accent); font-size: 0.92rem; }
+.cd.is-soon .cd-info h3 { color: var(--subheading); }
+
+/* Liner notes */
+.liner {
+  padding: clamp(24px, 4vw, 40px);
+  border-radius: 6px;
+  background: #1a1815;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 6px #151311;
+}
+
+.liner-kicker {
+  margin: 0 0 6px;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.liner h2 {
+  margin: 0 0 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.18);
+  font-weight: 400;
+}
+
+.liner-body { columns: 2 260px; column-gap: 40px; }
+.liner-body p { margin: 0 0 14px; line-height: 1.7; color: var(--subheading); break-inside: avoid; }
+.liner-body .tag { margin-left: 0; margin-right: 4px; font-size: 0.7rem; }
+
+@media (max-width: 760px) {
+  .home-hero {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+    gap: 18px;
+    padding-top: 24px;
+  }
+  .home-hero .hero-text { align-items: center; width: 100%; }
+  .home-hero h1 { font-size: min(8vw, 2.6rem); }
+  .home-hero .intro { margin-top: 12px; font-size: 0.95rem; }
+  .home-hero .btn { margin-top: 20px; }
+  .turntable { width: min(44vw, 190px); }
+
+  .shelf { grid-template-columns: 1fr; gap: 20px; }
+  .cd { display: grid; grid-template-columns: 112px 1fr; gap: 18px; align-items: center; }
+  .cd-case { width: 100%; margin-bottom: 0; }
+  .is-live .cd-disc { transform: translateX(12%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .record-spin { animation: none; }
+  .cd-disc { transition: none; }
+}
+
+/* Status badges on the market CDs */
+.status {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.status.live { background: var(--accent); color: var(--accent-ink); }
+.status.soon { border: 1px solid var(--card-border); color: var(--muted); }

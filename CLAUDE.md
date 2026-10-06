@@ -45,16 +45,17 @@ Plain HTML, CSS and JavaScript, with no outside libraries. Pages use addresses s
 
 | Address | File | What it is |
 |---|---|---|
-| `/` | `index.html` | Homepage: headline, intro, "Try the UK calculator" button, market cards, "How the numbers work" |
+| `/` | `index.html` | Homepage: spinning record, headline, intro, "Try the UK calculator" button, market CDs, liner notes |
 | `/uk/` | `uk/index.html` | UK calculator and summary, with a card linking to the case study |
-| `/uk/olivia-dean/` | `uk/olivia-dean/index.html` | Case study (placeholder for now) |
+| `/uk/olivia-dean/` | `uk/olivia-dean/index.html` | "Man I Need" case study (built) |
 | `/india/` | `india/index.html` | India (placeholder for now) |
 
 Shared files:
 - **`assets/site.css`:** all the styling.
-  - Colours: a brighter ocean gradient, a warm apricot accent for buttons and highlights, and dark cards for the calculator.
-  - Text: light sans-serif type using fonts already on the device.
-- **`assets/site.js`:** used by every page. It adds the animated waves and keeps the headline on one line, centred, shrinking to fit.
+  - Look: near-black background, apricot as the only accent, sans-serif type from the device's own fonts.
+  - Homepage: a record drawn in SVG turns beside the headline (left-aligned on laptops, centred on phones, record above). Markets are CD cases: the UK one ready to play, the others greyed and shrink-wrapped. "How the numbers work" is styled as liner notes.
+  - Anyone with "reduce motion" on sees a still record. No real artwork, artist names or logos on records or CDs.
+- **`assets/site.js`:** used by every page. It keeps the headline on one line, shrinking to fit.
 - **`assets/calculator.js`:** the shared maths and page code for every market. It has no country-specific numbers.
   - `calculate(inputs)` does the maths and works without the page. Test it in the browser with `RoyaltyCalculator.calculate(...)`.
   - The deal types are listed in `DEALS` and `DEAL_ORDER`.
@@ -92,7 +93,7 @@ Shared files:
   - break-even figures;
   - sources: the CMA, the IPO and the DCMS Committee.
 - **UK calculator:**
-  - three deal types, with adjustable settings and a side-by-side comparison;
+  - four deal types (self-released, indie royalty, indie profit-share, major label), with adjustable settings and a side-by-side comparison;
   - an "In summary" section, with the verdict first;
   - matches every worked example.
 - **Phase 1 site structure** (approved and saved to GitHub):
@@ -105,20 +106,14 @@ Shared files:
   - "Your share of the songwriting" setting for every deal (co-writers).
   - The "Man I Need" case study page at `/uk/olivia-dean/`, built from section 7, with its deal settings read from `markets/uk.js`.
   - The comparison and summary rank deals by what's **earned from streams** in year 1. An advance counts as earned only once the streams have paid it back; the rest is shown separately as an early payment of the artist's own royalties. Charged-back costs are assumed to be paid back before the advance.
+- **Homepage redesign:** dark music-app look with the record, CD cases and liner notes (approved and saved).
 
 ## Roadmap
 
-1. **Phase 1, homepage and structure:** done.
-2. **Phase 2, UK major-label rules, calculator and case study:** done.
-   - Royalty rate, advance, which costs are charged back, a publisher's share of the songwriting money, and co-writers splitting the songwriting share.
-   - Prepare the Olivia Dean case study: three most-streamed songs, each with its Spotify count and the date checked, its credited writers and label, all sourced. Ask the owner to read counts from Spotify if they can't be read reliably.
-   - State the assumption needed to apply UK rules to a worldwide, Spotify-only count.
-   - Stop and show the owner.
-3. **Phase 3, India rules:** write, don't build.
-   - `RULES-INDIA.md` for an independent, non-film, self-released artist, in rupees, naming the Indian organisations.
-   - Label anything unsourced as ASSUMPTION and say how uncertain it is.
-   - Stop; the owner chooses the case-study artist.
-4. **Later:** build the major-label calculator and the case study, a cover-song scenario, the owner's own domain, a database, and the United States.
+1. **Redesign the UK calculator, case study and India pages** to match the homepage. The chart colours tell the shares apart, so retune them for the dark look rather than cutting them to one colour.
+2. **Cover-song scenario:** rules agreed in `RULES-UK.md` first, then built.
+3. **India rules** (`RULES-INDIA.md`) for an independent, non-film, self-released artist, in rupees, naming the Indian organisations, with a clearly labelled fictional Hindi singer-songwriter persona. Label anything unsourced as ASSUMPTION and say how uncertain it is. Write, don't build.
+4. **Later:** own domain, a database, the United States.
 
 ## Parked ideas (don't start without being asked)
 
