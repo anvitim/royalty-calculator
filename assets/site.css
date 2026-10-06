@@ -950,3 +950,62 @@ table.compare {
 .page-calc .compare tr.key td.neg { color: var(--loss); }
 .page-calc .deal-choice .choice span { padding-top: 58px; min-height: 112px; }
 @media (max-width: 760px) { .page-calc .deal-choice .choice span { min-height: 112px; } }
+
+/* ---------- Single's page: case study and India ---------- */
+.page-case { --lit: #f5f2ec; }
+.single-hero {
+  display: grid;
+  grid-template-columns: minmax(150px, 250px) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(24px, 5vw, 56px);
+  max-width: 912px;
+  min-height: 0;
+  padding: clamp(24px, 5vw, 56px) 16px clamp(20px, 4vw, 36px);
+  text-align: left;
+}
+.single-hero .hero-text { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; width: 100%; }
+.single-hero .cd-case { width: 100%; margin: 0; }
+.single-hero h1 { font-weight: 400; letter-spacing: -0.01em; }
+.single-hero .subheading { margin: 0 0 10px; order: -1; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+.page-case .case-banner { margin: 20px 0 0; font-size: 1.02rem; line-height: 1.6; }
+.single-hero .is-soon + .hero-text .subheading { font-size: clamp(0.95rem, 2vw, 1.2rem); letter-spacing: 0.16em; margin: 12px 0 0; order: 0; }
+
+/* A generic CD for the case study: blank label, abstract shapes, nothing from any real cover */
+.generic-cd .cd-disc { transform: translateX(22%); }
+.generic-cd .cd-front {
+  background:
+    radial-gradient(circle at 50% 56%, rgba(0, 0, 0, 0) 0 21%, rgba(245, 242, 236, 0.55) 21.5% 23%, rgba(0, 0, 0, 0) 23.5% 33%, rgba(245, 242, 236, 0.22) 33.5% 34.5%, rgba(0, 0, 0, 0) 35%),
+    linear-gradient(135deg, rgba(0, 0, 0, 0) 0 58%, rgba(245, 242, 236, 0.12) 58% 74%, rgba(0, 0, 0, 0) 74%),
+    linear-gradient(160deg, #3a3a42, #1b1b1f);
+}
+
+/* India: still in its shrink-wrap, a little extra sheen over the front */
+.single-hero .is-soon .cd-front::after {
+  background:
+    repeating-linear-gradient(100deg, rgba(255, 255, 255, 0.05) 0 3px, rgba(255, 255, 255, 0) 3px 17px),
+    linear-gradient(125deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 38%);
+}
+
+/* The song's credits, set like liner notes */
+.page-case .liner-card {
+  background: #1a1815;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 6px #151311;
+}
+.page-case .liner-card h2 { padding-bottom: 14px; margin-bottom: 4px; border-bottom: 1px dashed rgba(255, 255, 255, 0.18); }
+.page-case .liner-card .rows li { border-top: 1px dashed rgba(255, 255, 255, 0.12); }
+.page-case .liner-card .rows li:first-child { border-top: 0; }
+.page-case .liner-card .fact-row .row-label { font-size: 0.74rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+
+/* Buttons are controls, so warm white (apricot is for the artist's money) */
+.page-calc .btn { background: var(--lit); color: #16140f; box-shadow: 0 6px 24px rgba(245, 242, 236, 0.16); }
+.page-calc .btn:hover { background: #fff; }
+.page-calc .btn:focus-visible { outline-color: var(--lit); }
+.page-case .play-card { padding-top: clamp(28px, 5vw, 44px); padding-bottom: clamp(32px, 5vw, 52px); }
+.page-case .play-card .btn { margin-top: 8px; padding: 16px 36px; font-size: 1.1rem; }
+
+@media (max-width: 760px) {
+  .single-hero { grid-template-columns: 1fr; justify-items: center; gap: 22px; }
+  .single-hero .cd-case { width: min(52vw, 200px); }
+  .generic-cd .cd-disc { transform: translateX(14%); }
+}

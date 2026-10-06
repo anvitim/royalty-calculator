@@ -52,7 +52,7 @@ Plain HTML, CSS and JavaScript, with no outside libraries. Pages use addresses s
 
 Shared files:
 - **`assets/site.css`:** all the styling.
-  - Look: near-black, device-font sans-serif. Calculator and case study pages: apricot = the artist's own money; controls, links and the chosen tile are warm white; losses coral red. Chart colours are shared by all pages.
+  - Look: near-black, device-font sans-serif. Calculator and case study pages: apricot = the artist's own money (on the case study, her recording money only; her songwriting money is green); controls, links and the chosen tile are warm white; losses coral red. Chart colours are shared by all pages.
   - Homepage: an SVG record turns beside the headline (centred on phones, record above). Markets are CD cases (UK ready, others greyed). "How the numbers work" is styled as liner notes.
   - "Reduce motion" gives a still record and tile. No real artwork, artist names or logos.
 - **`assets/site.js`:** used by every page. It keeps the headline on one line, shrinking to fit.
@@ -106,14 +106,13 @@ Shared files:
   - "Your share of the songwriting" setting for every deal (co-writers).
   - The "Man I Need" case study page at `/uk/olivia-dean/`, built from section 7, with its deal settings read from `markets/uk.js`.
   - The comparison and summary rank deals by what's **earned from streams** in year 1. An advance counts as earned only once the streams have paid it back; the rest is shown separately as an early payment of the artist's own royalties. Charged-back costs are assumed to be paid back before the advance.
-- **Homepage redesign:** dark music-app look with the record, CD cases and liner notes (approved and saved). **UK calculator redesign:** tiles, player controls, track list, CD card.
+- **Homepage redesign:** dark music-app look with the record, CD cases and liner notes (approved and saved). **UK calculator, case study and India redesigns:** tiles, player controls, track list, CD cards. The redesign is complete.
 
 ## Roadmap
 
-1. **Redesign the case study and India pages** to match the UK calculator.
-2. **Cover-song scenario:** rules agreed in `RULES-UK.md` first, then built.
-3. **India rules** (`RULES-INDIA.md`) for an independent, non-film, self-released artist, in rupees, naming the Indian organisations, with a clearly labelled fictional Hindi singer-songwriter persona. Label anything unsourced as ASSUMPTION and say how uncertain it is. Write, don't build.
-4. **Later:** own domain, a database, the United States.
+1. **Cover-song scenario:** rules agreed in `RULES-UK.md` first, then built. Open question: songwriting money that belongs to the artist is green and her artist money is apricot. Decide the colour rule at design time, since a cover artist's songwriting money goes to someone else.
+2. **India rules** (`RULES-INDIA.md`) for an independent, non-film, self-released artist, in rupees, naming the Indian organisations, with a clearly labelled fictional Hindi singer-songwriter persona. Label anything unsourced as ASSUMPTION and say how uncertain it is. Write, don't build.
+3. **Later:** own domain, a database, the United States.
 
 ## Parked ideas (don't start without being asked)
 
