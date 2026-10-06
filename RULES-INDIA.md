@@ -2,7 +2,7 @@
 
 **Draft for agreement. Sources checked 6 October 2026.** Services and societies in India have changed a lot since 2024, so every status below is as of that date.
 
-**Who this is for:** an independent artist in India who writes and sings their own non-film songs in Hindi, has no label and no publisher, and releases through a distributor (a company that gets the music onto Spotify, JioSaavn, Apple Music and other services). Money is in rupees (₹), written the Indian way (₹1,00,000; lakh and crore). A stream count is written both ways the first time it appears in each section, for example "10 lakh (1 million) streams".
+**Who this is for:** an independent artist in India who writes and releases her own non-film songs, has no label and no publisher, and releases through a distributor (a company that gets the music onto Spotify, JioSaavn, Apple Music and other services). Money is in rupees (₹), written the Indian way (₹1,00,000; lakh and crore). A stream count is written both ways the first time it appears in each section, for example "10 lakh (1 million) streams".
 
 **FACT** means the linked source states the figure, and I opened that source. **ASSUMPTION** means a typical figure, an estimate, or a source figure applied to a situation it doesn't directly cover; each one says why and how unsure it is. Where the only source I could open is a news report, I've tagged it ASSUMPTION and said so, even if it's probably right.
 
@@ -89,7 +89,7 @@ This is the hardest number. India has no published average rate per stream, and 
 - the two reports count different things (above);
 - ₹1,030 crore may include GST (tax charged to subscribers).
 
-**What the calculator user will be able to change:** the value of one stream, from ₹0.005 to ₹0.065 (the top is the all-paying ceiling), starting at ₹0.018 (range ₹0.009–₹0.034).
+**What the calculator user will be able to change:** the value of one stream, from ₹0.005 to ₹0.065 (the top is the all-paying ceiling), starting at ₹0.018 (range ₹0.009–₹0.034), and the cost of making and promoting the release, starting at ₹0 with no suggested figure.
 
 A blog quotes about ₹0.07 a stream for Spotify India. **ASSUMPTION, not used:** the blog gives no method, and ₹0.07 is about the all-paying ceiling, not an average.
 
@@ -139,14 +139,14 @@ Without IPRS, only the 53 paise reaches them from streams.
 |---|---|---|
 | TuneCore India, one single | ₹1,599, before GST. The page shows "/year" on the unlimited plans but not on the single, which suggests a one-off price. I couldn't confirm whether it renews. A search summary of TuneCore's support page said singles renew each year, but I couldn't open that page. | **FACT:** the price, [TuneCore India pricing](https://www.tunecore.com/en-in/pricing). Renewal: **ASSUMPTION, unsure.** |
 | *or* TuneCore India, unlimited releases, "Rising Artist" plan | ₹1,599 a year, before GST | **FACT:** same page |
-| *or* DistroKid | US$24.99 a year, which is about ₹2,200 before any GST | **FACT:** [DistroKid](https://distrokid.com/pricing/) for the dollars. **ASSUMPTION:** ₹87 to the dollar, the rate implied by Music Business Worldwide's report ₹1,030 crore = US$118.2 million; today's rate will differ. DistroKid doesn't show rupee prices, so I haven't worked out its GST. |
+| *or* DistroKid | US$24.99 a year, which is about ₹2,200 before any GST | **FACT:** [DistroKid](https://distrokid.com/pricing/) for the dollars. **ASSUMPTION:** ₹87 to the dollar, the rate implied by Music Business Worldwide's report ₹1,030 crore = US$118.2 million; today's rate will differ. DistroKid doesn't show rupee prices, so I haven't worked out its GST. Its figure is converted from dollars and shown before any GST, so it isn't like-for-like with the TuneCore figure. |
 | **GST on the distributor fee** | **18%**, so the TuneCore single costs ₹1,599 + ₹287.82 = **₹1,886.82** | **ASSUMPTION** (low uncertainty). TuneCore says "Applicable GST charges will be added to cart" but not the rate. The GST Council's [service rate schedule](https://gstcouncil.gov.in/sites/default/files/2024-02/gstservicerates.pdf) (February 2024 copy) gives 18% for the general headings that business and technical services fall under (9983 "other professional, technical and business services" and 9997 "other services"), but I couldn't find which heading music distribution is filed under, or confirm the rate after later changes. |
 | IPRS joining fee | **Not included for now** | to be read from IPRS's site |
 | ISAMRA (singer's lifetime fee), optional | ₹10,000 once | **ASSUMPTION** (low uncertainty): see section 1.2 |
 
 ## 6. Worked examples
 
-These use TuneCore India at ₹1,599 plus 18% GST (₹1,886.82), IPRS membership with every song registered, and **₹0.018 a stream (range ₹0.009–₹0.034)**. Everything is **ASSUMPTION** apart from the ₹1,599. The IPRS joining fee, income tax and tax taken off IPRS payments are not included. Streams: 10,000, and 10 lakh (1 million).
+These use TuneCore India at ₹1,599 plus 18% GST (₹1,886.82), IPRS membership with every song registered, and **₹0.018 a stream (range ₹0.009–₹0.034)**. Everything is **ASSUMPTION** apart from the ₹1,599. The IPRS joining fee, the cost of making and promoting the release (section 7), income tax and tax taken off IPRS payments are not included. Streams: 10,000, and 10 lakh (1 million).
 
 | | 10,000 streams | 10 lakh (1 million) streams |
 |---|---|---|
@@ -170,19 +170,21 @@ These use TuneCore India at ₹1,599 plus 18% GST (₹1,886.82), IPRS membership
 
 ## 7. What's left out
 
-- **YouTube and short-video apps (Instagram Reels, and similar).** Left out. **This distorts India more than the UK.** In India 32% of survey respondents used YouTube for music, and discovery increasingly happens on short-form video and social platforms (both from the [EY press release](https://www.ey.com/en_in/newsroom/2026/07/india-s-paid-music-subscriptions-could-reach-28-30-million-by-2028-as-industry-focuses-on-monetization-and-premium-experiences)). A Hindi indie artist may earn or lose more there than on audio services, and those payments follow different rules. **FACT:** TuneCore India charges a **20% fee** on money from TikTok, Facebook, Instagram and YouTube, unlike the 0% on the music services ([TuneCore India](https://www.tunecore.com/en-in/pricing)). So even the distributor's own terms differ for this money, and the calculator's "artist keeps all of it" wouldn't hold there.
+- **YouTube and short-video apps (Instagram Reels, and similar).** Left out. **This distorts India more than the UK.** In India 32% of survey respondents used YouTube for music, and discovery increasingly happens on short-form video and social platforms (both from the [EY press release](https://www.ey.com/en_in/newsroom/2026/07/india-s-paid-music-subscriptions-could-reach-28-30-million-by-2028-as-industry-focuses-on-monetization-and-premium-experiences)). An independent artist may earn or lose more there than on audio services, and those payments follow different rules. **FACT:** TuneCore India charges a **20% fee** on money from TikTok, Facebook, Instagram and YouTube, unlike the 0% on the music services ([TuneCore India](https://www.tunecore.com/en-in/pricing)). So even the distributor's own terms differ for this money, and the calculator's "artist keeps all of it" wouldn't hold there.
+- **The cost of making and promoting the release** (recording, artwork, marketing). Left out by default: the worked examples and the break-even figures cover only the distributor's fee, so they understate what a release really costs. I found no source for a typical figure, so the calculator starts at ₹0 and suggests none; the reader can enter her own, and it is then taken off "What you keep" and counted in the break-even.
 - **Free listening.** Included only through the single value of one stream. It matters far more in India than in the UK, since only about 8% of streamers pay.
 - **Film music.** Left out; film songs have a separate royalty rule (the third proviso to section 18(1) and section 19(9)) and the industry is film-led.
 - **Radio, TV, shops, pubs and live shows**, and the societies that collect them. Left out, apart from naming them in section 1.2.
 - **Ringback tones, downloads and sync (use in adverts, films and games).** Left out. IPRS collects for them.
 - **Tax.** GST on the distributor fee is included (section 5). Left out: tax taken off IPRS payments (IPRS's rules say it deducts tax), income tax, and whether the artist must register for GST themselves. Foreign artists would be taxed differently.
-- **Streams outside India.** Left out. Hindi songs have a large overseas audience, where a stream may be worth much more, and the money arrives in other currencies.
+- **Streams outside India.** Left out. Songs released in India can also be streamed overseas, where a stream may be worth more, and the money arrives in other currencies.
 - **A publisher or co-writers.** Left out. This artist writes alone and has no publisher.
 - **Currency.** Everything is in rupees, except DistroKid's price in dollars.
 
 ## 8. What I couldn't source
 
 - IPRS's joining fee (not included for now) and its portal steps for registering songs.
+- A typical cost of making and promoting a release.
 - Free (advert-paid) income per stream, and the share of an Indian artist's streams that come from paying listeners.
 - How each streaming service divides its income. Only Spotify's worldwide statement exists.
 - How much of each service's songwriting share reaches IPRS.
@@ -194,7 +196,7 @@ These use TuneCore India at ₹1,599 plus 18% GST (₹1,886.82), IPRS membership
 
 ## 9. The persona
 
-**Vani** (first name only): a fictional Hindi singer-songwriter, to be clearly labelled as an illustration, with round typical numbers and nobody real behind it. She releases her own non-film songs through a distributor, with no label and no publisher.
+**Vani** (first name only): a fictional independent artist, to be clearly labelled as an illustration, with round typical numbers and nobody real behind it. She writes and releases her own non-film songs through a distributor, with no label and no publisher. She is given no other details.
 
 ## 10. Decisions
 

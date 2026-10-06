@@ -3,31 +3,134 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>India · The economics of a song</title>
-  <meta name="description" content="Coming soon: where the money from a stream goes for independent artists in India.">
+  <title>India calculator · The economics of a song</title>
+  <meta name="description" content="Where the money from a stream goes for an independent artist in India who writes and releases her own non-film songs, in rupees.">
   <link rel="stylesheet" href="/assets/site.css">
 </head>
 <body class="page-calc">
   <nav class="site-nav"><a href="/">← All markets</a></nav>
 
-  <header class="hero single-hero page-head">
-    <div class="cd-case is-soon" aria-hidden="true">
-      <span class="cd-front"></span>
-    </div>
-    <div class="hero-text">
-      <h1>India</h1>
-      <p class="subheading">Coming soon</p>
-    </div>
+  <header class="hero compact page-head">
+    <h1>The India calculator</h1>
+    <p class="subheading">Where the money from a stream goes for an independent artist who writes and releases her own non-film songs, in rupees.</p>
   </header>
 
-  <main class="section">
-    <div class="card placeholder">
-      <p>The India calculator will show where the money from a stream goes for an independent artist who releases her own music, in rupees.</p>
-      <p>India has its own rules and organisations, so its numbers are being researched and checked separately.</p>
-      <a class="btn" href="/uk/">Try the UK calculator</a>
-    </div>
+  <main class="calculator">
+    <p class="message note case-banner">
+      <strong>The India figures are less certain than the UK ones.</strong> India publishes much less, so several numbers here, above all the value of one stream, are estimates.
+      <strong>YouTube and short-video apps are left out</strong>, and that matters more in India than in the UK.
+    </p>
+
+    <section class="card" aria-labelledby="inputs-title">
+      <h2 id="inputs-title">Choose your settings</h2>
+      <p class="hint">This calculator is for an independent artist in India who writes and releases her own non-film songs through a distributor.</p>
+      <p class="hint">Each number has a small label. <span class="tag fact">FACT</span> means it comes from a published source. <span class="tag assumption">ASSUMPTION</span> means it's an estimate or a typical figure. You can change many of them. Tap a label to see more.</p>
+
+      <div class="inputs two-up">
+        <div class="field">
+          <label for="in-streams">Streams per year</label>
+          <input id="in-streams" type="number" inputmode="numeric" min="0" step="10000" value="1000000">
+          <p class="field-help" id="in-streams-words"></p>
+        </div>
+
+        <div class="field">
+          <label for="in-value">Value of one stream <span id="in-value-tag"></span></label>
+          <div class="slider-row">
+            <input id="in-value" type="range" min="0.005" max="0.065" step="0.001" value="0.018">
+            <output id="in-value-out" class="slider-value" for="in-value">₹0.018</output>
+          </div>
+          <p class="field-help" id="in-value-range"></p>
+        </div>
+
+        <div class="field" id="in-costs-field">
+          <label for="in-costs">Cost of making and promoting the release <span id="in-costs-tag"></span></label>
+          <div class="money-input"><span class="currency-symbol">₹</span><input id="in-costs" type="number" inputmode="numeric" min="0" step="1000" value="0"></div>
+        </div>
+
+        <fieldset class="field">
+          <legend>Joined IPRS and registered your songs</legend>
+          <div class="choices" id="in-iprs-choices">
+            <label class="choice"><input type="radio" name="in-iprs" value="yes" checked><span>Yes</span></label>
+            <label class="choice"><input type="radio" name="in-iprs" value="no"><span>No</span></label>
+          </div>
+          <p class="field-help" id="in-iprs-help"></p>
+        </fieldset>
+      </div>
+
+      <p class="group-title">Self-released</p>
+      <div class="inputs">
+        <fieldset class="field wide">
+          <legend>Distributor</legend>
+          <div class="choices" id="in-distributor-choices"></div>
+        </fieldset>
+      </div>
+
+      <p id="in-threshold-note" class="message note" hidden></p>
+    </section>
+
+    <section class="card" aria-labelledby="split-title">
+      <h2 id="split-title">Where the money goes</h2>
+      <p class="hint" id="in-gross-line"></p>
+      <div class="bar" id="in-bar" role="img"></div>
+      <p class="hint">The bar shows how every ₹1 is shared. The shares stay the same however many streams there are; the rupee amounts below it are what change.</p>
+      <ul class="rows" id="in-rows" aria-live="polite"></ul>
+    </section>
+
+    <section class="card" aria-labelledby="fixed-title">
+      <h2 id="fixed-title">Fixed costs</h2>
+      <p class="hint">Paid however many streams there are.</p>
+      <ul class="rows" id="in-fixed-rows"></ul>
+    </section>
+
+    <section class="card" aria-labelledby="result-title">
+      <h2 id="result-title">What you keep</h2>
+      <p class="hint" id="in-result-hint"></p>
+      <div class="results" aria-live="polite">
+        <div class="result" id="in-year1">
+          <div class="label">Year 1</div>
+          <div class="big" id="in-year1-amount"></div>
+          <div class="sub" id="in-year1-sub"></div>
+        </div>
+        <div class="result" id="in-later">
+          <div class="label">Each later year</div>
+          <div class="big" id="in-later-amount"></div>
+          <div class="sub" id="in-later-sub"></div>
+        </div>
+      </div>
+      <p id="in-held-message" class="message note" hidden></p>
+      <p id="in-loss-message" class="message loss" hidden></p>
+    </section>
+
+    <section class="card" aria-labelledby="compare-title">
+      <h2 id="compare-title">With and without IPRS</h2>
+      <p class="hint">Year 1, using the settings above. The only thing that changes is whether you've joined IPRS and registered your songs.</p>
+      <table class="compare" id="in-compare"></table>
+      <p class="footnote">An estimate for illustration, not financial advice. Not included: <span id="in-not-covered"></span>. Tap any tag to see its source.</p>
+    </section>
+
+    <section class="card" aria-labelledby="summary-title">
+      <h2 id="summary-title">In summary</h2>
+      <div id="in-summary-text" class="summary" aria-live="polite"></div>
+      <p class="message note">These sentences describe the numbers above; they don't say what to do. The value of one stream is the least certain number on this page, so try the low and high ends of its range.</p>
+    </section>
+
+    <section class="card" aria-labelledby="persona-title">
+      <p class="group-title" style="margin-top:0;padding-top:0;border-top:0">An illustration, not a real artist</p>
+      <h2 id="persona-title">Vani</h2>
+      <div id="in-persona" class="summary"></div>
+      <button type="button" class="btn" id="in-load-vani">Load Vani's settings</button>
+    </section>
+
+    <section class="card rules-card" aria-labelledby="rules-title">
+      <h2 id="rules-title">Where the numbers come from</h2>
+      <p>Every figure on this page is written down, with its source, in the India rules. They were agreed before this page was built.</p>
+      <a class="text-link" href="https://github.com/anvitim/royalty-calculator/blob/main/RULES-INDIA.md" target="_blank" rel="noopener">Read the full India rules on GitHub</a>
+    </section>
   </main>
 
   <script src="/assets/site.js"></script>
+  <script src="/markets/india.js"></script>
+  <script src="/assets/calculator.js"></script>
+  <script src="/assets/calculator-india.js"></script>
 </body>
 </html>

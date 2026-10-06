@@ -1021,3 +1021,26 @@ table.compare {
   .single-hero .generic-cd { width: min(40vw, 160px); transform: translateX(-26%); }
   .generic-cd .cd-disc { transform: translateX(66%); }
 }
+
+/* A setting that takes the full width of its row (the India distributor choice) */
+.page-calc .inputs > .field.wide { grid-column: 1 / -1; }
+.page-calc .field.wide .choices { flex-wrap: wrap; }
+.rules-card h2 { margin-bottom: 8px; }
+.rules-card p { margin: 0 0 14px; color: var(--subheading); line-height: 1.65; }
+
+/* A fieldset's label sits inside its box, not on the top edge */
+.page-calc .inputs > fieldset.field > legend { float: left; width: 100%; }
+.page-calc .inputs > fieldset.field > legend + * { clear: both; }
+
+/* The India with-and-without table stays inside its card on the narrowest phones */
+#in-compare { table-layout: fixed; }
+#in-compare th[scope="row"] { width: 38%; overflow-wrap: anywhere; }
+#in-compare td { overflow-wrap: anywhere; }
+@media (max-width: 420px) {
+  #in-compare th, #in-compare td { padding-left: 3px; padding-right: 3px; font-size: 0.8rem; }
+}
+
+/* India settings: two boxes a row, one a row on a phone (the UK page keeps its three) */
+.page-calc .inputs.two-up { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 680px) { .page-calc .inputs.two-up { grid-template-columns: 1fr; } }
+.nobreak { white-space: nowrap; }

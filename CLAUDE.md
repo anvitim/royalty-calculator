@@ -5,7 +5,7 @@
 A "who gets paid" calculator for music royalties: it shows where the money goes when a song is streamed, told through women artists, with maths that is the same for everyone. **UK version due 23 October 2026.**
 
 It will cover:
-- three markets: the United Kingdom (live), India and the United States (coming soon);
+- three markets: the United Kingdom and India (live), and the United States (coming soon);
 - in the UK: self-released, indie-label and major-label deals;
 - an Olivia Dean case study, estimating a typical major-label deal;
 - a cover-song scenario.
@@ -19,7 +19,7 @@ It will cover:
 
 ## How we work
 
-1. **Agree rules first.** Each market's rules are written and agreed in its own rules file (`RULES-UK.md`; India will get `RULES-INDIA.md`) before anything is built.
+1. **Agree rules first.** Each market's rules are written and agreed in its own rules file (`RULES-UK.md`, `RULES-INDIA.md`) before anything is built.
 2. **Tag every number.** Each number is labelled **FACT** or **ASSUMPTION**.
    - FACT means the linked source states that figure. Use the market's own sources and currency where possible.
    - ASSUMPTION means an estimate, a typical figure, or a source figure applied to a situation it doesn't directly cover. Say why it's an assumption, and how uncertain it is. An honest gap is better than a confident guess.
@@ -48,7 +48,7 @@ Plain HTML, CSS and JavaScript, with no outside libraries. Pages use addresses s
 | `/` | `index.html` | Homepage: spinning record, headline, intro, "Try the UK calculator" button, market CDs, liner notes |
 | `/uk/` | `uk/index.html` | UK calculator and summary, with a card linking to the case study |
 | `/uk/olivia-dean/` | `uk/olivia-dean/index.html` | "Man I Need" case study (built) |
-| `/india/` | `india/index.html` | India (placeholder for now) |
+| `/india/` | `india/index.html` | India calculator (self-released only, with the persona Vani) |
 
 Shared files:
 - **`assets/site.css`:** all the styling.
@@ -60,6 +60,8 @@ Shared files:
   - `calculate(inputs)` does the maths and works without the page. Test it in the browser with `RoyaltyCalculator.calculate(...)`.
   - The deal types are listed in `DEALS` and `DEAL_ORDER`.
   - The summary uses fixed sentence templates with no AI service. It describes results and never advises which deal to choose.
+- **`assets/calculator-india.js`:** the India page's own drawing code. The shared page code is built around the UK's four deals, so India reuses only `calculate()` and the `markets/india.js` rules, and draws its single route itself.
+- **`markets/india.js`:** the India rules block, in the same shape as `markets/uk.js` (rupees, IPRS, the distributors and their fees).
 - **`markets/uk.js`:** the UK rules block. Every UK number, with its FACT/ASSUMPTION label, note and source, is in `RULES`. The file also holds:
   - the currency (£, and pence for the value of a stream);
   - the collecting societies (PRS, MCPS);
@@ -106,11 +108,12 @@ Shared files:
   - "Your share of the songwriting" setting for every deal (co-writers).
   - The "Man I Need" case study page at `/uk/olivia-dean/`, built from section 7, with its deal settings read from `markets/uk.js`.
   - The comparison and summary rank deals by what's **earned from streams** in year 1. An advance counts as earned only once the streams have paid it back; the rest is shown separately as an early payment of the artist's own royalties. Charged-back costs are assumed to be paid back before the advance.
-- **Homepage redesign:** dark music-app look with the record, CD cases and liner notes (approved and saved). **UK calculator, case study and India redesigns:** tiles, player controls, track list, CD cards. The redesign is complete.
+- **Homepage redesign:** dark music-app look with the record, CD cases and liner notes (approved and saved). **UK calculator, case study and India redesigns:** tiles, player controls, track list, CD cards. The redesign is complete. 
+- **India (approved and saved):** `RULES-INDIA.md` and the India calculator, self-released only, in rupees (lakh and crore style). It has IPRS and release-cost settings and a fictional persona, Vani (first name only, no language). Its worked examples match the rules exactly.
 
 ## Roadmap
 
-1. **India rules** (`RULES-INDIA.md`) for an independent, non-film, self-released artist, in rupees, naming the Indian organisations, with a clearly labelled fictional Hindi singer-songwriter persona. Label anything unsourced as ASSUMPTION and say how uncertain it is. Write, don't build.
+1. **Open:** the IPRS joining fee is "not included" in the India calculator until the owner supplies it from IPRS's site.
 2. **Later:** own domain, a database, the United States, and the **cover-song scenario** (rules agreed in `RULES-UK.md` first, then built). Open question: songwriting money that belongs to the artist is green and her artist money is apricot. Decide the colour rule at design time, since a cover artist's songwriting money goes to someone else.
 
 ## Parked ideas (don't start without being asked)

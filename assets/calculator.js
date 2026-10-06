@@ -63,9 +63,15 @@
     var publisher = yourSongwriting * (1 - writerShare);
     var artistSongwriting = yourSongwriting - publisher;
 
+    // If the songwriting society isn't joined (inputs.songwritingCollected === false), this money
+    // is held by the society and not paid to you
+    var songwritingCollected = inputs.songwritingCollected !== false;
+    var songwritingNotCollected = songwritingCollected ? 0 : artistSongwriting;
+    if (!songwritingCollected) artistSongwriting = 0;
+
     // Joining fees: with a publisher, the publisher deals with some societies (e.g. MCPS)
     var payingSocieties = M.societies.filter(function (s) { return !(hasPublisher && s.publisherJoins); });
-    var joiningFees = payingSocieties.reduce(function (sum, s) { return sum + r(s.joinKey); }, 0);
+    var joiningFees = songwritingCollected ? payingSocieties.reduce(function (sum, s) { return sum + r(s.joinKey); }, 0) : 0;
 
     var res = {
       deal: deal, gross: gross, service: service, recording: recording, songwriting: songwriting,
@@ -74,8 +80,10 @@
       coShare: coShare, writerShare: writerShare, producer: 0, labelDistributorCut: 0, distributorCut: 0
     };
 
+    if (!songwritingCollected) res.songwritingNotCollected = songwritingNotCollected;
+
     // Songwriting money you keep per stream (used for break-even)
-    var songwritingKeptPerStream = inputs.streamValue / perUnit * r('songwritingShare') * keptShareOfSongwriting * coShare * writerShare;
+    var songwritingKeptPerStream = songwritingCollected ? inputs.streamValue / perUnit * r('songwritingShare') * keptShareOfSongwriting * coShare * writerShare : 0;
 
     if (deal === 'self') {
       var distributor = findDistributor(inputs.distributor);
@@ -706,7 +714,8 @@
   document.addEventListener('input', paintSliders);
 
   // Available for testing in the browser
-  window.RoyaltyCalculator = { calculate: calculate, streamsUntilAhead: streamsUntilAhead, readInputs: readInputs, render: render };
+  window.RoyaltyCalculator = { calculate: calculate, streamsUntilAhead: streamsUntilAhead, readInputs: readInputs, render: render,
+                               tag: tag, esc: esc, paintSliders: paintSliders };
 
   if (el('streams')) {
     setUp();
