@@ -971,7 +971,18 @@ table.compare {
 .single-hero .is-soon + .hero-text .subheading { font-size: clamp(0.95rem, 2vw, 1.2rem); letter-spacing: 0.16em; margin: 12px 0 0; order: 0; }
 
 /* A generic CD for the case study: blank label, abstract shapes, nothing from any real cover */
-.generic-cd .cd-disc { transform: translateX(22%); }
+.single-hero .generic-cd { width: 66%; }
+/* About half of the disc slides out of the case: a real hole, a hub ring and a soft silver sheen */
+.generic-cd .cd-disc {
+  transform: translateX(66%);
+  background:
+    linear-gradient(115deg, rgba(255, 255, 255, 0) 34%, rgba(255, 255, 255, 0.38) 48%, rgba(255, 255, 255, 0) 62%),
+    radial-gradient(circle, rgba(0, 0, 0, 0) 0 5.5%, #4d4f58 5.5% 6.5%, rgba(238, 240, 246, 0.5) 6.5% 15.5%, rgba(40, 42, 50, 0.55) 15.5% 16.5%, rgba(0, 0, 0, 0) 16.5%),
+    repeating-radial-gradient(circle, rgba(255, 255, 255, 0.05) 0 1px, rgba(0, 0, 0, 0.06) 1px 3px),
+    conic-gradient(from 30deg, #8d9099, #e9ebf0, #9a9da6, #f3f4f7, #8a8d96, #dfe1e7, #8d9099);
+  -webkit-mask: radial-gradient(circle, transparent 0 5.5%, #000 5.9%);
+          mask: radial-gradient(circle, transparent 0 5.5%, #000 5.9%);
+}
 .generic-cd .cd-front {
   background:
     radial-gradient(circle at 50% 56%, rgba(0, 0, 0, 0) 0 21%, rgba(245, 242, 236, 0.55) 21.5% 23%, rgba(0, 0, 0, 0) 23.5% 33%, rgba(245, 242, 236, 0.22) 33.5% 34.5%, rgba(0, 0, 0, 0) 35%),
@@ -1007,5 +1018,6 @@ table.compare {
 @media (max-width: 760px) {
   .single-hero { grid-template-columns: 1fr; justify-items: center; gap: 22px; }
   .single-hero .cd-case { width: min(52vw, 200px); }
-  .generic-cd .cd-disc { transform: translateX(14%); }
+  .single-hero .generic-cd { width: min(40vw, 160px); transform: translateX(-26%); }
+  .generic-cd .cd-disc { transform: translateX(66%); }
 }
