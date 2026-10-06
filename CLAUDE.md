@@ -110,6 +110,7 @@ Shared files:
   - The comparison and summary rank deals by what's **earned from streams** in year 1. An advance counts as earned only once the streams have paid it back; the rest is shown separately as an early payment of the artist's own royalties. Charged-back costs are assumed to be paid back before the advance.
 - **Homepage redesign:** dark music-app look with the record, CD cases and liner notes (approved and saved). **UK calculator, case study and India redesigns:** tiles, player controls, track list, CD cards. The redesign is complete. 
 - **India (approved and saved):** `RULES-INDIA.md` and the India calculator, self-released only, in rupees (lakh and crore style). It has IPRS and release-cost settings and a fictional persona, Vani (first name only, no language). Its worked examples match the rules exactly.
+- **Visitor walk-through (approved and saved):** homepage button is now "Choose a market"; India page wording tidied (who it's for said once, IPRS and "non-film" explained); larger invisible tap areas on back links and FACT/ASSUMPTION tags; MCPS share now tagged; one tag on the case study's PRS and MCPS costs; "independent (indie)" defined on the UK page. No numbers, rules or calculations changed.
 
 ## Roadmap
 

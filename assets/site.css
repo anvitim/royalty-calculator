@@ -197,6 +197,9 @@ input[type="range"] {
   cursor: help;
 }
 
+.tag { position: relative; }
+/* Invisible larger tap area; the tag's look is unchanged */
+.tag::after { content: ""; position: absolute; inset: -12px -8px; }
 .tag.fact { color: var(--fact); }
 .tag.assumption { color: var(--assumption); }
 a.tag:hover { background: rgba(255, 255, 255, 0.08); }
@@ -423,6 +426,9 @@ table.compare {
   padding-bottom: 1px;
 }
 
+.site-nav a { position: relative; }
+/* Invisible larger tap area for the back link on phones */
+.site-nav a::after { content: ""; position: absolute; inset: -14px -10px; }
 .site-nav a:hover, .text-link:hover { color: var(--accent); }
 .site-nav a:focus-visible, .text-link:focus-visible, .btn:focus-visible, .market-card:focus-visible {
   outline: 2px solid var(--accent);

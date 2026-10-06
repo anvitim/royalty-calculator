@@ -392,7 +392,7 @@
     res.societies.forEach(function (item, i) {
       var s = item.society;
       segments.push({ name: s.costName, amount: item.cost, color: societyColours[i % societyColours.length],
-        detail: rulePct(s.costKey) + tag(s.costKey) + ' of the ' + s.name + ' share (' + pct(item.share) + (s.shareKey ? tag(s.shareKey) : '') + ') of the songwriting money' });
+        detail: rulePct(s.costKey) + tag(s.costKey) + ' of the ' + s.name + ' share (' + pct(item.share) + tag('prsHalf') + ') of the songwriting money' });
     });
 
     if (res.coWriters > 0.005) {

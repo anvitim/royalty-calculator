@@ -296,7 +296,7 @@
     var d = res.distributor;
     el('in-persona').innerHTML =
       '<p>Vani is fictional, and isn\'t based on any real artist. She writes and releases her own non-film songs herself through ' + d.name.replace(', one single', ' as a single') +
-      '. She has joined IPRS and registered her songs. In one year her songs are streamed ' + streamsBoth(VANI.streams) + ', at ' + valueText(VANI.value) + ' a stream' + tag('streamValueDefault') + '.</p>' +
+      '. She has joined IPRS and registered her songs. In one year her songs get ' + streamsBoth(VANI.streams) + ', at ' + valueText(VANI.value) + ' a stream' + tag('streamValueDefault') + '.</p>' +
       '<p>She receives about ' + wholeMoney(res.artist) + ' from those streams. After the ' + money(res.fixedYear1) + ' fee, she finishes the year ' + outcome(res.year1) + '. ' +
       'Had she not joined IPRS and registered her songs, she\'d receive about ' + wholeMoney(without.artist) + ', and IPRS would hold ' + wholeMoney(without.songwritingNotCollected) + ' of songwriting money for up to ' + r('iprsHoldYears') + ' years.</p>';
   }

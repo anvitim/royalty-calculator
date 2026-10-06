@@ -121,7 +121,7 @@
           detail: pct(r('producerShare')) + ' of the recording money' + t('producerShare') },
         { name: 'Olivia Dean, as the recording artist', value: herArtist, color: 'var(--c-artist)', strong: true,
           detail: pct(r('majorRoyaltyRate')) + ' royalty' + t('majorRoyaltyRate') + ' minus the producer\'s ' + pct(r('producerShare')) + ': ' + pct(artistRate) + ' of the recording money' },
-        { name: 'PRS and MCPS running costs', value: societyCosts, color: 'var(--c-prs)', detail: 'As for every UK deal' + t('prsCost') + t('mcpsCost') },
+        { name: 'PRS and MCPS running costs', value: societyCosts, color: 'var(--c-prs)', detail: 'As for every UK deal' + '<span class="tag assumption" tabindex="0" title="' + ('ASSUMPTION: ' + RULES.prsCost.note + ' ' + RULES.mcpsCost.note).replace(/"/g, '&quot;') + '">ASSUMPTION</span>' },
         { name: 'The writers\' publishers, together', value: afterSocieties - writersKeep, color: 'var(--c-publisher)',
           detail: pct(1 - r('writerShareAfterPublisher')) + ' of the songwriting money after PRS and MCPS costs' + t('writerShareAfterPublisher') },
         { name: 'Olivia Dean, as one of three credited writers', value: herWriter, color: 'var(--c-mcps)', strong: true,
